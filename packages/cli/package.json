@@ -1,0 +1,35 @@
+{
+  "name": "ft-pipeline",
+  "version": "0.1.0",
+  "description": "CLI for collecting, rating, formatting, and iterating on LLM fine-tuning datasets",
+  "type": "module",
+  "bin": {
+    "ft": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "commander": "^13.1.0",
+    "inquirer": "^12.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "tsx": "^4.19.2",
+    "vitest": "^3.0.4"
+  },
+  "keywords": [
+    "fine-tuning",
+    "llm",
+    "dataset",
+    "training",
+    "lora",
+    "together",
+    "openai"
+  ],
+  "license": "MIT"
+}
