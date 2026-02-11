@@ -26,7 +26,7 @@ if (showBanner) {
 program
   .name('ait')
   .description('Your AI atelier — craft fine-tuned models with an intuitive CLI')
-  .version('0.4.0', '-v, --version', 'Output the current version')
+  .version('0.5.0', '-v, --version', 'Output the current version')
   .addHelpText(
     'after',
     '\n' +
