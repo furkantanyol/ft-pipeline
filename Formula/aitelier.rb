@@ -1,8 +1,8 @@
 class Aitelier < Formula
   desc "Your AI atelier - craft fine-tuned models"
   homepage "https://github.com/furkantanyol/aitelier"
-  url "https://registry.npmjs.org/aitelier/-/aitelier-0.3.0.tgz"
-  sha256 "c8d3eae160a892e32837db3dcae515e843e5383fef52b8141940c8bcf8b6d59f"
+  url "https://registry.npmjs.org/aitelier/-/aitelier-0.4.0.tgz"
+  sha256 "aff1375c065428fa8d5b9785604084b81cd88cdafb87373ec93f75f292c1cc8c"
   license "MIT"
 
   depends_on "node"
@@ -14,6 +14,6 @@ class Aitelier < Formula
 
   test do
     system bin/"ait", "--version"
-    assert_match "0.3.0", shell_output("#{bin}/ait --version")
+    assert_match "0.4.0", shell_output("#{bin}/ait --version")
   end
 end
