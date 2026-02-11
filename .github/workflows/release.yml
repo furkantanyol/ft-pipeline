@@ -85,10 +85,16 @@ jobs:
           # Show the diff
           git diff Formula/aitelier.rb
 
-      - name: Commit Homebrew Formula
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: 'chore: update Homebrew formula to v${{ steps.version.outputs.VERSION }}'
-          file_pattern: 'Formula/aitelier.rb'
-          commit_user_name: 'github-actions[bot]'
-          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Commit and push (we're on main branch from checkout)
+          git add Formula/aitelier.rb
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update Homebrew formula to v${VERSION}"
+            git push origin main
+            echo "Homebrew formula updated successfully"
+          fi
