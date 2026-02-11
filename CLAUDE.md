@@ -32,6 +32,18 @@ pnpm turbo build && pnpm prettier --write . && pnpm turbo lint && pnpm turbo tes
 
 If all checks pass, update `TASKS.md` to check off any completed tasks.
 
+## Git and Version Control
+
+**IMPORTANT:** The user handles all git operations (add, commit, push, tags, releases). Do NOT run any git commands unless explicitly asked. This includes:
+
+- `git add`
+- `git commit`
+- `git push`
+- `git tag`
+- Any other git operations
+
+You may read git state (e.g., `git status`, `git diff`) when needed, but never modify the git repository.
+
 ## Common Commands
 
 ```bash

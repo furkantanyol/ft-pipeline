@@ -56,21 +56,37 @@ jobs:
 
       - name: Update Homebrew Formula
         run: |
-          # Get the tarball URL and download it
-          TARBALL_URL="https://registry.npmjs.org/aitelier/-/aitelier-${{ steps.version.outputs.VERSION }}.tgz"
-          wget $TARBALL_URL -O /tmp/aitelier.tgz
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          TARBALL_URL="https://registry.npmjs.org/aitelier/-/aitelier-${VERSION}.tgz"
+
+          # Wait for npm to propagate (usually takes 1-2 minutes)
+          echo "Waiting 90 seconds for npm registry to propagate..."
+          sleep 90
+
+          # Download tarball with retries
+          for i in {1..5}; do
+            if wget "$TARBALL_URL" -O /tmp/aitelier.tgz; then
+              break
+            fi
+            echo "Download attempt $i failed, retrying in 30s..."
+            sleep 30
+          done
 
           # Calculate SHA256
           SHA256=$(sha256sum /tmp/aitelier.tgz | awk '{print $1}')
+          echo "SHA256: $SHA256"
 
           # Update the formula
-          sed -i "s|url \".*\"|url \"$TARBALL_URL\"|" Formula/aitelier.rb
+          sed -i "s|url \"https://registry.npmjs.org/aitelier/-/aitelier-.*\.tgz\"|url \"$TARBALL_URL\"|" Formula/aitelier.rb
           sed -i "s|sha256 \".*\"|sha256 \"$SHA256\"|" Formula/aitelier.rb
-          sed -i "s|assert_match \".*\"|assert_match \"${{ steps.version.outputs.VERSION }}\"|" Formula/aitelier.rb
+          sed -i "s|assert_match \".*\", shell_output|assert_match \"$VERSION\", shell_output|" Formula/aitelier.rb
+
+          # Show the diff
+          git diff Formula/aitelier.rb
 
           # Commit and push
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add Formula/aitelier.rb
-          git commit -m "Update Homebrew formula to v${{ steps.version.outputs.VERSION }}" || echo "No changes to commit"
+          git commit -m "chore: update Homebrew formula to v${VERSION}" || echo "No changes to commit"
           git push origin HEAD:main || echo "No changes to push"
