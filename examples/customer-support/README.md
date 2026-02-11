@@ -31,6 +31,7 @@ The 25 examples include:
 - Account and technical support (2 examples)
 
 **Rating distribution:**
+
 - 10/10: 3 examples (exceptional responses)
 - 9/10: 9 examples (high quality, clear solutions)
 - 8/10: 12 examples (good, professional responses)
@@ -59,6 +60,7 @@ npx ft-pipeline stats
 ```
 
 You should see:
+
 - 25 total examples
 - All rated (100%)
 - 24 examples above threshold (96%)
@@ -74,6 +76,7 @@ npx ft-pipeline format
 ```
 
 This creates:
+
 - `data/train.jsonl` - 20 training examples
 - `data/val.jsonl` - 5 validation examples
 
@@ -84,6 +87,7 @@ npx ft-pipeline train
 ```
 
 This will:
+
 - Upload your training file to Together.ai
 - Start a LoRA fine-tune job
 - Save the job ID to `.ftpipeline.json`
@@ -120,12 +124,14 @@ After fine-tuning on this dataset, you should see:
 ### Base Model vs Fine-Tuned
 
 **Before (base model):**
+
 - Generic responses that don't reference order numbers
 - Less structured problem-solving
 - Doesn't always verify details before taking action
 - Inconsistent tone (sometimes too formal, sometimes too casual)
 
 **After (fine-tuned model):**
+
 - Always verifies order number (TG-XXXX format)
 - Structured responses: acknowledge → investigate → offer solution → next steps
 - Appropriate empathy for complaints and urgent issues
@@ -141,6 +147,7 @@ taking action. Offer clear next steps.
 ```
 
 This prompt:
+
 - **Sets the role**: Customer support agent for a specific company
 - **Defines tone**: Friendly + professional (balance of warmth and competence)
 - **Emphasizes safety**: Always verify before taking action (prevent errors)
@@ -153,6 +160,7 @@ To adapt this for your own customer support bot:
 ### 1. Update the system prompt
 
 Edit `.ftpipeline.json` to reflect your:
+
 - Company name and industry
 - Tone preferences
 - Key policies or procedures
@@ -176,6 +184,7 @@ npx ft-pipeline rate
 ```
 
 Score each example 1-10 based on:
+
 - **Accuracy**: Does it solve the customer's problem?
 - **Tone**: Is it appropriately friendly and professional?
 - **Completeness**: Are next steps clear?
@@ -184,6 +193,7 @@ Score each example 1-10 based on:
 ### 4. Iterate
 
 After your first fine-tune:
+
 - Run `ft eval --compare` to see what improved
 - Identify patterns in low-scoring responses
 - Add more examples in those areas
@@ -220,6 +230,7 @@ Fine-tuning on this dataset (25 examples, 20 train / 5 val):
 - **Total**: ~$0.60
 
 Inference costs after fine-tuning:
+
 - Same as base model ($0.20/million tokens)
 - Fine-tuned model is same size, just specialized
 

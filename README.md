@@ -1,6 +1,7 @@
 # ft-pipeline
 
 [![npm version](https://img.shields.io/npm/v/ft-pipeline.svg)](https://www.npmjs.com/package/ft-pipeline)
+[![CI](https://github.com/furkantanyol/ft-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/furkantanyol/ft-pipeline/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org/)
 [![Built with TypeScript](https://img.shields.io/badge/Built%20with-TypeScript-blue)](https://www.typescriptlang.org/)
@@ -163,25 +164,42 @@ Fine-tune on internal documentation, technical specs, or research papers.
 
 ## Installation
 
-**Option 1: Global install (recommended)**
+**Option 1: npm (recommended)**
 
 ```bash
+# Global install
 npm install -g ft-pipeline
+
+# Verify installation
 ft --version
 ```
 
-**Option 2: Use with npx (no install)**
+**Option 2: Homebrew (macOS/Linux)**
 
 ```bash
+# Tap the repository
+brew tap furkantanyol/ft-pipeline https://github.com/furkantanyol/ft-pipeline
+
+# Install
+brew install ft-pipeline
+
+# Verify installation
+ft --version
+```
+
+**Option 3: npx (no install)**
+
+```bash
+# Run commands directly without installing
 npx ft-pipeline init
 npx ft-pipeline add
 # ... other commands
 ```
 
-**Option 3: Development install**
+**Option 4: Development install**
 
 ```bash
-git clone https://github.com/yourusername/ft-pipeline.git
+git clone https://github.com/furkantanyol/ft-pipeline.git
 cd ft-pipeline
 pnpm install
 pnpm turbo build
@@ -191,7 +209,8 @@ pnpm --filter ft-pipeline exec tsx src/index.ts --help
 **Requirements:**
 
 - Node.js 20 or higher
-- npm, pnpm, or yarn
+- npm, pnpm, or yarn (for npm install)
+- Homebrew (for brew install)
 - Together.ai API key (for training and evaluation)
 
 ## Quick Start
@@ -874,12 +893,13 @@ ft-pipeline/
 - [x] JSONL-native storage with validation set locking
 - [x] Interactive prompts and quality control
 - [x] Comprehensive test coverage
+- [x] Package publishing to npm and Homebrew
+- [x] Example projects (customer support, code review)
+- [x] CI/CD with GitHub Actions
 
 ### 🚧 In Progress
 
-- [ ] Package publishing to npm
 - [ ] OpenAI provider support
-- [ ] Example projects (customer support, code review)
 
 ### 🔮 Future
 
@@ -888,6 +908,7 @@ ft-pipeline/
 - [ ] Fireworks.ai provider support
 - [ ] Dataset versioning and diff tools
 - [ ] Export to other fine-tuning platforms (HuggingFace, Replicate)
+- [ ] CLI demo video (asciinema or vhs)
 
 ## Troubleshooting
 

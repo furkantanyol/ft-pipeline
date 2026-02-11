@@ -131,10 +131,10 @@ Track progress by checking off tasks as they're completed.
 
 ### M4.3 — Package Publishing
 
-- [ ] Publish to npm as `ft-pipeline`
-- [ ] `npx ft-pipeline` works out of the box
-- [ ] GitHub releases with changelog
-- [ ] Badges: npm version, CI status, license
+- [x] Publish to npm as `ft-pipeline`
+- [x] `npx ft-pipeline` works out of the box
+- [x] GitHub releases with changelog
+- [x] Badges: npm version, CI status, license
 
 ### M4.4 — Launch
 

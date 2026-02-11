@@ -1,0 +1,46 @@
+# Source files
+src/
+*.test.ts
+*.spec.ts
+
+# Development files
+tsconfig.json
+vitest.config.ts
+eslint.config.js
+.prettierrc
+
+# Build artifacts
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.env
+.turbo/
+node_modules/

@@ -19,12 +19,13 @@ This example contains:
 The 5 examples include:
 
 - Security vulnerabilities (SQL injection) - 1 example
-- Modern JavaScript best practices - 1 example  
+- Modern JavaScript best practices - 1 example
 - Error handling improvements - 1 example
 - React component issues - 1 example
 - Password validation - 1 example
 
 **Rating distribution:**
+
 - 10/10: 2 examples (critical security issues with clear fixes)
 - 9/10: 2 examples (important improvements with good explanations)
 - 8/10: 1 example (solid style improvements)
@@ -52,6 +53,7 @@ ft stats
 ```
 
 You should see:
+
 ```
 Dataset Overview
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -64,13 +66,13 @@ Rating Distribution
  10 ████████████████████████ 2 (40%)
   9 ████████████████████████ 2 (40%)
   8 ████████████ 1 (20%)
-  7 
-  6 
-  5 
-  4 
-  3 
-  2 
-  1 
+  7
+  6
+  5
+  4
+  3
+  2
+  1
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Average rating: 9.2/10
 
@@ -85,6 +87,7 @@ ft split
 ```
 
 With only 5 examples, you'll get:
+
 ```
 Split 5 examples: 4 train, 1 val (80/20)
 ```
@@ -96,6 +99,7 @@ ft format
 ```
 
 This exports the split examples to Together.ai format:
+
 ```
 Exported 4 examples to data/train.jsonl
 Exported 1 example to data/val.jsonl
@@ -108,6 +112,7 @@ ft train --epochs 3
 ```
 
 Output:
+
 ```
 Uploading data/train.jsonl... ✓
 Uploading data/val.jsonl... ✓
@@ -147,6 +152,7 @@ With proper training data (you'd want 50-100 examples in production), you should
 To make this production-ready:
 
 1. **Add more examples** (aim for 50-100):
+
    ```bash
    ft add  # Interactive mode
    # Or use file mode:
@@ -159,6 +165,7 @@ To make this production-ready:
    - General: naming conventions, code organization, documentation
 
 3. **Rate existing examples**:
+
    ```bash
    ft rate
    ```
@@ -195,7 +202,7 @@ Adjust the quality threshold in `.ftpipeline.json`:
 
 ```json
 {
-  "qualityThreshold": 9  // Only train on 9+ rated examples
+  "qualityThreshold": 9 // Only train on 9+ rated examples
 }
 ```
 
