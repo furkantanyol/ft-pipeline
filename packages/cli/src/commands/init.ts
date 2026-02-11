@@ -4,6 +4,7 @@ import { mkdir, writeFile, access } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { ProjectConfig } from '../storage/config.js';
 import { saveConfig } from '../storage/config.js';
+import { banner, text, divider } from '../utils/ui.js';
 
 const CONFIG_FILE = '.aitelier.json';
 
@@ -39,6 +40,8 @@ async function initCommand(): Promise<void> {
       throw error;
     }
   }
+
+  banner('🎨 Initialize Your Fine-Tuning Project', 'Set up your AI atelier workspace');
 
   // Interactive prompts
   const answers = await inquirer.prompt<{
@@ -93,7 +96,6 @@ async function initCommand(): Promise<void> {
 
   // Save config file
   await saveConfig(config, cwd);
-  console.log('✓ Created .aitelier.json');
 
   // Create data directory structure
   const dataDir = join(cwd, 'data');
@@ -104,6 +106,19 @@ async function initCommand(): Promise<void> {
   await writeFile(join(dataDir, 'train.jsonl'), '');
   await writeFile(join(dataDir, 'val.jsonl'), '');
 
-  console.log('✓ Created data/ directory');
-  console.log('✓ Ready to add training examples with `ait add`');
+  console.log('');
+  divider();
+  console.log(text.success(`Project "${config.name}" initialized successfully!`));
+  console.log('');
+  console.log(text.info('Created files:'));
+  console.log(text.muted('  • .aitelier.json (project config)'));
+  console.log(text.muted('  • data/examples.jsonl (training data)'));
+  console.log(text.muted('  • data/evals/ (evaluation results)'));
+  console.log('');
+  console.log(text.highlight('Next steps:'));
+  console.log(text.command('ait add') + text.muted('  — Add training examples'));
+  console.log(text.command('ait rate') + text.muted(' — Review and rate examples'));
+  console.log(text.command('ait stats') + text.muted(' — Check dataset health'));
+  divider();
+  console.log('');
 }

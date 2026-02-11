@@ -4,6 +4,16 @@ import { join } from 'node:path';
 import type { Example } from '../storage/dataset.js';
 import { readExamples } from '../storage/dataset.js';
 import { loadConfig } from '../storage/config.js';
+import {
+  section,
+  text,
+  metric,
+  progressBar,
+  divider,
+  colors,
+  statusIcon,
+  listItem,
+} from '../utils/ui.js';
 
 const CONFIG_FILE = '.aitelier.json';
 const EXAMPLES_FILE = 'data/examples.jsonl';
@@ -124,70 +134,91 @@ function calculateStats(examples: Example[], threshold: number): DatasetStats {
 }
 
 function displayStats(stats: DatasetStats, threshold: number): void {
-  console.log('\n' + '═'.repeat(70));
-  console.log('Dataset Health Overview');
-  console.log('═'.repeat(70));
+  console.log('');
+  section('📊 Dataset Health Overview');
+  console.log('');
 
-  // Dataset size
-  console.log(`\nTotal examples: ${stats.total}`);
-  console.log(`Rated: ${stats.rated} (${percentage(stats.rated, stats.total)}%)`);
-  console.log(`Unrated: ${stats.unrated} (${percentage(stats.unrated, stats.total)}%)`);
+  // Dataset size with visual bars
+  console.log(metric('Total examples', stats.total));
+  console.log(
+    metric('Rated', `${stats.rated} (${percentage(stats.rated, stats.total)}%)`) +
+      '\n  ' +
+      progressBar(stats.rated, stats.total),
+  );
+  console.log(metric('Unrated', `${stats.unrated} (${percentage(stats.unrated, stats.total)}%)`));
 
   // Rating distribution histogram
   if (stats.rated > 0) {
-    console.log('\nRating Distribution:');
-    console.log('━'.repeat(70));
+    console.log('');
+    divider();
+    console.log(colors.primary.bold('\n Rating Distribution (1-10):\n'));
     displayHistogram(stats.ratingDistribution, stats.rated);
   }
 
   // Quality threshold analysis
-  console.log('\nQuality Analysis:');
-  console.log('━'.repeat(70));
-  console.log(`Quality threshold: ${threshold}/10`);
+  console.log('');
+  divider();
+  console.log(colors.primary.bold('\n Quality Analysis:\n'));
+  console.log(metric('Threshold', `${threshold}/10`));
+  const qualityPct = percentage(stats.aboveThreshold, stats.total);
+  const qualityColor =
+    qualityPct >= 80 ? colors.success : qualityPct >= 50 ? colors.warning : colors.error;
   console.log(
-    `Examples ≥ ${threshold}: ${stats.aboveThreshold} (${percentage(stats.aboveThreshold, stats.total)}%)`,
+    metric('High-quality examples', `${stats.aboveThreshold}`) +
+      ' ' +
+      qualityColor(`(${qualityPct}%)`),
   );
 
   // Train/val split status
-  console.log('\nTrain/Val Split:');
-  console.log('━'.repeat(70));
+  console.log('');
+  divider();
+  console.log(colors.primary.bold('\n Train/Val Split:\n'));
   if (stats.trainCount > 0 || stats.valCount > 0) {
-    console.log(`Train: ${stats.trainCount} examples`);
-    console.log(`Val: ${stats.valCount} examples`);
+    console.log(metric('Training examples', stats.trainCount));
+    console.log(metric('Validation examples', stats.valCount));
+    console.log('');
     if (stats.hasTrainFile) {
-      console.log('✓ train.jsonl exists');
+      console.log(listItem('train.jsonl exists', 'success'));
     } else {
-      console.log('✗ train.jsonl not found (run `ait format` to generate)');
+      console.log(listItem('train.jsonl not found — run `ait format`', 'error'));
     }
     if (stats.hasValFile) {
-      console.log('✓ val.jsonl exists');
+      console.log(listItem('val.jsonl exists', 'success'));
     } else {
-      console.log('✗ val.jsonl not found (run `ait format` to generate)');
+      console.log(listItem('val.jsonl not found — run `ait format`', 'error'));
     }
   } else {
-    console.log('Not yet split (run `ait split` to assign train/val splits)');
+    console.log(text.muted('  Not yet split'));
+    console.log(text.info('  Run `ait split` to create train/val splits'));
   }
 
   // Readiness assessment
-  console.log('\nReadiness:');
-  console.log('━'.repeat(70));
+  console.log('');
+  divider();
+  console.log(colors.primary.bold('\n Readiness Check:\n'));
   assessReadiness(stats, threshold);
 
-  console.log('═'.repeat(70) + '\n');
+  console.log('');
+  divider();
+  console.log('');
 }
 
 function displayHistogram(distribution: Map<number, number>, total: number): void {
   // Display histogram for ratings 1-10
-  const maxBarLength = 40;
+  const maxBarLength = 35;
   const maxCount = Math.max(...Array.from(distribution.values()));
 
   for (let rating = 10; rating >= 1; rating--) {
     const count = distribution.get(rating) || 0;
     const barLength = maxCount > 0 ? Math.round((count / maxCount) * maxBarLength) : 0;
-    const bar = '█'.repeat(barLength);
+
+    // Color based on rating
+    const barColor = rating >= 8 ? colors.success : rating >= 5 ? colors.warning : colors.error;
+    const bar = barColor('█'.repeat(barLength));
     const pct = percentage(count, total);
+
     console.log(
-      `${rating.toString().padStart(2)}/10 │${bar.padEnd(maxBarLength)} │ ${count.toString().padStart(3)} (${pct.toString().padStart(5)}%)`,
+      `  ${colors.primary(rating.toString().padStart(2))}${colors.dim('/10')} │ ${bar.padEnd(maxBarLength + 10)} ${colors.muted('│')} ${text.number(count.toString().padStart(3))} ${colors.dim('(' + pct.toString().padStart(2) + '%)')}`,
     );
   }
 }
@@ -199,44 +230,57 @@ function assessReadiness(stats: DatasetStats, _threshold: number): void {
   // Check for unrated examples
   if (stats.unrated > 0) {
     issues.push(`${stats.unrated} unrated examples`);
-    recommendations.push('Run `ait rate` to rate all examples');
+    recommendations.push('ait rate — Review and rate all examples');
   }
 
   // Check for sufficient high-quality examples
   if (stats.aboveThreshold < 20) {
     issues.push(
-      `Only ${stats.aboveThreshold} examples meet quality threshold (recommend 20+ for fine-tuning)`,
+      `Only ${stats.aboveThreshold} high-quality examples (recommend 20+ for fine-tuning)`,
     );
     if (stats.rated < stats.total) {
-      recommendations.push('Rate more examples to identify high-quality data');
+      recommendations.push('ait rate — Rate more examples');
     } else {
-      recommendations.push('Add more examples with `ait add` or lower quality threshold');
+      recommendations.push('ait add — Add more training examples');
     }
   }
 
   // Check for train/val split
   if (stats.trainCount === 0 && stats.valCount === 0) {
     issues.push('No train/val split assigned');
-    recommendations.push('Run `ait split` to create train/val splits');
+    recommendations.push('ait split — Create train/validation splits');
   }
 
   // Check for formatted files
   if (!stats.hasTrainFile || !stats.hasValFile) {
     issues.push('Training files not generated');
-    recommendations.push('Run `ait format` to generate train.jsonl and val.jsonl');
+    recommendations.push('ait format — Export to JSONL format');
   }
 
   if (issues.length === 0) {
-    console.log('✓ Dataset is ready for training');
-    console.log('  Run `ait train` to start fine-tuning');
+    console.log(
+      statusIcon('success') + ' ' + colors.success.bold('Dataset is ready for training!\n'),
+    );
+    console.log(text.highlight('  Next step:'));
+    console.log(
+      text.muted('  Run ') + text.command('ait train') + text.muted(' to start fine-tuning'),
+    );
   } else {
-    console.log('✗ Dataset not ready for training:');
+    console.log(statusIcon('warning') + ' ' + colors.warning.bold('Dataset needs attention:\n'));
     for (const issue of issues) {
-      console.log(`  • ${issue}`);
+      console.log(listItem(issue, 'error'));
     }
-    console.log('\nRecommended next steps:');
+    console.log('');
+    console.log(text.highlight('  Recommended steps:'));
+    let step = 1;
     for (const rec of recommendations) {
-      console.log(`  1. ${rec}`);
+      console.log(
+        colors.muted(`  ${step}.`) +
+          ' ' +
+          text.command(rec.split(' — ')[0]) +
+          colors.muted(' — ' + rec.split(' — ')[1]),
+      );
+      step++;
     }
   }
 }

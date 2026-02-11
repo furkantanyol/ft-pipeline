@@ -1,6 +1,6 @@
 {
   "name": "aitelier",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Your AI atelier - craft fine-tuned models with an intuitive CLI for dataset curation and training",
   "type": "module",
   "main": "./dist/index.js",
@@ -21,11 +21,17 @@
     "prepublishOnly": "pnpm run build && pnpm run test"
   },
   "dependencies": {
+    "boxen": "8",
+    "chalk": "5",
+    "cli-table3": "0.6",
     "commander": "^13.1.0",
     "dotenv": "^17.2.4",
-    "inquirer": "^12.3.2"
+    "gradient-string": "2",
+    "inquirer": "^12.3.2",
+    "ora": "8"
   },
   "devDependencies": {
+    "@types/gradient-string": "^1.1.6",
     "@types/node": "^22.10.7",
     "tsx": "^4.19.2",
     "vitest": "^3.0.4"
