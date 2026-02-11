@@ -42,11 +42,11 @@ Track progress by checking off tasks as they're completed.
 
 ### M1.5 — `ft stats` Command
 
-- [ ] Total examples, rated count, unrated count
-- [ ] Rating distribution (histogram in terminal)
-- [ ] Examples above quality threshold (configurable, default 8+)
-- [ ] Train/val split status
-- [ ] Write tests
+- [x] Total examples, rated count, unrated count
+- [x] Rating distribution (histogram in terminal)
+- [x] Examples above quality threshold (configurable, default 8+)
+- [x] Train/val split status
+- [x] Write tests
 
 ---
 
