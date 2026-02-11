@@ -1,6 +1,6 @@
 class Aitelier < Formula
   desc "Your AI atelier - craft fine-tuned models"
-  homepage "https://github.com/furkantanyol/ft-pipeline"
+  homepage "https://github.com/furkantanyol/aitelier"
   url "https://registry.npmjs.org/aitelier/-/aitelier-0.1.0.tgz"
   sha256 "PLACEHOLDER_SHA256"
   license "MIT"
