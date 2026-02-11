@@ -1,10 +1,11 @@
 import type { Command } from 'commander';
 import { access, stat } from 'node:fs/promises';
 import { join } from 'node:path';
+import { config as loadDotenv } from 'dotenv';
 import { loadConfig, saveConfig } from '../storage/config.js';
 import { TogetherProvider } from '../providers/together.js';
 
-const CONFIG_FILE = '.ftpipeline.json';
+const CONFIG_FILE = '.aitelier.json';
 const TRAIN_FILE = 'data/train.jsonl';
 const VAL_FILE = 'data/val.jsonl';
 
@@ -38,11 +39,14 @@ export function registerTrain(program: Command): void {
 async function trainCommand(options: TrainOptions): Promise<void> {
   const cwd = process.cwd();
 
+  // Load environment variables from .env file if it exists
+  loadDotenv({ path: join(cwd, '.env') });
+
   // Check if project is initialized
   try {
     await access(join(cwd, CONFIG_FILE));
   } catch {
-    throw new Error('Project not initialized. Run `ft init` first to create .ftpipeline.json');
+    throw new Error('Project not initialized. Run `ait init` first to create .aitelier.json');
   }
 
   // Load config
@@ -53,7 +57,7 @@ async function trainCommand(options: TrainOptions): Promise<void> {
   try {
     await access(trainPath);
   } catch {
-    throw new Error('Training file not found. Run `ft format` first to generate data/train.jsonl');
+    throw new Error('Training file not found. Run `ait format` first to generate data/train.jsonl');
   }
 
   // Check for validation file (optional but recommended)
@@ -153,9 +157,9 @@ async function trainCommand(options: TrainOptions): Promise<void> {
 
   console.log('\nNext Steps:');
   console.log('━'.repeat(70));
-  console.log('1. Monitor progress: ft status');
-  console.log('2. Check all runs: ft status --all');
-  console.log('3. After completion, run evaluations: ft eval');
+  console.log('1. Monitor progress: ait status');
+  console.log('2. Check all runs: ait status --all');
+  console.log('3. After completion, run evaluations: ait eval');
 
   console.log('═'.repeat(70) + '\n');
 }

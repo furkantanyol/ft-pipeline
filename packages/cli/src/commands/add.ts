@@ -7,7 +7,7 @@ import type { Example } from '../storage/dataset.js';
 import { appendExample, readExamples } from '../storage/dataset.js';
 import { loadConfig } from '../storage/config.js';
 
-const CONFIG_FILE = '.ftpipeline.json';
+const CONFIG_FILE = '.aitelier.json';
 const EXAMPLES_FILE = 'data/examples.jsonl';
 
 export function registerAdd(program: Command): void {
@@ -33,7 +33,7 @@ async function addCommand(options: { input?: string; output?: string }): Promise
   try {
     await access(join(cwd, CONFIG_FILE));
   } catch {
-    throw new Error('Project not initialized. Run `ft init` first to create .ftpipeline.json');
+    throw new Error('Project not initialized. Run `ait init` first to create .aitelier.json');
   }
 
   // Load project config for system prompt

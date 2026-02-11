@@ -9,7 +9,7 @@ import type { Example } from '../storage/dataset.js';
 import type { Message } from '../providers/types.js';
 import { writeFile } from 'node:fs/promises';
 
-const CONFIG_FILE = '.ftpipeline.json';
+const CONFIG_FILE = '.aitelier.json';
 const VAL_FILE = 'data/val.jsonl';
 const EVALS_DIR = 'data/evals';
 
@@ -88,7 +88,7 @@ async function evalCommand(): Promise<void> {
   try {
     await access(join(cwd, CONFIG_FILE));
   } catch {
-    throw new Error('Project not initialized. Run `ft init` first to create .ftpipeline.json');
+    throw new Error('Project not initialized. Run `ait init` first to create .aitelier.json');
   }
 
   // Load config
@@ -102,8 +102,8 @@ async function evalCommand(): Promise<void> {
     console.log('No Completed Models Found');
     console.log('═'.repeat(70));
     console.log('\nNo completed fine-tuning jobs with model IDs found.');
-    console.log('\nTo start a training job, run: ft train');
-    console.log('To check job status, run: ft status');
+    console.log('\nTo start a training job, run: ait train');
+    console.log('To check job status, run: ait status');
     console.log('═'.repeat(70) + '\n');
     return;
   }
@@ -122,7 +122,7 @@ async function evalCommand(): Promise<void> {
       console.log('No Validation Data Found');
       console.log('═'.repeat(70));
       console.log('\nNo validation examples found.');
-      console.log('\nTo create validation data, run: ft split');
+      console.log('\nTo create validation data, run: ait split');
       console.log('═'.repeat(70) + '\n');
       return;
     }
@@ -134,7 +134,7 @@ async function evalCommand(): Promise<void> {
     console.log('No Validation Examples');
     console.log('═'.repeat(70));
     console.log('\nValidation file is empty.');
-    console.log('\nTo create validation data, run: ft split');
+    console.log('\nTo create validation data, run: ait split');
     console.log('═'.repeat(70) + '\n');
     return;
   }
@@ -350,7 +350,7 @@ async function evalCompareCommand(): Promise<void> {
   try {
     await access(join(cwd, CONFIG_FILE));
   } catch {
-    throw new Error('Project not initialized. Run `ft init` first to create .ftpipeline.json');
+    throw new Error('Project not initialized. Run `ait init` first to create .aitelier.json');
   }
 
   // Load config
@@ -364,8 +364,8 @@ async function evalCompareCommand(): Promise<void> {
     console.log('No Completed Models Found');
     console.log('═'.repeat(70));
     console.log('\nNo completed fine-tuning jobs with model IDs found.');
-    console.log('\nTo start a training job, run: ft train');
-    console.log('To check job status, run: ft status');
+    console.log('\nTo start a training job, run: ait train');
+    console.log('To check job status, run: ait status');
     console.log('═'.repeat(70) + '\n');
     return;
   }
@@ -385,7 +385,7 @@ async function evalCompareCommand(): Promise<void> {
       console.log('No Validation Data Found');
       console.log('═'.repeat(70));
       console.log('\nNo validation examples found.');
-      console.log('\nTo create validation data, run: ft split');
+      console.log('\nTo create validation data, run: ait split');
       console.log('═'.repeat(70) + '\n');
       return;
     }
@@ -397,7 +397,7 @@ async function evalCompareCommand(): Promise<void> {
     console.log('No Validation Examples');
     console.log('═'.repeat(70));
     console.log('\nValidation file is empty.');
-    console.log('\nTo create validation data, run: ft split');
+    console.log('\nTo create validation data, run: ait split');
     console.log('═'.repeat(70) + '\n');
     return;
   }

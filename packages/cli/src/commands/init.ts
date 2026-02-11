@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import type { ProjectConfig } from '../storage/config.js';
 import { saveConfig } from '../storage/config.js';
 
-const CONFIG_FILE = '.ftpipeline.json';
+const CONFIG_FILE = '.aitelier.json';
 
 const DEFAULT_MODELS = {
   together: 'meta-llama/Llama-3.3-70B-Instruct',
@@ -32,7 +32,7 @@ async function initCommand(): Promise<void> {
   // Check if project is already initialized
   try {
     await access(join(cwd, CONFIG_FILE));
-    throw new Error('Project already initialized. .ftpipeline.json already exists.');
+    throw new Error('Project already initialized. .aitelier.json already exists.');
   } catch (error) {
     // File doesn't exist, continue with init
     if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
@@ -93,7 +93,7 @@ async function initCommand(): Promise<void> {
 
   // Save config file
   await saveConfig(config, cwd);
-  console.log('✓ Created .ftpipeline.json');
+  console.log('✓ Created .aitelier.json');
 
   // Create data directory structure
   const dataDir = join(cwd, 'data');
@@ -105,5 +105,5 @@ async function initCommand(): Promise<void> {
   await writeFile(join(dataDir, 'val.jsonl'), '');
 
   console.log('✓ Created data/ directory');
-  console.log('✓ Ready to add training examples with `ft add`');
+  console.log('✓ Ready to add training examples with `ait add`');
 }

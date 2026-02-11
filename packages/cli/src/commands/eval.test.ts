@@ -8,14 +8,14 @@ import type { ProjectConfig } from '../storage/config.js';
 import type { Example } from '../storage/dataset.js';
 import inquirer from 'inquirer';
 
-describe('ft eval', () => {
+describe('ait eval', () => {
   let testDir: string;
   let originalCwd: string;
   let originalFetch: typeof globalThis.fetch;
 
   beforeEach(async () => {
     // Create a temporary directory for each test
-    testDir = await mkdtemp(join(tmpdir(), 'ft-eval-test-'));
+    testDir = await mkdtemp(join(tmpdir(), 'ait-eval-test-'));
     originalCwd = process.cwd();
     process.chdir(testDir);
 
@@ -43,7 +43,7 @@ describe('ft eval', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-123',
+          jobId: 'ait-job-123',
           modelId: 'model-abc-123',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
@@ -51,7 +51,7 @@ describe('ft eval', () => {
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     // Create data directory and validation data
     await mkdir('data', { recursive: true });
@@ -141,7 +141,7 @@ describe('ft eval', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-123',
+          jobId: 'ait-job-123',
           modelId: 'model-abc-123',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
@@ -149,7 +149,7 @@ describe('ft eval', () => {
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     // Create data directory and validation data
     await mkdir('data', { recursive: true });
@@ -205,7 +205,7 @@ describe('ft eval', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-123',
+          jobId: 'ait-job-123',
           modelId: 'model-abc-123',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
@@ -213,7 +213,7 @@ describe('ft eval', () => {
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     // Create data directory and validation data
     await mkdir('data', { recursive: true });
@@ -269,14 +269,14 @@ describe('ft eval', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-123',
+          jobId: 'ait-job-123',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
           status: 'running',
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 
@@ -300,7 +300,7 @@ describe('ft eval', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-123',
+          jobId: 'ait-job-123',
           modelId: 'model-abc-123',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
@@ -308,7 +308,7 @@ describe('ft eval', () => {
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 
@@ -332,7 +332,7 @@ describe('ft eval', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-123',
+          jobId: 'ait-job-123',
           modelId: 'model-abc-123',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
@@ -340,7 +340,7 @@ describe('ft eval', () => {
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     // Create data directory and validation data
     await mkdir('data', { recursive: true });
@@ -414,7 +414,7 @@ describe('ft eval', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-123',
+          jobId: 'ait-job-123',
           modelId: 'model-abc-123',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
@@ -422,7 +422,7 @@ describe('ft eval', () => {
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     // Create data directory and validation data
     await mkdir('data', { recursive: true });
@@ -472,7 +472,7 @@ describe('ft eval', () => {
         qualityThreshold: 8,
         runs: [
           {
-            jobId: 'ft-job-123',
+            jobId: 'ait-job-123',
             modelId: 'model-abc-123',
             provider: 'together',
             startedAt: '2025-01-01T00:00:00.000Z',
@@ -480,7 +480,7 @@ describe('ft eval', () => {
           },
         ],
       };
-      await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+      await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
       // Create data directory and validation data
       await mkdir('data', { recursive: true });
@@ -595,7 +595,7 @@ describe('ft eval', () => {
         qualityThreshold: 8,
         runs: [
           {
-            jobId: 'ft-job-123',
+            jobId: 'ait-job-123',
             modelId: 'model-abc-123',
             provider: 'together',
             startedAt: '2025-01-01T00:00:00.000Z',
@@ -603,7 +603,7 @@ describe('ft eval', () => {
           },
         ],
       };
-      await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+      await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
       // Create data directory and validation data
       await mkdir('data', { recursive: true });
@@ -662,7 +662,7 @@ describe('ft eval', () => {
         qualityThreshold: 8,
         runs: [
           {
-            jobId: 'ft-job-123',
+            jobId: 'ait-job-123',
             modelId: 'model-abc-123',
             provider: 'together',
             startedAt: '2025-01-01T00:00:00.000Z',
@@ -670,7 +670,7 @@ describe('ft eval', () => {
           },
         ],
       };
-      await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+      await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
       // Create data directory and validation data
       await mkdir('data', { recursive: true });
@@ -729,7 +729,7 @@ describe('ft eval', () => {
         qualityThreshold: 8,
         runs: [
           {
-            jobId: 'ft-job-123',
+            jobId: 'ait-job-123',
             modelId: 'model-abc-123',
             provider: 'together',
             startedAt: '2025-01-01T00:00:00.000Z',
@@ -737,7 +737,7 @@ describe('ft eval', () => {
           },
         ],
       };
-      await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+      await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
       // Create data directory and validation data
       await mkdir('data', { recursive: true });
@@ -791,7 +791,7 @@ describe('ft eval', () => {
         qualityThreshold: 8,
         runs: [
           {
-            jobId: 'ft-job-123',
+            jobId: 'ait-job-123',
             modelId: 'model-abc-123',
             provider: 'together',
             startedAt: '2025-01-01T00:00:00.000Z',
@@ -799,7 +799,7 @@ describe('ft eval', () => {
           },
         ],
       };
-      await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+      await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
       // Create data directory and validation data
       await mkdir('data', { recursive: true });
@@ -872,7 +872,7 @@ describe('ft eval', () => {
         qualityThreshold: 8,
         runs: [
           {
-            jobId: 'ft-job-123',
+            jobId: 'ait-job-123',
             modelId: 'model-abc-123',
             provider: 'together',
             startedAt: '2025-01-01T00:00:00.000Z',
@@ -880,7 +880,7 @@ describe('ft eval', () => {
           },
         ],
       };
-      await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+      await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
       // Create data directory and validation data
       await mkdir('data', { recursive: true });

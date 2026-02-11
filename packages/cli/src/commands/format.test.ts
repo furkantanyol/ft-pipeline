@@ -7,13 +7,13 @@ import { registerFormat } from './format.js';
 import type { ProjectConfig } from '../storage/config.js';
 import type { Example } from '../storage/dataset.js';
 
-describe('ft format', () => {
+describe('ait format', () => {
   let testDir: string;
   let originalCwd: string;
 
   beforeEach(async () => {
     // Create a temporary directory for each test
-    testDir = await mkdtemp(join(tmpdir(), 'ft-format-test-'));
+    testDir = await mkdtemp(join(tmpdir(), 'ait-format-test-'));
     originalCwd = process.cwd();
     process.chdir(testDir);
 
@@ -25,7 +25,7 @@ describe('ft format', () => {
       qualityThreshold: 8,
       runs: [],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
     await mkdir('data', { recursive: true });
   });
 
@@ -454,7 +454,7 @@ describe('ft format', () => {
     await program.parseAsync(['node', 'test', 'format']);
 
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      'No examples found. Add examples with `ft add` first.',
+      'No examples found. Add examples with `ait add` first.',
     );
   });
 
@@ -484,7 +484,7 @@ describe('ft format', () => {
     await program.parseAsync(['node', 'test', 'format']);
 
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      'No rated examples found. Rate examples with `ft rate` first.',
+      'No rated examples found. Rate examples with `ait rate` first.',
     );
   });
 
@@ -516,7 +516,7 @@ describe('ft format', () => {
     expect(consoleLogSpy).toHaveBeenCalledWith(
       'Found 1 qualified examples but none have train/val splits assigned.',
     );
-    expect(consoleLogSpy).toHaveBeenCalledWith('Run `ft split` first to assign train/val splits.');
+    expect(consoleLogSpy).toHaveBeenCalledWith('Run `ait split` first to assign train/val splits.');
   });
 
   it('should display message when all examples below threshold', async () => {
@@ -546,12 +546,12 @@ describe('ft format', () => {
     await program.parseAsync(['node', 'test', 'format']);
 
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      'No examples meet quality threshold (8/10). Rate examples with `ft rate` first.',
+      'No examples meet quality threshold (8/10). Rate examples with `ait rate` first.',
     );
   });
 
   it('should fail if project is not initialized', async () => {
-    await rm('.ftpipeline.json');
+    await rm('.aitelier.json');
 
     const mockExit = vi.spyOn(process, 'exit').mockImplementation(() => {
       throw new Error('process.exit called');
@@ -580,7 +580,7 @@ describe('ft format', () => {
       qualityThreshold: 8,
       runs: [],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     const examples: Example[] = [
       {

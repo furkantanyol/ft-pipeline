@@ -6,14 +6,14 @@ import { Command } from 'commander';
 import { registerTrain } from './train.js';
 import type { ProjectConfig } from '../storage/config.js';
 
-describe('ft train', () => {
+describe('ait train', () => {
   let testDir: string;
   let originalCwd: string;
   let originalFetch: typeof globalThis.fetch;
 
   beforeEach(async () => {
     // Create a temporary directory for each test
-    testDir = await mkdtemp(join(tmpdir(), 'ft-train-test-'));
+    testDir = await mkdtemp(join(tmpdir(), 'ait-train-test-'));
     originalCwd = process.cwd();
     process.chdir(testDir);
 
@@ -28,7 +28,7 @@ describe('ft train', () => {
       qualityThreshold: 8,
       runs: [],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
     await mkdir('data', { recursive: true });
 
     // Create sample training and validation files
@@ -104,7 +104,7 @@ describe('ft train', () => {
 
         return {
           ok: true,
-          json: async () => ({ id: 'ft-job-123' }),
+          json: async () => ({ id: 'ait-job-123' }),
           text: async () => '',
         } as Response;
       }
@@ -123,11 +123,11 @@ describe('ft train', () => {
     expect(createJobCalled).toBe(true);
 
     // Verify job was saved to config
-    const configContent = await readFile('.ftpipeline.json', 'utf-8');
+    const configContent = await readFile('.aitelier.json', 'utf-8');
     const config = JSON.parse(configContent) as ProjectConfig;
 
     expect(config.runs).toHaveLength(1);
-    expect(config.runs[0].jobId).toBe('ft-job-123');
+    expect(config.runs[0].jobId).toBe('ait-job-123');
     expect(config.runs[0].provider).toBe('together');
     expect(config.runs[0].status).toBe('pending');
     expect(config.runs[0].hyperparameters).toEqual({
@@ -157,7 +157,7 @@ describe('ft train', () => {
         jobConfig = JSON.parse(options.body as string);
         return {
           ok: true,
-          json: async () => ({ id: 'ft-job-custom' }),
+          json: async () => ({ id: 'ait-job-custom' }),
           text: async () => '',
         } as Response;
       }
@@ -213,7 +213,7 @@ describe('ft train', () => {
         jobConfig = JSON.parse(options.body as string);
         return {
           ok: true,
-          json: async () => ({ id: 'ft-job-no-val' }),
+          json: async () => ({ id: 'ait-job-no-val' }),
           text: async () => '',
         } as Response;
       }
@@ -233,7 +233,7 @@ describe('ft train', () => {
   });
 
   it('should fail if project not initialized', async () => {
-    await rm('.ftpipeline.json');
+    await rm('.aitelier.json');
 
     const mockExit = vi.spyOn(process, 'exit').mockImplementation(() => {
       throw new Error('process.exit called');

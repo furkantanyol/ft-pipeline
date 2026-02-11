@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import type { Example } from '../storage/dataset.js';
 import { readExamples, writeExamples } from '../storage/dataset.js';
 
-const CONFIG_FILE = '.ftpipeline.json';
+const CONFIG_FILE = '.aitelier.json';
 const EXAMPLES_FILE = 'data/examples.jsonl';
 
 interface SessionStats {
@@ -42,7 +42,7 @@ async function rateCommand(options: { min: string }): Promise<void> {
   try {
     await access(join(cwd, CONFIG_FILE));
   } catch {
-    throw new Error('Project not initialized. Run `ft init` first to create .ftpipeline.json');
+    throw new Error('Project not initialized. Run `ait init` first to create .aitelier.json');
   }
 
   // Parse and validate --min flag
@@ -58,7 +58,7 @@ async function rateCommand(options: { min: string }): Promise<void> {
     examples = await readExamples(examplesPath);
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      console.log('No examples found. Add examples with `ft add` first.');
+      console.log('No examples found. Add examples with `ait add` first.');
       return;
     }
     throw error;
@@ -66,7 +66,7 @@ async function rateCommand(options: { min: string }): Promise<void> {
 
   // Check if file has any examples
   if (examples.length === 0) {
-    console.log('No examples found. Add examples with `ft add` first.');
+    console.log('No examples found. Add examples with `ait add` first.');
     return;
   }
 

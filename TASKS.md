@@ -17,7 +17,7 @@ Track progress by checking off tasks as they're completed.
 ### M1.2 — `ait init` Command
 
 - [x] Interactive prompts: project name, provider (together/openai), model, system prompt
-- [x] Generate `.ftpipeline.json` config file
+- [x] Generate `.aitelier.json` config file
 - [x] Create `data/` directory with `examples.jsonl`, `train.jsonl`, `val.jsonl`
 - [x] Write tests for init flow
 
@@ -75,7 +75,7 @@ Track progress by checking off tasks as they're completed.
 - [x] Upload training file to Together.ai via API
 - [x] Create LoRA fine-tune job with sensible defaults
 - [x] Configurable: epochs, batch_size, learning_rate, lora_r, lora_alpha
-- [x] Save job ID + config to `.ftpipeline.json` under `runs[]`
+- [x] Save job ID + config to `.aitelier.json` under `runs[]`
 - [x] Requires `TOGETHER_API_KEY` env var
 - [x] Write tests
 
@@ -131,8 +131,8 @@ Track progress by checking off tasks as they're completed.
 
 ### M4.3 — Package Publishing
 
-- [x] Publish to npm as `ft-pipeline`
-- [x] `npx ft-pipeline` works out of the box
+- [x] Publish to npm as `aitelier`
+- [x] `npx aitelier` works out of the box
 - [x] GitHub releases with changelog
 - [x] Badges: npm version, CI status, license
 

@@ -14,9 +14,9 @@ import { registerStatus } from './commands/status.js';
 const program = new Command();
 
 program
-  .name('ft')
+  .name('ait')
   .description('CLI for collecting, rating, formatting, and iterating on LLM fine-tuning datasets')
-  .version('0.1.0');
+  .version('0.2.0');
 
 registerInit(program);
 registerAdd(program);

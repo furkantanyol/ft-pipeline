@@ -16,7 +16,7 @@ Built for indie hackers and small teams fine-tuning open-source models (Llama, M
 
 [![Made with VHS](https://vhs.charm.sh/vhs-2qrSQ8Phswh8QBaxsdvMKC.gif)](https://vhs.charm.sh)
 
-*Full workflow: `ait init` → `ait add` → `ait rate` → `ait split` → `ait train` → `ait eval`*
+_Full workflow: `ait init` → `ait add` → `ait rate` → `ait split` → `ait train` → `ait eval`_
 
 ---
 
@@ -227,7 +227,7 @@ ait init
 # → What's your project name? my-support-bot
 # → Which provider? Together.ai
 # → Base model? meta-llama/Llama-3.3-70B-Instruct
-# → Created .ftpipeline.json and data/ directory
+# → Created .aitelier.json and data/ directory
 
 # Add training examples interactively
 ait add
@@ -279,7 +279,7 @@ When you run `ait init`, it creates:
 
 ```
 your-project/
-├── .ftpipeline.json    # Project config (provider, model, runs history)
+├── .aitelier.json    # Project config (provider, model, runs history)
 └── data/
     ├── examples.jsonl  # Raw examples with ratings and metadata
     ├── train.jsonl     # Formatted training split
@@ -302,10 +302,10 @@ ait init
 # → Base model? meta-llama/Llama-3.3-70B-Instruct
 # → System prompt? You are a helpful customer support assistant.
 # → Quality threshold (1-10)? 8
-# → Created .ftpipeline.json and data/ directory
+# → Created .aitelier.json and data/ directory
 ```
 
-Creates `.ftpipeline.json` config and `data/` directory structure.
+Creates `.aitelier.json` config and `data/` directory structure.
 
 ---
 
@@ -464,7 +464,13 @@ Start a fine-tuning job on Together.ai with LoRA.
 
 **Prerequisites:**
 
+Set your API key using either method:
+
 ```bash
+# Option 1: .env file (recommended)
+echo "TOGETHER_API_KEY=your_api_key_here" > .env
+
+# Option 2: Environment variable
 export TOGETHER_API_KEY=your_api_key_here
 ```
 
@@ -475,7 +481,7 @@ ait train
 # → Uploading data/train.jsonl...
 # → Starting fine-tune job...
 # → Job ID: ait-abc123xyz
-# → Saved run to .ftpipeline.json
+# → Saved run to .aitelier.json
 # → Run `ait status` to check progress
 ```
 
@@ -522,14 +528,14 @@ ait status --all
 # ══════════════════════════════════════════════════════════════════════
 #
 # Run #1 (2026-02-11)
-# Job ID: ft-abc123xyz
+# Job ID: ait-abc123xyz
 # Status: COMPLETED ✓
 # Model: username/Llama-3.3-70B-my-bot-v1
 # Config: 3 epochs, batch 4, lr 1e-5, LoRA r=16 α=32
 # Training examples: 16
 #
 # Run #2 (2026-02-10)
-# Job ID: ft-def456uvw
+# Job ID: ait-def456uvw
 # Status: COMPLETED ✓
 # Model: username/Llama-3.3-70B-my-bot-v0
 ```
@@ -787,7 +793,7 @@ pnpm turbo build && pnpm prettier --write . && pnpm turbo lint && pnpm turbo tes
 - `data/train.jsonl` — formatted training split
 - `data/val.jsonl` — formatted validation split (locked once assigned)
 - `data/evals/` — evaluation results per run
-- `.ftpipeline.json` — project config and training run history
+- `.aitelier.json` — project config and training run history
 
 ### System Diagram
 
@@ -806,7 +812,7 @@ graph TB
     end
 
     subgraph "Storage Layer"
-        Config[.ftpipeline.json]
+        Config[.aitelier.json]
         Examples[data/examples.jsonl]
         TrainData[data/train.jsonl]
         ValData[data/val.jsonl]
@@ -875,7 +881,7 @@ aitelier/
 │   │   │   └── index.ts        # CLI entrypoint
 │   │   └── package.json
 │   └── web/                    # React web UI (future)
-├── .ftpipeline.json            # Example project config
+├── .aitelier.json            # Example project config
 ├── CLAUDE.md                   # Project instructions for Claude Code
 ├── TASKS.md                    # Development task tracking
 └── README.md
@@ -922,7 +928,7 @@ aitelier/
 
 **Problem:** Command fails with "Project not initialized. Run `ait init` first."
 
-**Solution:** Run `ait init` in your project directory to create `.ftpipeline.json` and `data/` structure.
+**Solution:** Run `ait init` in your project directory to create `.aitelier.json` and `data/` structure.
 
 ---
 
@@ -1033,7 +1039,7 @@ NODE_DEBUG=* ait train
 cat data/examples.jsonl | head -n 3
 
 # Check config
-cat .ftpipeline.json
+cat .aitelier.json
 
 # List evaluation results
 ls -lh data/evals/
@@ -1043,7 +1049,7 @@ ls -lh data/evals/
 
 - Command you ran
 - Error message (full output)
-- Contents of `.ftpipeline.json` (redact API keys)
+- Contents of `.aitelier.json` (redact API keys)
 - Output of `ait stats`
 
 ---

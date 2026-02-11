@@ -1,5 +1,5 @@
 {
-  "name": "ft-pipeline-monorepo",
+  "name": "aitelier-monorepo",
   "private": true,
   "type": "module",
   "scripts": {

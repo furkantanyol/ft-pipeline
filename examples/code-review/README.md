@@ -11,7 +11,7 @@ You want to create an AI code reviewer that provides constructive feedback on co
 This example contains:
 
 - **5 pre-rated training examples** covering common code review scenarios
-- **Pre-configured `.ftpipeline.json`** with system prompt optimized for code review
+- **Pre-configured `.aitelier.json`** with system prompt optimized for code review
 - **Realistic variety**: SQL injection, modern JavaScript, error handling, React hooks, password validation
 
 ## Training Data Overview
@@ -118,7 +118,7 @@ Uploading data/train.jsonl... ✓
 Uploading data/val.jsonl... ✓
 Creating fine-tune job... ✓
 
-Job ID: ft-abc123xyz
+Job ID: ait-abc123xyz
 Model will be available as: username/Meta-Llama-3.1-8B-Instruct-Turbo-code-review-assistant-abc123
 
 Run `ait status` to check progress.
@@ -180,7 +180,7 @@ To make this production-ready:
 
 ### Adjust the system prompt
 
-Edit `.ftpipeline.json` to customize the reviewer's personality:
+Edit `.aitelier.json` to customize the reviewer's personality:
 
 ```json
 {
@@ -198,7 +198,7 @@ ait add  # Add more React/Python/etc. examples
 
 ### Set quality standards
 
-Adjust the quality threshold in `.ftpipeline.json`:
+Adjust the quality threshold in `.aitelier.json`:
 
 ```json
 {

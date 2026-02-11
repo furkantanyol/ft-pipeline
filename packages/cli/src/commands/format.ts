@@ -6,7 +6,7 @@ import { readExamples } from '../storage/dataset.js';
 import { loadConfig } from '../storage/config.js';
 import type { Message } from '../providers/types.js';
 
-const CONFIG_FILE = '.ftpipeline.json';
+const CONFIG_FILE = '.aitelier.json';
 const EXAMPLES_FILE = 'data/examples.jsonl';
 const TRAIN_FILE = 'data/train.jsonl';
 const VAL_FILE = 'data/val.jsonl';
@@ -46,7 +46,7 @@ async function formatCommand(): Promise<void> {
   try {
     await access(join(cwd, CONFIG_FILE));
   } catch {
-    throw new Error('Project not initialized. Run `ft init` first to create .ftpipeline.json');
+    throw new Error('Project not initialized. Run `ait init` first to create .aitelier.json');
   }
 
   // Load config to get quality threshold
@@ -59,7 +59,7 @@ async function formatCommand(): Promise<void> {
     examples = await readExamples(examplesPath);
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      console.log('No examples found. Add examples with `ft add` first.');
+      console.log('No examples found. Add examples with `ait add` first.');
       return;
     }
     throw error;
@@ -67,7 +67,7 @@ async function formatCommand(): Promise<void> {
 
   // Check if file has any examples
   if (examples.length === 0) {
-    console.log('No examples found. Add examples with `ft add` first.');
+    console.log('No examples found. Add examples with `ait add` first.');
     return;
   }
 
@@ -123,12 +123,12 @@ async function formatCommand(): Promise<void> {
       console.log(
         `Found ${stats.qualifiedExamples} qualified examples but none have train/val splits assigned.`,
       );
-      console.log('Run `ft split` first to assign train/val splits.');
+      console.log('Run `ait split` first to assign train/val splits.');
     } else if (stats.unrated > 0) {
-      console.log('No rated examples found. Rate examples with `ft rate` first.');
+      console.log('No rated examples found. Rate examples with `ait rate` first.');
     } else if (stats.belowThreshold > 0) {
       console.log(
-        `No examples meet quality threshold (${config.qualityThreshold}/10). Rate examples with \`ft rate\` first.`,
+        `No examples meet quality threshold (${config.qualityThreshold}/10). Rate examples with \`ait rate\` first.`,
       );
     } else {
       console.log('No examples found to format.');
@@ -248,7 +248,7 @@ function displaySummary(stats: FormatStats, threshold: number, provider: string)
   console.log('\nNext Steps:');
   console.log('━'.repeat(70));
   console.log('1. Review exported files: data/train.jsonl and data/val.jsonl');
-  console.log('2. Run `ft train` to start fine-tuning');
+  console.log('2. Run `ait train` to start fine-tuning');
 
   console.log('═'.repeat(70) + '\n');
 }

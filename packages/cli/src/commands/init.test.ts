@@ -6,13 +6,13 @@ import inquirer from 'inquirer';
 import { Command } from 'commander';
 import { registerInit } from './init.js';
 
-describe('ft init', () => {
+describe('ait init', () => {
   let testDir: string;
   let originalCwd: string;
 
   beforeEach(async () => {
     // Create a temporary directory for each test
-    testDir = await mkdtemp(join(tmpdir(), 'ft-init-test-'));
+    testDir = await mkdtemp(join(tmpdir(), 'ait-init-test-'));
     originalCwd = process.cwd();
     process.chdir(testDir);
   });
@@ -38,7 +38,7 @@ describe('ft init', () => {
     await program.parseAsync(['node', 'test', 'init']);
 
     // Verify config file was created
-    const configPath = join(testDir, '.ftpipeline.json');
+    const configPath = join(testDir, '.aitelier.json');
     const configContent = await readFile(configPath, 'utf-8');
     const config = JSON.parse(configContent);
 
@@ -73,7 +73,7 @@ describe('ft init', () => {
 
     await program.parseAsync(['node', 'test', 'init']);
 
-    const configPath = join(testDir, '.ftpipeline.json');
+    const configPath = join(testDir, '.aitelier.json');
     const configContent = await readFile(configPath, 'utf-8');
     const config = JSON.parse(configContent);
 
@@ -84,7 +84,7 @@ describe('ft init', () => {
 
   it('should fail if project is already initialized', async () => {
     // Create an existing config file
-    await writeFile(join(testDir, '.ftpipeline.json'), '{}');
+    await writeFile(join(testDir, '.aitelier.json'), '{}');
 
     vi.spyOn(inquirer, 'prompt').mockResolvedValue({
       name: 'test-project',
@@ -124,7 +124,7 @@ describe('ft init', () => {
 
     await program.parseAsync(['node', 'test', 'init']);
 
-    const configPath = join(testDir, '.ftpipeline.json');
+    const configPath = join(testDir, '.aitelier.json');
     const configContent = await readFile(configPath, 'utf-8');
     const config = JSON.parse(configContent);
 

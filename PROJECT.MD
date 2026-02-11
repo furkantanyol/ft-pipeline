@@ -1,4 +1,4 @@
-# ft-pipeline — LLM Fine-Tuning Data Pipeline
+# aitelier — LLM Fine-Tuning Data Pipeline
 
 ## One-Liner
 
@@ -17,7 +17,7 @@ Indie hackers and small teams fine-tuning open-source models (Llama, Mistral) vi
 ## Architecture
 
 ```
-ft-pipeline/
+aitelier/
 ├── packages/
 │   ├── cli/              # Node.js CLI (core — ship first)
 │   │   ├── src/
@@ -36,7 +36,7 @@ ft-pipeline/
 │   │   │   │   └── types.ts       # Provider interface
 │   │   │   ├── storage/
 │   │   │   │   ├── dataset.ts     # JSONL read/write
-│   │   │   │   └── config.ts      # Project config (.ftpipeline.json)
+│   │   │   │   └── config.ts      # Project config (.aitelier.json)
 │   │   │   └── index.ts
 │   │   ├── package.json
 │   │   └── tsconfig.json
@@ -99,29 +99,29 @@ React-based rating/review interface. Only build if CLI gets traction.
 - [ ] Create initial README with project description + "coming soon"
       **Est: 2-3 hours**
 
-#### M1.2 — `ft init` Command
+#### M1.2 — `ait init` Command
 
 - [ ] Interactive prompts: project name, provider (together/openai), model, system prompt
-- [ ] Generate `.ftpipeline.json` config file
+- [ ] Generate `.aitelier.json` config file
 - [ ] Create `data/` directory with `examples.jsonl`, `train.jsonl`, `val.jsonl`
 - [ ] Write tests for init flow
 
 ```bash
 # Usage
-ft init
+ait init
 # → What's your project name? my-support-bot
 # → Which provider? Together.ai
 # → Base model? meta-llama/Llama-3.3-70B-Instruct
 # → System prompt? (paste or skip)
-# → Created .ftpipeline.json and data/ directory
+# → Created .aitelier.json and data/ directory
 ```
 
 **Est: 3-4 hours**
 
-#### M1.3 — `ft add` Command
+#### M1.3 — `ait add` Command
 
 - [ ] Interactive mode: paste system input → paste ideal output → auto-format to chat JSONL
-- [ ] File mode: `ft add --input input.txt --output output.txt`
+- [ ] File mode: `ait add --input input.txt --output output.txt`
 - [ ] Auto-append to `data/examples.jsonl` with metadata (timestamp, rating: null, version)
 - [ ] Validate JSON structure on save
 - [ ] Support for multi-turn conversations (array of messages)
@@ -129,7 +129,7 @@ ft init
 
 ```bash
 # Usage
-ft add
+ait add
 # → Paste the input (user message):
 # → Paste the ideal output (assistant message):
 # → Rate this example (1-10, or skip): 9
@@ -138,19 +138,19 @@ ft add
 
 **Est: 4-5 hours**
 
-#### M1.4 — `ft rate` Command
+#### M1.4 — `ait rate` Command
 
 - [ ] Show unrated examples one by one (interactive)
 - [ ] Display: system prompt + input + output, formatted nicely in terminal
 - [ ] Rate 1-10, option to rewrite output inline
 - [ ] If rewrite: save rewritten version as the training target, keep original as metadata
-- [ ] `ft rate --min 8` — only show examples rated below 8 for re-review
+- [ ] `ait rate --min 8` — only show examples rated below 8 for re-review
 - [ ] Summary stats after session: "Rated 12 examples. 8 scored 8+. 4 need rewrites."
 - [ ] Write tests
 
 ```bash
 # Usage
-ft rate
+ait rate
 # → Example #23 (unrated)
 # → [system]: You write dating openers...
 # → [user]: Profile shows hiking photo...
@@ -164,7 +164,7 @@ ft rate
 
 #### M1.5 — Data Statistics Command
 
-- [ ] `ft stats` — show dataset health overview
+- [ ] `ait stats` — show dataset health overview
 - [ ] Total examples, rated count, unrated count
 - [ ] Rating distribution (histogram in terminal)
 - [ ] Examples above quality threshold (configurable, default 8+)
@@ -172,7 +172,7 @@ ft rate
 
 ```bash
 # Usage
-ft stats
+ait stats
 # → 47 total examples (39 rated, 8 unrated)
 # → Rating distribution: ██████░░ 8+ (31) | ███░ 5-7 (8) | █ <5 (0)
 # → Train: 31 | Val: 8 | Unassigned: 8
@@ -185,18 +185,18 @@ ft stats
 
 ### Milestone 2: Format, Split, Train
 
-#### M2.1 — `ft format` Command
+#### M2.1 — `ait format` Command
 
 - [ ] Export rated examples (above threshold) to provider-specific JSONL format
 - [ ] Together.ai format: standard chat messages
 - [ ] OpenAI format: standard chat messages with optional `weight` field
 - [ ] Validate output against provider schema
 - [ ] Output: `data/train.jsonl` and `data/val.jsonl`
-- [ ] `ft format --provider together --min-rating 8`
+- [ ] `ait format --provider together --min-rating 8`
 
 ```bash
 # Usage
-ft format
+ait format
 # → Filtered 31 examples (rating >= 8)
 # → Exported to data/train.jsonl (25 examples)
 # → Exported to data/val.jsonl (6 examples)
@@ -205,52 +205,52 @@ ft format
 
 **Est: 3-4 hours**
 
-#### M2.2 — `ft split` Command
+#### M2.2 — `ait split` Command
 
 - [ ] Auto-split: 80/20 train/val by default
 - [ ] Stratified by rating if enough examples
-- [ ] `ft split --ratio 0.9` for custom splits
+- [ ] `ait split --ratio 0.9` for custom splits
 - [ ] Lock validation set: once assigned, val examples don't move to train
-- [ ] `ft split --reshuffle` to force re-split (with confirmation)
+- [ ] `ait split --reshuffle` to force re-split (with confirmation)
 - [ ] Write tests
       **Est: 2-3 hours**
 
-#### M2.3 — `ft train` Command (Together.ai first)
+#### M2.3 — `ait train` Command (Together.ai first)
 
 - [ ] Upload training file to Together.ai via API
 - [ ] Create LoRA fine-tune job with sensible defaults
 - [ ] Configurable: epochs, batch_size, learning_rate, lora_r, lora_alpha
-- [ ] Save job ID + config to `.ftpipeline.json` under `runs[]`
+- [ ] Save job ID + config to `.aitelier.json` under `runs[]`
 - [ ] Print job ID and estimated time
 - [ ] Requires TOGETHER_API_KEY env var
 
 ```bash
 # Usage
-ft train
+ait train
 # → Uploading data/train.jsonl (25 examples)...
 # → Starting LoRA fine-tune on meta-llama/Llama-3.3-70B-Instruct
 # → Config: epochs=3, batch=4, lr=1e-5, lora_r=16
-# → Job ID: ft-abc123
+# → Job ID: ait-abc123
 # → Estimated time: ~15 minutes
-# → Run `ft status` to check progress
+# → Run `ait status` to check progress
 ```
 
 **Est: 4-5 hours**
 
-#### M2.4 — `ft status` Command
+#### M2.4 — `ait status` Command
 
 - [ ] Check fine-tune job status via provider API
-- [ ] `ft status` — show latest job
-- [ ] `ft status --all` — show all runs with model IDs
+- [ ] `ait status` — show latest job
+- [ ] `ait status --all` — show all runs with model IDs
 - [ ] When complete: save model ID to config, print inference example
 
 ```bash
 # Usage
-ft status
-# → Job ft-abc123: COMPLETED ✓
+ait status
+# → Job ait-abc123: COMPLETED ✓
 # → Model: username/Llama-3.3-70B-Instruct-my-support-bot-v1
 # → Duration: 12 minutes
-# → Run `ft eval` to test against validation set
+# → Run `ait eval` to test against validation set
 ```
 
 **Est: 2-3 hours**
@@ -259,18 +259,18 @@ ft status
 
 ### Milestone 3: Eval
 
-#### M3.1 — `ft eval` Command
+#### M3.1 — `ait eval` Command
 
 - [ ] Run fine-tuned model on all validation examples
 - [ ] Side-by-side display: expected output vs model output
 - [ ] Interactive scoring per example (or batch auto-score)
 - [ ] Summary: sendable rate, average quality score, comparison to baseline
 - [ ] Save eval results to `data/evals/eval-v1-2025-02-10.json`
-- [ ] `ft eval --compare base` — run BOTH base model and fine-tuned on same val set
+- [ ] `ait eval --compare base` — run BOTH base model and fine-tuned on same val set
 
 ```bash
 # Usage
-ft eval
+ait eval
 # → Running 6 validation examples through fine-tuned model...
 # →
 # → Example 1/6:
@@ -285,7 +285,7 @@ ft eval
 
 **Est: 5-6 hours**
 
-#### M3.2 — `ft eval --compare` Mode
+#### M3.2 — `ait eval --compare` Mode
 
 - [ ] Run base model (pre-fine-tune) AND fine-tuned model on same inputs
 - [ ] Show A vs B (blind, randomized order)
@@ -301,7 +301,7 @@ ft eval
 
 - [ ] One-line description
 - [ ] 30-second GIF/video of the CLI in action (use asciinema or vhs)
-- [ ] Quick start: `npx ft-pipeline init` → `add` → `rate` → `train` → `eval`
+- [ ] Quick start: `npx aitelier init` → `add` → `rate` → `train` → `eval`
 - [ ] Architecture diagram (mermaid)
 - [ ] Provider setup guides (Together, OpenAI)
 - [ ] Example use cases (customer support, code review — NOT dating)
@@ -318,8 +318,8 @@ ft eval
 
 #### M4.3 — Package Publishing
 
-- [ ] Publish to npm as `ft-pipeline`
-- [ ] `npx ft-pipeline` should work out of the box
+- [ ] Publish to npm as `aitelier`
+- [ ] `npx aitelier` should work out of the box
 - [ ] GitHub releases with changelog
 - [ ] Add badges: npm version, CI status, license
       **Est: 2 hours**

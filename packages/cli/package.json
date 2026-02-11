@@ -1,6 +1,6 @@
 {
   "name": "aitelier",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Your AI atelier - craft fine-tuned models with an intuitive CLI for dataset curation and training",
   "type": "module",
   "main": "./dist/index.js",
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "commander": "^13.1.0",
+    "dotenv": "^17.2.4",
     "inquirer": "^12.3.2"
   },
   "devDependencies": {

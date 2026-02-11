@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { loadConfig, saveConfig } from '../storage/config.js';
 import { TogetherProvider } from '../providers/together.js';
 
-const CONFIG_FILE = '.ftpipeline.json';
+const CONFIG_FILE = '.aitelier.json';
 
 interface StatusOptions {
   all?: boolean;
@@ -32,7 +32,7 @@ async function statusCommand(options: StatusOptions): Promise<void> {
   try {
     await access(join(cwd, CONFIG_FILE));
   } catch {
-    throw new Error('Project not initialized. Run `ft init` first to create .ftpipeline.json');
+    throw new Error('Project not initialized. Run `ait init` first to create .aitelier.json');
   }
 
   // Load config
@@ -44,7 +44,7 @@ async function statusCommand(options: StatusOptions): Promise<void> {
     console.log('No Training Jobs Found');
     console.log('═'.repeat(70));
     console.log('\nNo fine-tuning jobs have been started yet.');
-    console.log('\nTo start a job, run: ft train');
+    console.log('\nTo start a job, run: ait train');
     console.log('═'.repeat(70) + '\n');
     return;
   }
@@ -125,17 +125,17 @@ async function statusCommand(options: StatusOptions): Promise<void> {
 
   if (latestRun.status === 'completed' && latestRun.modelId) {
     console.log('\nJob completed successfully!');
-    console.log(`\nYou can now evaluate your model: ft eval`);
+    console.log(`\nYou can now evaluate your model: ait eval`);
     console.log(`Model ID: ${latestRun.modelId}`);
   } else if (latestRun.status === 'failed') {
     console.log('\nJob failed. Check the error message above.');
     console.log('You may need to adjust your training data or hyperparameters.');
   } else if (latestRun.status === 'cancelled') {
     console.log('\nJob was cancelled.');
-    console.log('You can start a new job with: ft train');
+    console.log('You can start a new job with: ait train');
   } else {
     console.log(`\nJob is ${latestRun.status}. Check back later for updates.`);
-    console.log('Run `ft status` again to refresh.');
+    console.log('Run `ait status` again to refresh.');
   }
 
   console.log('═'.repeat(70) + '\n');

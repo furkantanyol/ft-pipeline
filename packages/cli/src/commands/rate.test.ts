@@ -8,13 +8,13 @@ import { registerRate } from './rate.js';
 import type { ProjectConfig } from '../storage/config.js';
 import type { Example } from '../storage/dataset.js';
 
-describe('ft rate', () => {
+describe('ait rate', () => {
   let testDir: string;
   let originalCwd: string;
 
   beforeEach(async () => {
     // Create a temporary directory for each test
-    testDir = await mkdtemp(join(tmpdir(), 'ft-rate-test-'));
+    testDir = await mkdtemp(join(tmpdir(), 'ait-rate-test-'));
     originalCwd = process.cwd();
     process.chdir(testDir);
 
@@ -26,7 +26,7 @@ describe('ft rate', () => {
       qualityThreshold: 8,
       runs: [],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
     await mkdir('data', { recursive: true });
   });
 
@@ -304,12 +304,12 @@ describe('ft rate', () => {
     await program.parseAsync(['node', 'test', 'rate']);
 
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      'No examples found. Add examples with `ft add` first.',
+      'No examples found. Add examples with `ait add` first.',
     );
   });
 
   it('should fail if project is not initialized', async () => {
-    await rm('.ftpipeline.json');
+    await rm('.aitelier.json');
 
     const mockExit = vi.spyOn(process, 'exit').mockImplementation(() => {
       throw new Error('process.exit called');

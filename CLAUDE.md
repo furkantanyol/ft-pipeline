@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**ft-pipeline** — CLI + web UI for collecting, rating, formatting, and iterating on LLM fine-tuning datasets. Vendor-agnostic (Together, OpenAI, Fireworks). Published as `ft-pipeline` on npm (`npx ft-pipeline`).
+**aitelier** — CLI + web UI for collecting, rating, formatting, and iterating on LLM fine-tuning datasets. Vendor-agnostic (Together, OpenAI, Fireworks). Published as `aitelier` on npm (`npx aitelier`).
 
 Target users: indie hackers and small teams fine-tuning open-source models (Llama, Mistral) via LoRA on Together.ai or OpenAI, with 50-500 training examples iterating weekly.
 
@@ -45,16 +45,16 @@ pnpm turbo build
 pnpm turbo test
 
 # Run a single test file
-pnpm --filter ft-pipeline exec vitest run src/commands/init.test.ts
+pnpm --filter aitelier exec vitest run src/commands/init.test.ts
 
 # Run tests in watch mode
-pnpm --filter ft-pipeline exec vitest
+pnpm --filter aitelier exec vitest
 
 # Lint
 pnpm turbo lint
 
 # Run the CLI locally during development
-pnpm --filter ft-pipeline exec tsx src/index.ts
+pnpm --filter aitelier exec tsx src/index.ts
 ```
 
 ## Architecture
@@ -77,11 +77,11 @@ packages/
 - **Together.ai first.** Cheapest LoRA fine-tuning with OpenAI-compatible API. OpenAI support is near-identical to add later.
 - **Provider interface:** All providers implement a common interface in `providers/types.ts`. Adding a new provider means implementing that interface.
 
-### User Project Structure (what `ft init` creates)
+### User Project Structure (what `ait init` creates)
 
-When a user runs `ft init`, it generates:
+When a user runs `ait init`, it generates:
 
-- `.ftpipeline.json` — project config (name, provider, model, system prompt, training runs)
+- `.aitelier.json` — project config (name, provider, model, system prompt, training runs)
 - `data/examples.jsonl` — raw training examples with metadata (timestamp, rating, version)
 - `data/train.jsonl` — formatted training split
 - `data/val.jsonl` — formatted validation split (locked once assigned)
@@ -89,7 +89,7 @@ When a user runs `ft init`, it generates:
 
 ### CLI Command Flow
 
-`ft init` → `ft add` (collect examples) → `ft rate` (score/rewrite) → `ft stats` (check health) → `ft split` (train/val) → `ft format` (provider JSONL) → `ft train` (kick off job) → `ft status` (monitor) → `ft eval` (validate quality)
+`ait init` → `ait add` (collect examples) → `ait rate` (score/rewrite) → `ait stats` (check health) → `ait split` (train/val) → `ait format` (provider JSONL) → `ait train` (kick off job) → `ait status` (monitor) → `ait eval` (validate quality)
 
 ### Provider API Keys
 

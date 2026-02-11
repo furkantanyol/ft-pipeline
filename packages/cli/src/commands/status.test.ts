@@ -6,14 +6,14 @@ import { Command } from 'commander';
 import { registerStatus } from './status.js';
 import type { ProjectConfig } from '../storage/config.js';
 
-describe('ft status', () => {
+describe('ait status', () => {
   let testDir: string;
   let originalCwd: string;
   let originalFetch: typeof globalThis.fetch;
 
   beforeEach(async () => {
     // Create a temporary directory for each test
-    testDir = await mkdtemp(join(tmpdir(), 'ft-status-test-'));
+    testDir = await mkdtemp(join(tmpdir(), 'ait-status-test-'));
     originalCwd = process.cwd();
     process.chdir(testDir);
 
@@ -41,7 +41,7 @@ describe('ft status', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-123',
+          jobId: 'ait-job-123',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
           status: 'pending',
@@ -55,17 +55,17 @@ describe('ft status', () => {
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     // Mock API response for running job
     globalThis.fetch = vi.fn(async (url: string | URL | Request) => {
       const urlString = typeof url === 'string' ? url : url.toString();
 
-      if (urlString.includes('/fine-tunes/ft-job-123')) {
+      if (urlString.includes('/fine-tunes/ait-job-123')) {
         return {
           ok: true,
           json: async () => ({
-            id: 'ft-job-123',
+            id: 'ait-job-123',
             status: 'running',
           }),
           text: async () => '',
@@ -83,18 +83,18 @@ describe('ft status', () => {
 
     // Verify API was called
     expect(globalThis.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/fine-tunes/ft-job-123'),
+      expect.stringContaining('/fine-tunes/ait-job-123'),
       expect.any(Object),
     );
 
     // Verify output shows the job
     const logOutput = consoleLogSpy.mock.calls.map((call) => call.join(' ')).join('\n');
     expect(logOutput).toContain('Latest Training Job');
-    expect(logOutput).toContain('ft-job-123');
+    expect(logOutput).toContain('ait-job-123');
     expect(logOutput).toContain('running');
 
     // Verify config was updated with new status
-    const configContent = await readFile('.ftpipeline.json', 'utf-8');
+    const configContent = await readFile('.aitelier.json', 'utf-8');
     const updatedConfig = JSON.parse(configContent) as ProjectConfig;
     expect(updatedConfig.runs[0].status).toBe('running');
 
@@ -110,7 +110,7 @@ describe('ft status', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-001',
+          jobId: 'ait-job-001',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
           status: 'completed',
@@ -124,7 +124,7 @@ describe('ft status', () => {
           },
         },
         {
-          jobId: 'ft-job-002',
+          jobId: 'ait-job-002',
           provider: 'together',
           startedAt: '2025-01-02T00:00:00.000Z',
           status: 'running',
@@ -138,17 +138,17 @@ describe('ft status', () => {
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     // Mock API responses for both jobs
     globalThis.fetch = vi.fn(async (url: string | URL | Request) => {
       const urlString = typeof url === 'string' ? url : url.toString();
 
-      if (urlString.includes('/fine-tunes/ft-job-001')) {
+      if (urlString.includes('/fine-tunes/ait-job-001')) {
         return {
           ok: true,
           json: async () => ({
-            id: 'ft-job-001',
+            id: 'ait-job-001',
             status: 'succeeded',
             fine_tuned_model: 'model-001',
           }),
@@ -156,11 +156,11 @@ describe('ft status', () => {
         } as Response;
       }
 
-      if (urlString.includes('/fine-tunes/ft-job-002')) {
+      if (urlString.includes('/fine-tunes/ait-job-002')) {
         return {
           ok: true,
           json: async () => ({
-            id: 'ft-job-002',
+            id: 'ait-job-002',
             status: 'running',
           }),
           text: async () => '',
@@ -182,8 +182,8 @@ describe('ft status', () => {
     // Verify output shows both jobs
     const logOutput = consoleLogSpy.mock.calls.map((call) => call.join(' ')).join('\n');
     expect(logOutput).toContain('All Training Jobs');
-    expect(logOutput).toContain('ft-job-001');
-    expect(logOutput).toContain('ft-job-002');
+    expect(logOutput).toContain('ait-job-001');
+    expect(logOutput).toContain('ait-job-002');
     expect(logOutput).toContain('model-001');
 
     consoleLogSpy.mockRestore();
@@ -198,24 +198,24 @@ describe('ft status', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-123',
+          jobId: 'ait-job-123',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
           status: 'running',
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     // Mock API response for completed job
     globalThis.fetch = vi.fn(async (url: string | URL | Request) => {
       const urlString = typeof url === 'string' ? url : url.toString();
 
-      if (urlString.includes('/fine-tunes/ft-job-123')) {
+      if (urlString.includes('/fine-tunes/ait-job-123')) {
         return {
           ok: true,
           json: async () => ({
-            id: 'ft-job-123',
+            id: 'ait-job-123',
             status: 'succeeded',
             fine_tuned_model: 'model-abc-123',
           }),
@@ -233,7 +233,7 @@ describe('ft status', () => {
     await program.parseAsync(['node', 'test', 'status']);
 
     // Verify config was updated with completed status and model ID
-    const configContent = await readFile('.ftpipeline.json', 'utf-8');
+    const configContent = await readFile('.aitelier.json', 'utf-8');
     const updatedConfig = JSON.parse(configContent) as ProjectConfig;
 
     expect(updatedConfig.runs[0].status).toBe('completed');
@@ -243,7 +243,7 @@ describe('ft status', () => {
     const logOutput = consoleLogSpy.mock.calls.map((call) => call.join(' ')).join('\n');
     expect(logOutput).toContain('completed');
     expect(logOutput).toContain('model-abc-123');
-    expect(logOutput).toContain('ft eval');
+    expect(logOutput).toContain('ait eval');
 
     consoleLogSpy.mockRestore();
   });
@@ -257,24 +257,24 @@ describe('ft status', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-fail',
+          jobId: 'ait-job-fail',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
           status: 'running',
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     // Mock API response for failed job
     globalThis.fetch = vi.fn(async (url: string | URL | Request) => {
       const urlString = typeof url === 'string' ? url : url.toString();
 
-      if (urlString.includes('/fine-tunes/ft-job-fail')) {
+      if (urlString.includes('/fine-tunes/ait-job-fail')) {
         return {
           ok: true,
           json: async () => ({
-            id: 'ft-job-fail',
+            id: 'ait-job-fail',
             status: 'failed',
             error: 'Insufficient training data',
           }),
@@ -297,7 +297,7 @@ describe('ft status', () => {
     expect(logOutput).toContain('Insufficient training data');
 
     // Verify config was updated
-    const configContent = await readFile('.ftpipeline.json', 'utf-8');
+    const configContent = await readFile('.aitelier.json', 'utf-8');
     const updatedConfig = JSON.parse(configContent) as ProjectConfig;
     expect(updatedConfig.runs[0].status).toBe('failed');
 
@@ -313,7 +313,7 @@ describe('ft status', () => {
       qualityThreshold: 8,
       runs: [],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 
@@ -324,7 +324,7 @@ describe('ft status', () => {
     // Verify output shows no jobs message
     const logOutput = consoleLogSpy.mock.calls.map((call) => call.join(' ')).join('\n');
     expect(logOutput).toContain('No Training Jobs Found');
-    expect(logOutput).toContain('ft train');
+    expect(logOutput).toContain('ait train');
 
     consoleLogSpy.mockRestore();
   });
@@ -359,14 +359,14 @@ describe('ft status', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-123',
+          jobId: 'ait-job-123',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
           status: 'pending',
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     // Mock API error
     globalThis.fetch = vi.fn(async () => {
@@ -405,24 +405,24 @@ describe('ft status', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-cancelled',
+          jobId: 'ait-job-cancelled',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
           status: 'running',
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     // Mock API response for cancelled job
     globalThis.fetch = vi.fn(async (url: string | URL | Request) => {
       const urlString = typeof url === 'string' ? url : url.toString();
 
-      if (urlString.includes('/fine-tunes/ft-job-cancelled')) {
+      if (urlString.includes('/fine-tunes/ait-job-cancelled')) {
         return {
           ok: true,
           json: async () => ({
-            id: 'ft-job-cancelled',
+            id: 'ait-job-cancelled',
             status: 'cancelled',
           }),
           text: async () => '',
@@ -443,7 +443,7 @@ describe('ft status', () => {
     expect(logOutput).toContain('cancelled');
 
     // Verify config was updated
-    const configContent = await readFile('.ftpipeline.json', 'utf-8');
+    const configContent = await readFile('.aitelier.json', 'utf-8');
     const updatedConfig = JSON.parse(configContent) as ProjectConfig;
     expect(updatedConfig.runs[0].status).toBe('cancelled');
 
@@ -459,27 +459,27 @@ describe('ft status', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-123',
+          jobId: 'ait-job-123',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
           status: 'running',
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     // Store original modification time
-    const originalContent = await readFile('.ftpipeline.json', 'utf-8');
+    const originalContent = await readFile('.aitelier.json', 'utf-8');
 
     // Mock API response with same status
     globalThis.fetch = vi.fn(async (url: string | URL | Request) => {
       const urlString = typeof url === 'string' ? url : url.toString();
 
-      if (urlString.includes('/fine-tunes/ft-job-123')) {
+      if (urlString.includes('/fine-tunes/ait-job-123')) {
         return {
           ok: true,
           json: async () => ({
-            id: 'ft-job-123',
+            id: 'ait-job-123',
             status: 'running',
           }),
           text: async () => '',
@@ -496,7 +496,7 @@ describe('ft status', () => {
     await program.parseAsync(['node', 'test', 'status']);
 
     // Verify config content is unchanged
-    const newContent = await readFile('.ftpipeline.json', 'utf-8');
+    const newContent = await readFile('.aitelier.json', 'utf-8');
     expect(newContent).toBe(originalContent);
 
     consoleLogSpy.mockRestore();
@@ -513,14 +513,14 @@ describe('ft status', () => {
       qualityThreshold: 8,
       runs: [
         {
-          jobId: 'ft-job-123',
+          jobId: 'ait-job-123',
           provider: 'together',
           startedAt: '2025-01-01T00:00:00.000Z',
           status: 'pending',
         },
       ],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     const mockExit = vi.spyOn(process, 'exit').mockImplementation(() => {
       throw new Error('process.exit called');

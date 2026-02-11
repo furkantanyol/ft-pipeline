@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-02-11
+
+### Changed
+
+- **BREAKING:** Renamed config file from `.ftpipeline.json` to `.aitelier.json`
+- **BREAKING:** Updated all command references from `ft` to `ait` throughout codebase
+- Renamed package from `ft-pipeline` to `aitelier`
+
+### Added
+
+- Environment variable support: `ait train` now loads API keys from `.env` file
+- Added `dotenv` dependency for better local development experience
+
+### Fixed
+
+- Updated all documentation to use `ait` command name
+- Updated test suite to reflect new naming conventions
+
 ## [0.1.0] - 2026-02-11
 
 ### Added
@@ -38,5 +56,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Configurable fine-tuning hyperparameters
 - Interactive CLI with clear formatting
 
-[Unreleased]: https://github.com/furkantanyol/aitelier/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/furkantanyol/aitelier/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/furkantanyol/aitelier/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/furkantanyol/aitelier/releases/tag/v0.1.0

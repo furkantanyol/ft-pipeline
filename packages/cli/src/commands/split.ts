@@ -6,7 +6,7 @@ import type { Example } from '../storage/dataset.js';
 import { readExamples, writeExamples } from '../storage/dataset.js';
 import { loadConfig } from '../storage/config.js';
 
-const CONFIG_FILE = '.ftpipeline.json';
+const CONFIG_FILE = '.aitelier.json';
 const EXAMPLES_FILE = 'data/examples.jsonl';
 
 interface SplitStats {
@@ -47,7 +47,7 @@ async function splitCommand(options: { ratio: string; reshuffle?: boolean }): Pr
   try {
     await access(join(cwd, CONFIG_FILE));
   } catch {
-    throw new Error('Project not initialized. Run `ft init` first to create .ftpipeline.json');
+    throw new Error('Project not initialized. Run `ait init` first to create .aitelier.json');
   }
 
   // Parse and validate --ratio flag
@@ -66,7 +66,7 @@ async function splitCommand(options: { ratio: string; reshuffle?: boolean }): Pr
     examples = await readExamples(examplesPath);
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      console.log('No examples found. Add examples with `ft add` first.');
+      console.log('No examples found. Add examples with `ait add` first.');
       return;
     }
     throw error;
@@ -74,7 +74,7 @@ async function splitCommand(options: { ratio: string; reshuffle?: boolean }): Pr
 
   // Check if file has any examples
   if (examples.length === 0) {
-    console.log('No examples found. Add examples with `ft add` first.');
+    console.log('No examples found. Add examples with `ait add` first.');
     return;
   }
 
@@ -85,7 +85,7 @@ async function splitCommand(options: { ratio: string; reshuffle?: boolean }): Pr
 
   if (qualified.length === 0) {
     console.log(
-      `No examples meet quality threshold (${config.qualityThreshold}/10). Rate examples with \`ft rate\` first.`,
+      `No examples meet quality threshold (${config.qualityThreshold}/10). Rate examples with \`ait rate\` first.`,
     );
     return;
   }
@@ -268,8 +268,8 @@ function displaySummary(stats: SplitStats, threshold: number, ratio: number): vo
 
   console.log('\nNext Steps:');
   console.log('━'.repeat(70));
-  console.log('1. Run `ft format` to generate train.jsonl and val.jsonl');
-  console.log('2. Run `ft train` to start fine-tuning');
+  console.log('1. Run `ait format` to generate train.jsonl and val.jsonl');
+  console.log('2. Run `ait train` to start fine-tuning');
 
   console.log('═'.repeat(70) + '\n');
 }

@@ -45,7 +45,7 @@ Add a new section to `CHANGELOG.md`:
 Update the version in `/packages/cli/src/index.ts`:
 
 ```typescript
-program.name('ft').description('...').version('0.2.0');
+program.name('ait').description('...').version('0.2.0');
 ```
 
 ### 4. Run Full Verification
@@ -90,7 +90,7 @@ After the workflow completes:
 
 ```bash
 npm install -g aitelier@latest
-ft --version
+ait --version
 ```
 
 4. Test Homebrew (after formula update):
@@ -98,7 +98,7 @@ ft --version
 ```bash
 brew update
 brew upgrade aitelier
-ft --version
+ait --version
 ```
 
 ## Manual npm Publishing (if needed)
@@ -139,8 +139,8 @@ sha256 "abc123..." # Paste the calculated SHA256
 
 ```ruby
 test do
-  system bin/"ft", "--version"
-  assert_match "0.2.0", shell_output("#{bin}/ft --version")
+  system bin/"ait", "--version"
+  assert_match "0.2.0", shell_output("#{bin}/ait --version")
 end
 ```
 

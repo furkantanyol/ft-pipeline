@@ -7,13 +7,13 @@ import { Command } from 'commander';
 import { registerAdd } from './add.js';
 import type { ProjectConfig } from '../storage/config.js';
 
-describe('ft add', () => {
+describe('ait add', () => {
   let testDir: string;
   let originalCwd: string;
 
   beforeEach(async () => {
     // Create a temporary directory for each test
-    testDir = await mkdtemp(join(tmpdir(), 'ft-add-test-'));
+    testDir = await mkdtemp(join(tmpdir(), 'ait-add-test-'));
     originalCwd = process.cwd();
     process.chdir(testDir);
 
@@ -25,7 +25,7 @@ describe('ft add', () => {
       qualityThreshold: 8,
       runs: [],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
     await mkdir('data', { recursive: true });
     await writeFile('data/examples.jsonl', '');
   });
@@ -129,7 +129,7 @@ describe('ft add', () => {
       qualityThreshold: 8,
       runs: [],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
 
     await writeFile('input.txt', 'Hello');
     await writeFile('output.txt', 'Hi there!');
@@ -169,7 +169,7 @@ describe('ft add', () => {
 
   it('should fail if project is not initialized', async () => {
     // Remove config file
-    await rm('.ftpipeline.json');
+    await rm('.aitelier.json');
 
     const mockExit = vi.spyOn(process, 'exit').mockImplementation(() => {
       throw new Error('process.exit called');

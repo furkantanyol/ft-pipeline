@@ -5,7 +5,7 @@ import type { Example } from '../storage/dataset.js';
 import { readExamples } from '../storage/dataset.js';
 import { loadConfig } from '../storage/config.js';
 
-const CONFIG_FILE = '.ftpipeline.json';
+const CONFIG_FILE = '.aitelier.json';
 const EXAMPLES_FILE = 'data/examples.jsonl';
 const TRAIN_FILE = 'data/train.jsonl';
 const VAL_FILE = 'data/val.jsonl';
@@ -43,7 +43,7 @@ async function statsCommand(): Promise<void> {
   try {
     await access(join(cwd, CONFIG_FILE));
   } catch {
-    throw new Error('Project not initialized. Run `ft init` first to create .ftpipeline.json');
+    throw new Error('Project not initialized. Run `ait init` first to create .aitelier.json');
   }
 
   // Load config to get quality threshold
@@ -56,7 +56,7 @@ async function statsCommand(): Promise<void> {
     examples = await readExamples(examplesPath);
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      console.log('No examples found. Add examples with `ft add` first.');
+      console.log('No examples found. Add examples with `ait add` first.');
       return;
     }
     throw error;
@@ -64,7 +64,7 @@ async function statsCommand(): Promise<void> {
 
   // Check if file has any examples
   if (examples.length === 0) {
-    console.log('No examples found. Add examples with `ft add` first.');
+    console.log('No examples found. Add examples with `ait add` first.');
     return;
   }
 
@@ -157,15 +157,15 @@ function displayStats(stats: DatasetStats, threshold: number): void {
     if (stats.hasTrainFile) {
       console.log('✓ train.jsonl exists');
     } else {
-      console.log('✗ train.jsonl not found (run `ft format` to generate)');
+      console.log('✗ train.jsonl not found (run `ait format` to generate)');
     }
     if (stats.hasValFile) {
       console.log('✓ val.jsonl exists');
     } else {
-      console.log('✗ val.jsonl not found (run `ft format` to generate)');
+      console.log('✗ val.jsonl not found (run `ait format` to generate)');
     }
   } else {
-    console.log('Not yet split (run `ft split` to assign train/val splits)');
+    console.log('Not yet split (run `ait split` to assign train/val splits)');
   }
 
   // Readiness assessment
@@ -199,7 +199,7 @@ function assessReadiness(stats: DatasetStats, _threshold: number): void {
   // Check for unrated examples
   if (stats.unrated > 0) {
     issues.push(`${stats.unrated} unrated examples`);
-    recommendations.push('Run `ft rate` to rate all examples');
+    recommendations.push('Run `ait rate` to rate all examples');
   }
 
   // Check for sufficient high-quality examples
@@ -210,25 +210,25 @@ function assessReadiness(stats: DatasetStats, _threshold: number): void {
     if (stats.rated < stats.total) {
       recommendations.push('Rate more examples to identify high-quality data');
     } else {
-      recommendations.push('Add more examples with `ft add` or lower quality threshold');
+      recommendations.push('Add more examples with `ait add` or lower quality threshold');
     }
   }
 
   // Check for train/val split
   if (stats.trainCount === 0 && stats.valCount === 0) {
     issues.push('No train/val split assigned');
-    recommendations.push('Run `ft split` to create train/val splits');
+    recommendations.push('Run `ait split` to create train/val splits');
   }
 
   // Check for formatted files
   if (!stats.hasTrainFile || !stats.hasValFile) {
     issues.push('Training files not generated');
-    recommendations.push('Run `ft format` to generate train.jsonl and val.jsonl');
+    recommendations.push('Run `ait format` to generate train.jsonl and val.jsonl');
   }
 
   if (issues.length === 0) {
     console.log('✓ Dataset is ready for training');
-    console.log('  Run `ft train` to start fine-tuning');
+    console.log('  Run `ait train` to start fine-tuning');
   } else {
     console.log('✗ Dataset not ready for training:');
     for (const issue of issues) {

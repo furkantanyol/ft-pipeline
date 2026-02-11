@@ -17,7 +17,7 @@ A complete example project demonstrating how to fine-tune an LLM for customer su
 This example contains:
 
 - **25 pre-rated training examples** covering common support scenarios
-- **Pre-configured `.ftpipeline.json`** with system prompt and quality threshold
+- **Pre-configured `.aitelier.json`** with system prompt and quality threshold
 - **Realistic variety**: order issues, product questions, returns, complaints, policy questions
 
 ## Training Data Overview
@@ -90,7 +90,7 @@ This will:
 
 - Upload your training file to Together.ai
 - Start a LoRA fine-tune job
-- Save the job ID to `.ftpipeline.json`
+- Save the job ID to `.aitelier.json`
 
 ### 6. Monitor progress
 
@@ -159,7 +159,7 @@ To adapt this for your own customer support bot:
 
 ### 1. Update the system prompt
 
-Edit `.ftpipeline.json` to reflect your:
+Edit `.aitelier.json` to reflect your:
 
 - Company name and industry
 - Tone preferences

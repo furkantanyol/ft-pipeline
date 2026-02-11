@@ -3,13 +3,13 @@
 ## Project Structure
 
 - **Monorepo:** Turborepo + pnpm workspace
-- **CLI package:** `/Users/ftanyol/Projects/ft-pipeline/packages/cli/`
+- **CLI package:** `/Users/ftanyol/Projects/aitelier/packages/cli/`
 - **Task tracking:** TASKS.md in project root
 - **Project rules:** CLAUDE.md defines code standards and workflow
 
 ## Task Management System
 
-- Tasks tracked in `/Users/ftanyol/Projects/ft-pipeline/TASKS.md`
+- Tasks tracked in `/Users/ftanyol/Projects/aitelier/TASKS.md`
 - Format: Markdown checklist with `[ ]` (pending) and `[x]` (completed)
 - Organized by milestones (M1, M2, M3, M4)
 - Update TASKS.md after completing each task
@@ -64,7 +64,7 @@ pnpm turbo build && pnpm prettier --write . && pnpm turbo lint && pnpm turbo tes
 
 ## Completed Tasks
 
-### Task #6: ft eval command (M3.1)
+### Task #6: ait eval command (M3.1)
 
 - Implemented interactive evaluation command that runs fine-tuned models on validation examples
 - Uses Together.ai chat completions API via `provider.runInference()` method
@@ -76,7 +76,7 @@ pnpm turbo build && pnpm prettier --write . && pnpm turbo lint && pnpm turbo tes
 - Supports skip and quit actions during evaluation
 - Comprehensive test coverage with 8 test cases
 
-### Task #7: ft eval --compare command (M3.2)
+### Task #7: ait eval --compare command (M3.2)
 
 - Implemented blind A/B testing between base model and fine-tuned model
 - Runs inference on both models in parallel using `Promise.all()`
@@ -143,7 +143,7 @@ try {
 try {
   await access(join(cwd, CONFIG_FILE));
 } catch {
-  throw new Error('Project not initialized. Run `ft init` first...');
+  throw new Error('Project not initialized. Run `ait init` first...');
 }
 ```
 

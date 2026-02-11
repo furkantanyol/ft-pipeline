@@ -7,13 +7,13 @@ import { registerStats } from './stats.js';
 import type { ProjectConfig } from '../storage/config.js';
 import type { Example } from '../storage/dataset.js';
 
-describe('ft stats', () => {
+describe('ait stats', () => {
   let testDir: string;
   let originalCwd: string;
 
   beforeEach(async () => {
     // Create a temporary directory for each test
-    testDir = await mkdtemp(join(tmpdir(), 'ft-stats-test-'));
+    testDir = await mkdtemp(join(tmpdir(), 'ait-stats-test-'));
     originalCwd = process.cwd();
     process.chdir(testDir);
 
@@ -25,7 +25,7 @@ describe('ft stats', () => {
       qualityThreshold: 8,
       runs: [],
     };
-    await writeFile('.ftpipeline.json', JSON.stringify(config, null, 2));
+    await writeFile('.aitelier.json', JSON.stringify(config, null, 2));
     await mkdir('data', { recursive: true });
   });
 
@@ -217,7 +217,7 @@ describe('ft stats', () => {
 
     expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining('Train/Val Split:'));
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Not yet split (run `ft split` to assign train/val splits)'),
+      expect.stringContaining('Not yet split (run `ait split` to assign train/val splits)'),
     );
   });
 
@@ -312,10 +312,10 @@ describe('ft stats', () => {
     await program.parseAsync(['node', 'test', 'stats']);
 
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      expect.stringContaining('✗ train.jsonl not found (run `ft format` to generate)'),
+      expect.stringContaining('✗ train.jsonl not found (run `ait format` to generate)'),
     );
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      expect.stringContaining('✗ val.jsonl not found (run `ft format` to generate)'),
+      expect.stringContaining('✗ val.jsonl not found (run `ait format` to generate)'),
     );
   });
 
@@ -350,7 +350,7 @@ describe('ft stats', () => {
       expect.stringContaining('✓ Dataset is ready for training'),
     );
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Run `ft train` to start fine-tuning'),
+      expect.stringContaining('Run `ait train` to start fine-tuning'),
     );
   });
 
@@ -413,7 +413,7 @@ describe('ft stats', () => {
     await program.parseAsync(['node', 'test', 'stats']);
 
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      'No examples found. Add examples with `ft add` first.',
+      'No examples found. Add examples with `ait add` first.',
     );
   });
 
@@ -425,12 +425,12 @@ describe('ft stats', () => {
     await program.parseAsync(['node', 'test', 'stats']);
 
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      'No examples found. Add examples with `ft add` first.',
+      'No examples found. Add examples with `ait add` first.',
     );
   });
 
   it('should fail if project is not initialized', async () => {
-    await rm('.ftpipeline.json');
+    await rm('.aitelier.json');
 
     const mockExit = vi.spyOn(process, 'exit').mockImplementation(() => {
       throw new Error('process.exit called');
@@ -606,7 +606,7 @@ describe('ft stats', () => {
     await program.parseAsync(['node', 'test', 'stats']);
 
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Add more examples with `ft add` or lower quality threshold'),
+      expect.stringContaining('Add more examples with `ait add` or lower quality threshold'),
     );
   });
 });
