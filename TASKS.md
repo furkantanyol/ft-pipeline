@@ -32,13 +32,13 @@ Track progress by checking off tasks as they're completed.
 
 ### M1.4 — `ft rate` Command
 
-- [ ] Show unrated examples one by one (interactive)
-- [ ] Display: system prompt + input + output, formatted in terminal
-- [ ] Rate 1-10, option to rewrite output inline
-- [ ] If rewrite: save rewritten version as training target, keep original as metadata
-- [ ] `ft rate --min 8` — only show examples rated below 8 for re-review
-- [ ] Summary stats after session
-- [ ] Write tests
+- [x] Show unrated examples one by one (interactive)
+- [x] Display: system prompt + input + output, formatted in terminal
+- [x] Rate 1-10, option to rewrite output inline
+- [x] If rewrite: save rewritten version as training target, keep original as metadata
+- [x] `ft rate --min 8` — only show examples rated below 8 for re-review
+- [x] Summary stats after session
+- [x] Write tests
 
 ### M1.5 — `ft stats` Command
 
