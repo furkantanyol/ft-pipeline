@@ -7,6 +7,7 @@
 ## Why This Exists
 
 Fine-tuning LLMs usually means:
+
 - Manually managing JSONL files in scattered directories
 - Writing one-off Python scripts for train/val splits
 - Copy-pasting evaluation results between terminal and spreadsheets
@@ -115,35 +116,45 @@ your-project/
 ## Commands
 
 ### `ft init`
+
 Initialize a new fine-tuning project with interactive prompts.
 
 ### `ft add`
+
 Add training examples. Interactive mode (paste input/output) or file mode (`--input`/`--output`).
 
 ### `ft rate`
+
 Review and rate examples. Options: rewrite outputs inline, filter by rating threshold.
 
 ### `ft stats`
+
 Show dataset health: total examples, rating distribution, train/val status.
 
 ### `ft format`
+
 Export rated examples to provider-specific JSONL format.
 
 Options:
+
 - `--provider <name>` — Target provider (together, openai)
 - `--min-rating <n>` — Minimum rating threshold (default: 8)
 
 ### `ft split`
+
 Manage train/validation split.
 
 Options:
+
 - `--ratio <n>` — Train ratio, e.g., 0.8 for 80/20 (default: 0.8)
 - `--reshuffle` — Force re-split with confirmation
 
 ### `ft train`
+
 Start a fine-tuning job on the configured provider.
 
 Options:
+
 - `--epochs <n>` — Number of epochs (default: 3)
 - `--batch-size <n>` — Batch size (default: 4)
 - `--learning-rate <rate>` — Learning rate (default: 1e-5)
@@ -153,15 +164,19 @@ Options:
 Requires `TOGETHER_API_KEY` environment variable.
 
 ### `ft status`
+
 Check fine-tuning job status.
 
 Options:
+
 - `--all` — Show all runs with model IDs
 
 ### `ft eval`
+
 Evaluate fine-tuned model on validation set.
 
 Options:
+
 - `--compare <baseline>` — Compare against base model (blind A/B test)
 
 ## Provider Setup
@@ -201,6 +216,7 @@ pnpm turbo lint
 ## Architecture
 
 Built with:
+
 - **Node.js + TypeScript** (strict mode)
 - **Commander.js** (CLI framework) + **Inquirer.js** (interactive prompts)
 - **Turborepo** (monorepo orchestration) + **pnpm** (package manager)

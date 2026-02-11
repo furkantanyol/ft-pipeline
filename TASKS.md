@@ -16,10 +16,10 @@ Track progress by checking off tasks as they're completed.
 
 ### M1.2 — `ft init` Command
 
-- [ ] Interactive prompts: project name, provider (together/openai), model, system prompt
-- [ ] Generate `.ftpipeline.json` config file
-- [ ] Create `data/` directory with `examples.jsonl`, `train.jsonl`, `val.jsonl`
-- [ ] Write tests for init flow
+- [x] Interactive prompts: project name, provider (together/openai), model, system prompt
+- [x] Generate `.ftpipeline.json` config file
+- [x] Create `data/` directory with `examples.jsonl`, `train.jsonl`, `val.jsonl`
+- [x] Write tests for init flow
 
 ### M1.3 — `ft add` Command
 
