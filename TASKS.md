@@ -206,18 +206,18 @@ Track progress by checking off tasks as they're completed.
 ### W1.1 — Project Setup Wizard (Steps 1-3: Basics, Provider, Model)
 **Deps:** W0.5, W0.3 · **Size:** L
 
-- [ ] Multi-step wizard (client component with step state)
-- [ ] Step 1 — Basics: project name + description
-- [ ] Step 2 — Provider: Together.ai selector, API key input + "Test Connection" validation
-- [ ] Step 3 — Model: dropdown fetched from Together.ai API, highlight recommended models
+- [x] Multi-step wizard (client component with step state)
+- [x] Step 1 — Basics: project name + description
+- [x] Step 2 — Provider: Together.ai selector, API key input + "Test Connection" validation
+- [x] Step 3 — Model: dropdown fetched from Together.ai API, highlight recommended models
 
 ### W1.2 — Project Setup Wizard (Steps 4-6: Prompt, Config, Invite + Save)
 **Deps:** W1.1 · **Size:** M
 
-- [ ] Step 4 — System Prompt: textarea with clickable template presets
-- [ ] Step 5 — Training Config: defaults + expandable advanced section + live cost estimate
-- [ ] Step 6 — Invite Team: email + role input, skip option
-- [ ] Save action: insert project + members + send invites → redirect to dashboard
+- [x] Step 4 — System Prompt: textarea with clickable template presets
+- [x] Step 5 — Training Config: defaults + expandable advanced section + live cost estimate
+- [x] Step 6 — Invite Team: email + role input, skip option
+- [x] Save action: insert project + members + send invites → redirect to dashboard
 
 ### W1.3 — Add Examples Page
 **Deps:** W0.5, W0.3 · **Size:** M

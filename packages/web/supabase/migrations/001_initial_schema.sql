@@ -5,7 +5,7 @@
 -- TABLES
 -- =============================================================================
 
-create table projects (
+create table if not exists projects (
   id uuid primary key default gen_random_uuid(),
   name text not null,
   system_prompt text,
@@ -25,7 +25,7 @@ create table projects (
   created_at timestamptz not null default now()
 );
 
-create table project_members (
+create table if not exists project_members (
   project_id uuid not null references projects(id) on delete cascade,
   user_id uuid not null references auth.users(id) on delete cascade,
   role text not null check (role in ('owner', 'trainer', 'rater')),
@@ -33,7 +33,7 @@ create table project_members (
   primary key (project_id, user_id)
 );
 
-create table examples (
+create table if not exists examples (
   id uuid primary key default gen_random_uuid(),
   project_id uuid not null references projects(id) on delete cascade,
   input text not null,
@@ -48,11 +48,11 @@ create table examples (
   rated_at timestamptz
 );
 
-create index examples_project_id_idx on examples(project_id);
-create index examples_project_split_idx on examples(project_id, split);
-create index examples_project_rating_idx on examples(project_id, rating);
+create index if not exists examples_project_id_idx on examples(project_id);
+create index if not exists examples_project_split_idx on examples(project_id, split);
+create index if not exists examples_project_rating_idx on examples(project_id, rating);
 
-create table training_runs (
+create table if not exists training_runs (
   id uuid primary key default gen_random_uuid(),
   project_id uuid not null references projects(id) on delete cascade,
   provider text not null,
@@ -74,9 +74,9 @@ create table training_runs (
   created_at timestamptz not null default now()
 );
 
-create index training_runs_project_id_idx on training_runs(project_id);
+create index if not exists training_runs_project_id_idx on training_runs(project_id);
 
-create table evaluations (
+create table if not exists evaluations (
   id uuid primary key default gen_random_uuid(),
   project_id uuid not null references projects(id) on delete cascade,
   training_run_id uuid not null references training_runs(id) on delete cascade,
@@ -90,8 +90,8 @@ create table evaluations (
   created_at timestamptz not null default now()
 );
 
-create index evaluations_project_id_idx on evaluations(project_id);
-create index evaluations_training_run_id_idx on evaluations(training_run_id);
+create index if not exists evaluations_project_id_idx on evaluations(project_id);
+create index if not exists evaluations_training_run_id_idx on evaluations(training_run_id);
 
 -- =============================================================================
 -- ROW LEVEL SECURITY
@@ -120,99 +120,125 @@ returns text as $$
 $$ language sql security definer stable;
 
 -- PROJECTS --
-create policy "Members can view their projects"
-  on projects for select
-  using (is_project_member(id, auth.uid()));
-
-create policy "Owners can update their projects"
-  on projects for update
-  using (get_project_role(id, auth.uid()) = 'owner');
+drop policy if exists "Members can view their projects" on projects;
+drop policy if exists "Owners can update their projects" on projects;
+drop policy if exists "Authenticated users can create projects" on projects;
+drop policy if exists "Owners can delete their projects" on projects;
 
 create policy "Authenticated users can create projects"
-  on projects for insert
-  with check (created_by = auth.uid());
+  on projects for insert to authenticated
+  with check (created_by = (select auth.uid()));
+
+create policy "Members can view their projects"
+  on projects for select to authenticated
+  using (
+    is_project_member(id, (select auth.uid()))
+    or created_by = (select auth.uid())
+  );
+
+create policy "Owners can update their projects"
+  on projects for update to authenticated
+  using (get_project_role(id, (select auth.uid())) = 'owner');
 
 create policy "Owners can delete their projects"
-  on projects for delete
-  using (get_project_role(id, auth.uid()) = 'owner');
+  on projects for delete to authenticated
+  using (get_project_role(id, (select auth.uid())) = 'owner');
 
 -- PROJECT_MEMBERS --
+drop policy if exists "Members can view project membership" on project_members;
+drop policy if exists "Owners can manage members" on project_members;
+drop policy if exists "Owners can update member roles" on project_members;
+drop policy if exists "Owners can remove members" on project_members;
+drop policy if exists "Creator can add themselves as owner" on project_members;
+
 create policy "Members can view project membership"
-  on project_members for select
-  using (is_project_member(project_id, auth.uid()));
+  on project_members for select to authenticated
+  using (is_project_member(project_id, (select auth.uid())));
 
 create policy "Owners can manage members"
-  on project_members for insert
-  with check (get_project_role(project_id, auth.uid()) = 'owner');
+  on project_members for insert to authenticated
+  with check (get_project_role(project_id, (select auth.uid())) = 'owner');
+
+create policy "Creator can add themselves as owner"
+  on project_members for insert to authenticated
+  with check (user_id = (select auth.uid()) and role = 'owner');
 
 create policy "Owners can update member roles"
-  on project_members for update
-  using (get_project_role(project_id, auth.uid()) = 'owner');
+  on project_members for update to authenticated
+  using (get_project_role(project_id, (select auth.uid())) = 'owner');
 
 create policy "Owners can remove members"
-  on project_members for delete
-  using (get_project_role(project_id, auth.uid()) = 'owner');
-
--- Special: allow the project creator to insert themselves as first member
-create policy "Creator can add themselves as owner"
-  on project_members for insert
-  with check (user_id = auth.uid() and role = 'owner');
+  on project_members for delete to authenticated
+  using (get_project_role(project_id, (select auth.uid())) = 'owner');
 
 -- EXAMPLES --
+drop policy if exists "Members can view project examples" on examples;
+drop policy if exists "Trainers and owners can add examples" on examples;
+drop policy if exists "Raters can rate examples" on examples;
+drop policy if exists "Owners can delete examples" on examples;
+
 create policy "Members can view project examples"
-  on examples for select
-  using (is_project_member(project_id, auth.uid()));
+  on examples for select to authenticated
+  using (is_project_member(project_id, (select auth.uid())));
 
 create policy "Trainers and owners can add examples"
-  on examples for insert
+  on examples for insert to authenticated
   with check (
-    created_by = auth.uid()
-    and get_project_role(project_id, auth.uid()) in ('owner', 'trainer')
+    created_by = (select auth.uid())
+    and get_project_role(project_id, (select auth.uid())) in ('owner', 'trainer')
   );
 
 create policy "Raters can rate examples"
-  on examples for update
-  using (
-    is_project_member(project_id, auth.uid())
-  );
+  on examples for update to authenticated
+  using (is_project_member(project_id, (select auth.uid())));
 
 create policy "Owners can delete examples"
-  on examples for delete
-  using (get_project_role(project_id, auth.uid()) = 'owner');
+  on examples for delete to authenticated
+  using (get_project_role(project_id, (select auth.uid())) = 'owner');
 
 -- TRAINING_RUNS --
+drop policy if exists "Members can view training runs" on training_runs;
+drop policy if exists "Trainers and owners can create training runs" on training_runs;
+drop policy if exists "Trainers and owners can update training runs" on training_runs;
+drop policy if exists "Owners can delete training runs" on training_runs;
+
 create policy "Members can view training runs"
-  on training_runs for select
-  using (is_project_member(project_id, auth.uid()));
+  on training_runs for select to authenticated
+  using (is_project_member(project_id, (select auth.uid())));
 
 create policy "Trainers and owners can create training runs"
-  on training_runs for insert
+  on training_runs for insert to authenticated
   with check (
-    created_by = auth.uid()
-    and get_project_role(project_id, auth.uid()) in ('owner', 'trainer')
+    created_by = (select auth.uid())
+    and get_project_role(project_id, (select auth.uid())) in ('owner', 'trainer')
   );
 
 create policy "Trainers and owners can update training runs"
-  on training_runs for update
-  using (get_project_role(project_id, auth.uid()) in ('owner', 'trainer'));
+  on training_runs for update to authenticated
+  using (get_project_role(project_id, (select auth.uid())) in ('owner', 'trainer'));
 
 create policy "Owners can delete training runs"
-  on training_runs for delete
-  using (get_project_role(project_id, auth.uid()) = 'owner');
+  on training_runs for delete to authenticated
+  using (get_project_role(project_id, (select auth.uid())) = 'owner');
 
 -- EVALUATIONS --
+drop policy if exists "Members can view evaluations" on evaluations;
+drop policy if exists "Members can create evaluations" on evaluations;
+drop policy if exists "Members can score evaluations" on evaluations;
+drop policy if exists "Owners can delete evaluations" on evaluations;
+
 create policy "Members can view evaluations"
-  on evaluations for select
-  using (is_project_member(project_id, auth.uid()));
+  on evaluations for select to authenticated
+  using (is_project_member(project_id, (select auth.uid())));
 
 create policy "Members can create evaluations"
-  on evaluations for insert
-  with check (is_project_member(project_id, auth.uid()));
+  on evaluations for insert to authenticated
+  with check (is_project_member(project_id, (select auth.uid())));
 
 create policy "Members can score evaluations"
-  on evaluations for update
-  using (is_project_member(project_id, auth.uid()));
+  on evaluations for update to authenticated
+  using (is_project_member(project_id, (select auth.uid())));
 
 create policy "Owners can delete evaluations"
-  on evaluations for delete
-  using (get_project_role(project_id, auth.uid()) = 'owner');
+  on evaluations for delete to authenticated
+  using (get_project_role(project_id, (select auth.uid())) = 'owner');
