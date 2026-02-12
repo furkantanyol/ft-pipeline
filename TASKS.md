@@ -167,12 +167,12 @@ Track progress by checking off tasks as they're completed.
 ### W0.2 — Supabase Client Setup
 **Deps:** W0.1 · **Size:** S
 
-- [ ] Install `@supabase/supabase-js` and `@supabase/ssr`
-- [ ] Create server-side client helper (`src/lib/supabase/server.ts`) using `createServerClient`
-- [ ] Create browser-side client helper (`src/lib/supabase/client.ts`) using `createBrowserClient`
-- [ ] Create middleware helper (`src/lib/supabase/middleware.ts`) for auth session refresh
-- [ ] Create placeholder `types.ts` with empty `Database` type
-- [ ] Add `.env.local.example` with Supabase env var placeholders
+- [x] Install `@supabase/supabase-js` and `@supabase/ssr`
+- [x] Create server-side client helper (`src/lib/supabase/server.ts`) using `createServerClient`
+- [x] Create browser-side client helper (`src/lib/supabase/client.ts`) using `createBrowserClient`
+- [x] Create middleware helper (`src/lib/supabase/middleware.ts`) for auth session refresh
+- [x] Create placeholder `types.ts` with empty `Database` type
+- [x] Add `.env.local.example` with Supabase env var placeholders
 
 ### W0.3 — Database Schema & Types
 **Deps:** W0.2 · **Size:** M
