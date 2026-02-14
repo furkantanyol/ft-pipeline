@@ -1,39 +1,25 @@
-"use client";
+'use client';
 
-import { useState, useCallback } from "react";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Slider } from "@/components/ui/slider";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { addExample, importExamples } from "@/app/(app)/add/actions";
+import { useState, useCallback } from 'react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Slider } from '@/components/ui/slider';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { addExample, importExamples } from '@/app/(app)/add/actions';
+import { useProject } from '@/components/project-provider';
 
-type Project = { id: string; name: string };
+export function AddExamples() {
+  const { activeProjectId } = useProject();
 
-export function AddExamples({ projects }: { projects: Project[] }) {
-  const [projectId, setProjectId] = useState(projects[0]?.id ?? "");
-
-  if (projects.length === 0) {
+  if (!activeProjectId) {
     return (
       <Card>
         <CardContent className="py-12 text-center">
           <p className="text-muted-foreground">
-            No projects yet. Create one first in{" "}
+            No projects yet. Create one first in{' '}
             <a href="/setup" className="text-primary underline">
               Setup
             </a>
@@ -45,45 +31,25 @@ export function AddExamples({ projects }: { projects: Project[] }) {
   }
 
   return (
-    <div className="space-y-4">
-      {projects.length > 1 && (
-        <div className="space-y-2">
-          <Label>Project</Label>
-          <Select value={projectId} onValueChange={setProjectId}>
-            <SelectTrigger className="w-64">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {projects.map((p) => (
-                <SelectItem key={p.id} value={p.id}>
-                  {p.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      )}
+    <Tabs defaultValue="manual">
+      <TabsList>
+        <TabsTrigger value="manual">Manual</TabsTrigger>
+        <TabsTrigger value="import">Import</TabsTrigger>
+      </TabsList>
 
-      <Tabs defaultValue="manual">
-        <TabsList>
-          <TabsTrigger value="manual">Manual</TabsTrigger>
-          <TabsTrigger value="import">Import</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="manual">
-          <ManualAdd projectId={projectId} />
-        </TabsContent>
-        <TabsContent value="import">
-          <BulkImport projectId={projectId} />
-        </TabsContent>
-      </Tabs>
-    </div>
+      <TabsContent value="manual">
+        <ManualAdd projectId={activeProjectId} />
+      </TabsContent>
+      <TabsContent value="import">
+        <BulkImport projectId={activeProjectId} />
+      </TabsContent>
+    </Tabs>
   );
 }
 
 function ManualAdd({ projectId }: { projectId: string }) {
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
+  const [input, setInput] = useState('');
+  const [output, setOutput] = useState('');
   const [rating, setRating] = useState<number | null>(null);
   const [useRating, setUseRating] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -91,7 +57,7 @@ function ManualAdd({ projectId }: { projectId: string }) {
 
   const handleSubmit = async () => {
     if (!input.trim() || !output.trim()) {
-      toast.error("Both input and output are required.");
+      toast.error('Both input and output are required.');
       return;
     }
 
@@ -111,8 +77,8 @@ function ManualAdd({ projectId }: { projectId: string }) {
 
     const newCount = count + 1;
     setCount(newCount);
-    setInput("");
-    setOutput("");
+    setInput('');
+    setOutput('');
     setRating(null);
     toast.success(`Example added (${newCount} this session)`);
   };
@@ -121,9 +87,7 @@ function ManualAdd({ projectId }: { projectId: string }) {
     <Card>
       <CardHeader>
         <CardTitle>Add Example</CardTitle>
-        <CardDescription>
-          Enter an input/output pair. Optionally rate it now.
-        </CardDescription>
+        <CardDescription>Enter an input/output pair. Optionally rate it now.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
@@ -185,7 +149,7 @@ function ManualAdd({ projectId }: { projectId: string }) {
         </div>
 
         <Button onClick={handleSubmit} disabled={saving}>
-          {saving ? "Saving..." : "Add & Next"}
+          {saving ? 'Saving...' : 'Add & Next'}
         </Button>
       </CardContent>
     </Card>
@@ -193,10 +157,10 @@ function ManualAdd({ projectId }: { projectId: string }) {
 }
 
 function BulkImport({ projectId }: { projectId: string }) {
-  const [text, setText] = useState("");
-  const [parsed, setParsed] = useState<
-    { input: string; output: string; rating?: number }[] | null
-  >(null);
+  const [text, setText] = useState('');
+  const [parsed, setParsed] = useState<{ input: string; output: string; rating?: number }[] | null>(
+    null,
+  );
   const [parseError, setParseError] = useState<string | null>(null);
   const [importing, setImporting] = useState(false);
 
@@ -211,14 +175,12 @@ function BulkImport({ projectId }: { projectId: string }) {
       // Try JSONL (one JSON object per line)
       const lines = raw
         .trim()
-        .split("\n")
+        .split('\n')
         .filter((l) => l.trim());
       const items = lines.map((line, i) => {
         const obj = JSON.parse(line);
         if (!obj.input || !obj.output) {
-          throw new Error(
-            `Line ${i + 1}: missing "input" or "output" field`,
-          );
+          throw new Error(`Line ${i + 1}: missing "input" or "output" field`);
         }
         return {
           input: String(obj.input),
@@ -232,14 +194,12 @@ function BulkImport({ projectId }: { projectId: string }) {
       try {
         const arr = JSON.parse(raw);
         if (!Array.isArray(arr)) {
-          setParseError("Expected a JSON array or JSONL (one object per line).");
+          setParseError('Expected a JSON array or JSONL (one object per line).');
           return;
         }
         const items = arr.map((obj: Record<string, unknown>, i: number) => {
           if (!obj.input || !obj.output) {
-            throw new Error(
-              `Item ${i + 1}: missing "input" or "output" field`,
-            );
+            throw new Error(`Item ${i + 1}: missing "input" or "output" field`);
           }
           return {
             input: String(obj.input),
@@ -250,7 +210,7 @@ function BulkImport({ projectId }: { projectId: string }) {
         setParsed(items);
       } catch (e) {
         setParseError(
-          e instanceof Error ? e.message : "Invalid JSON. Expected JSONL or a JSON array.",
+          e instanceof Error ? e.message : 'Invalid JSON. Expected JSONL or a JSON array.',
         );
       }
     }
@@ -263,7 +223,7 @@ function BulkImport({ projectId }: { projectId: string }) {
     const reader = new FileReader();
     reader.onload = (ev) => {
       const content = ev.target?.result;
-      if (typeof content === "string") {
+      if (typeof content === 'string') {
         parseInput(content);
       }
     };
@@ -283,7 +243,7 @@ function BulkImport({ projectId }: { projectId: string }) {
     }
 
     toast.success(`Imported ${result.count} examples`);
-    setText("");
+    setText('');
     setParsed(null);
   };
 
@@ -292,7 +252,7 @@ function BulkImport({ projectId }: { projectId: string }) {
       <CardHeader>
         <CardTitle>Bulk Import</CardTitle>
         <CardDescription>
-          Upload a .jsonl file or paste JSON. Each entry needs{" "}
+          Upload a .jsonl file or paste JSON. Each entry needs{' '}
           <code className="text-xs">{`{"input": "...", "output": "..."}`}</code>
         </CardDescription>
       </CardHeader>
@@ -320,15 +280,12 @@ function BulkImport({ projectId }: { projectId: string }) {
           />
         </div>
 
-        {parseError && (
-          <p className="text-sm text-destructive">{parseError}</p>
-        )}
+        {parseError && <p className="text-sm text-destructive">{parseError}</p>}
 
         {parsed && (
           <div className="space-y-3">
             <p className="text-sm text-muted-foreground">
-              {parsed.length} example{parsed.length !== 1 ? "s" : ""} ready to
-              import
+              {parsed.length} example{parsed.length !== 1 ? 's' : ''} ready to import
             </p>
 
             <div className="max-h-48 overflow-y-auto rounded-md border">
@@ -343,15 +300,9 @@ function BulkImport({ projectId }: { projectId: string }) {
                 <tbody>
                   {parsed.slice(0, 50).map((ex, i) => (
                     <tr key={i} className="border-t">
-                      <td className="px-3 py-1.5 text-muted-foreground">
-                        {i + 1}
-                      </td>
-                      <td className="max-w-[200px] truncate px-3 py-1.5">
-                        {ex.input}
-                      </td>
-                      <td className="max-w-[200px] truncate px-3 py-1.5">
-                        {ex.output}
-                      </td>
+                      <td className="px-3 py-1.5 text-muted-foreground">{i + 1}</td>
+                      <td className="max-w-[200px] truncate px-3 py-1.5">{ex.input}</td>
+                      <td className="max-w-[200px] truncate px-3 py-1.5">{ex.output}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -364,7 +315,7 @@ function BulkImport({ projectId }: { projectId: string }) {
             </div>
 
             <Button onClick={handleImport} disabled={importing}>
-              {importing ? "Importing..." : `Import ${parsed.length} Examples`}
+              {importing ? 'Importing...' : `Import ${parsed.length} Examples`}
             </Button>
           </div>
         )}
@@ -373,30 +324,28 @@ function BulkImport({ projectId }: { projectId: string }) {
   );
 }
 
-function FormatJsonButton({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-}) {
+function tryFormatJson(value: string): string | null {
   if (!value.trim()) return null;
-
   try {
     const parsed = JSON.parse(value);
     const formatted = JSON.stringify(parsed, null, 2);
-    if (formatted === value) return null;
-
-    return (
-      <button
-        type="button"
-        onClick={() => onChange(formatted)}
-        className="text-xs text-muted-foreground hover:text-foreground"
-      >
-        Format JSON
-      </button>
-    );
+    return formatted !== value ? formatted : null;
   } catch {
     return null;
   }
+}
+
+function FormatJsonButton({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const formatted = tryFormatJson(value);
+  if (!formatted) return null;
+
+  return (
+    <button
+      type="button"
+      onClick={() => onChange(formatted)}
+      className="text-xs text-muted-foreground hover:text-foreground"
+    >
+      Format JSON
+    </button>
+  );
 }

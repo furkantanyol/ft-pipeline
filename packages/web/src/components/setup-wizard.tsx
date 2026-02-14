@@ -1,45 +1,23 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  validateApiKey,
-  fetchModels,
-  saveProject,
-} from "@/app/(app)/setup/actions";
-import {
-  Check,
-  Loader2,
-  ArrowRight,
-  ArrowLeft,
-  X,
-  ChevronDown,
-  Trash2,
-} from "lucide-react";
+} from '@/components/ui/select';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { validateApiKey, fetchModels, saveProject } from '@/app/(app)/setup/actions';
+import { Check, Loader2, ArrowRight, ArrowLeft, X, ChevronDown, Trash2 } from 'lucide-react';
 
 export type WizardData = {
   name: string;
@@ -56,7 +34,7 @@ export type WizardData = {
     lora_alpha: number;
     lora_dropout: number;
   };
-  invites: Array<{ email: string; role: "trainer" | "rater" }>;
+  invites: Array<{ email: string; role: 'trainer' | 'rater' }>;
 };
 
 type ModelOption = {
@@ -77,24 +55,24 @@ const DEFAULT_TRAINING_CONFIG = {
 
 const PROMPT_TEMPLATES = [
   {
-    label: "Customer Support",
+    label: 'Customer Support',
     prompt:
-      "You are a helpful customer support agent. Respond to customer inquiries professionally, empathetically, and concisely. Always try to resolve the issue or escalate appropriately.",
+      'You are a helpful customer support agent. Respond to customer inquiries professionally, empathetically, and concisely. Always try to resolve the issue or escalate appropriately.',
   },
   {
-    label: "Code Review",
+    label: 'Code Review',
     prompt:
-      "You are an expert code reviewer. Analyze the provided code for bugs, performance issues, and style problems. Suggest specific improvements with code examples.",
+      'You are an expert code reviewer. Analyze the provided code for bugs, performance issues, and style problems. Suggest specific improvements with code examples.',
   },
   {
-    label: "Creative Writing",
+    label: 'Creative Writing',
     prompt:
-      "You are a creative writing assistant. Help users craft engaging, well-structured prose with vivid descriptions and natural dialogue. Match the requested tone and style.",
+      'You are a creative writing assistant. Help users craft engaging, well-structured prose with vivid descriptions and natural dialogue. Match the requested tone and style.',
   },
   {
-    label: "Domain Q&A",
+    label: 'Domain Q&A',
     prompt:
-      "You are a knowledgeable domain expert. Answer questions accurately and thoroughly, citing relevant context. If unsure, say so rather than guessing.",
+      'You are a knowledgeable domain expert. Answer questions accurately and thoroughly, citing relevant context. If unsure, say so rather than guessing.',
   },
 ];
 
@@ -104,20 +82,18 @@ export function SetupWizard() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [data, setData] = useState<WizardData>({
-    name: "",
-    description: "",
-    provider: "together",
-    apiKey: "",
-    model: "",
-    systemPrompt: "",
+    name: '',
+    description: '',
+    provider: 'together',
+    apiKey: '',
+    model: '',
+    systemPrompt: '',
     trainingConfig: { ...DEFAULT_TRAINING_CONFIG },
     invites: [],
   });
 
   // Step 2 state
-  const [keyStatus, setKeyStatus] = useState<
-    "idle" | "testing" | "valid" | "invalid"
-  >("idle");
+  const [keyStatus, setKeyStatus] = useState<'idle' | 'testing' | 'valid' | 'invalid'>('idle');
   const [keyError, setKeyError] = useState<string | null>(null);
 
   // Step 3 state
@@ -129,8 +105,8 @@ export function SetupWizard() {
   const [advancedOpen, setAdvancedOpen] = useState(false);
 
   // Step 6 state
-  const [inviteEmail, setInviteEmail] = useState("");
-  const [inviteRole, setInviteRole] = useState<"trainer" | "rater">("rater");
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteRole, setInviteRole] = useState<'trainer' | 'rater'>('rater');
 
   // Save state
   const [saving, setSaving] = useState(false);
@@ -141,7 +117,7 @@ export function SetupWizard() {
       case 1:
         return data.name.trim().length > 0;
       case 2:
-        return keyStatus === "valid";
+        return keyStatus === 'valid';
       case 3:
         return data.model.length > 0;
       case 4:
@@ -156,21 +132,21 @@ export function SetupWizard() {
   }
 
   async function handleTestConnection() {
-    setKeyStatus("testing");
+    setKeyStatus('testing');
     setKeyError(null);
 
     const result = await validateApiKey(data.apiKey);
 
     if (result.valid) {
-      setKeyStatus("valid");
+      setKeyStatus('valid');
       setModelsLoading(true);
       const modelsResult = await fetchModels(data.apiKey);
       setModels(modelsResult.models);
       setModelsError(modelsResult.error ?? null);
       setModelsLoading(false);
     } else {
-      setKeyStatus("invalid");
-      setKeyError(result.error ?? "Invalid API key");
+      setKeyStatus('invalid');
+      setKeyError(result.error ?? 'Invalid API key');
     }
   }
 
@@ -188,7 +164,7 @@ export function SetupWizard() {
       ...data,
       invites: [...data.invites, { email: inviteEmail.trim(), role: inviteRole }],
     });
-    setInviteEmail("");
+    setInviteEmail('');
   }
 
   function removeInvite(email: string) {
@@ -219,17 +195,21 @@ export function SetupWizard() {
       return;
     }
 
-    router.push("/dashboard");
+    if (result.projectId) {
+      document.cookie = `active_project=${result.projectId}; path=/; max-age=${60 * 60 * 24 * 365}`;
+    }
+
+    router.push('/dashboard');
   }
 
   // Rough cost estimate based on model size and epochs
   function estimateCost() {
     const modelId = data.model.toLowerCase();
     let pricePerEpoch = 0.5; // default $/epoch for small models
-    if (modelId.includes("70b")) pricePerEpoch = 5;
-    else if (modelId.includes("34b") || modelId.includes("32b")) pricePerEpoch = 3;
-    else if (modelId.includes("13b") || modelId.includes("11b")) pricePerEpoch = 1.5;
-    else if (modelId.includes("7b") || modelId.includes("8b")) pricePerEpoch = 0.8;
+    if (modelId.includes('70b')) pricePerEpoch = 5;
+    else if (modelId.includes('34b') || modelId.includes('32b')) pricePerEpoch = 3;
+    else if (modelId.includes('13b') || modelId.includes('11b')) pricePerEpoch = 1.5;
+    else if (modelId.includes('7b') || modelId.includes('8b')) pricePerEpoch = 0.8;
     return (pricePerEpoch * data.trainingConfig.epochs).toFixed(2);
   }
 
@@ -242,18 +222,16 @@ export function SetupWizard() {
             <div
               className={`flex size-8 items-center justify-center rounded-full text-sm font-medium transition-colors ${
                 s === step
-                  ? "bg-primary text-primary-foreground"
+                  ? 'bg-primary text-primary-foreground'
                   : s < step
-                    ? "bg-primary/20 text-primary"
-                    : "bg-muted text-muted-foreground"
+                    ? 'bg-primary/20 text-primary'
+                    : 'bg-muted text-muted-foreground'
               }`}
             >
               {s < step ? <Check className="size-4" /> : s}
             </div>
             {s < TOTAL_STEPS && (
-              <div
-                className={`h-px w-8 ${s < step ? "bg-primary/40" : "bg-muted"}`}
-              />
+              <div className={`h-px w-8 ${s < step ? 'bg-primary/40' : 'bg-muted'}`} />
             )}
           </div>
         ))}
@@ -264,9 +242,7 @@ export function SetupWizard() {
         <Card>
           <CardHeader>
             <CardTitle>Project basics</CardTitle>
-            <CardDescription>
-              Give your fine-tuning project a name
-            </CardDescription>
+            <CardDescription>Give your fine-tuning project a name</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -281,16 +257,13 @@ export function SetupWizard() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="description">
-                Description{" "}
-                <span className="text-muted-foreground">(optional)</span>
+                Description <span className="text-muted-foreground">(optional)</span>
               </Label>
               <Textarea
                 id="description"
                 placeholder="What will this model do?"
                 value={data.description}
-                onChange={(e) =>
-                  setData({ ...data, description: e.target.value })
-                }
+                onChange={(e) => setData({ ...data, description: e.target.value })}
                 rows={3}
               />
             </div>
@@ -303,20 +276,16 @@ export function SetupWizard() {
         <Card>
           <CardHeader>
             <CardTitle>Provider</CardTitle>
-            <CardDescription>
-              Connect to your fine-tuning provider
-            </CardDescription>
+            <CardDescription>Connect to your fine-tuning provider</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label>Provider</Label>
               <div className="flex gap-2">
                 <Button
-                  variant={
-                    data.provider === "together" ? "default" : "outline"
-                  }
+                  variant={data.provider === 'together' ? 'default' : 'outline'}
                   className="flex-1"
-                  onClick={() => setData({ ...data, provider: "together" })}
+                  onClick={() => setData({ ...data, provider: 'together' })}
                 >
                   Together.ai
                 </Button>
@@ -338,32 +307,30 @@ export function SetupWizard() {
                   value={data.apiKey}
                   onChange={(e) => {
                     setData({ ...data, apiKey: e.target.value });
-                    setKeyStatus("idle");
+                    setKeyStatus('idle');
                     setKeyError(null);
                   }}
                 />
                 <Button
                   variant="outline"
                   onClick={handleTestConnection}
-                  disabled={!data.apiKey.trim() || keyStatus === "testing"}
+                  disabled={!data.apiKey.trim() || keyStatus === 'testing'}
                 >
-                  {keyStatus === "testing" ? (
+                  {keyStatus === 'testing' ? (
                     <Loader2 className="size-4 animate-spin" />
-                  ) : keyStatus === "valid" ? (
+                  ) : keyStatus === 'valid' ? (
                     <Check className="size-4 text-green-500" />
-                  ) : keyStatus === "invalid" ? (
+                  ) : keyStatus === 'invalid' ? (
                     <X className="size-4 text-destructive" />
                   ) : (
-                    "Test"
+                    'Test'
                   )}
                 </Button>
               </div>
-              {keyStatus === "valid" && (
+              {keyStatus === 'valid' && (
                 <p className="text-sm text-green-500">Connected successfully</p>
               )}
-              {keyError && (
-                <p className="text-sm text-destructive">{keyError}</p>
-              )}
+              {keyError && <p className="text-sm text-destructive">{keyError}</p>}
             </div>
           </CardContent>
         </Card>
@@ -380,9 +347,7 @@ export function SetupWizard() {
             {modelsLoading ? (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="size-5 animate-spin text-muted-foreground" />
-                <span className="ml-2 text-sm text-muted-foreground">
-                  Loading models...
-                </span>
+                <span className="ml-2 text-sm text-muted-foreground">Loading models...</span>
               </div>
             ) : modelsError ? (
               <p className="text-sm text-destructive">{modelsError}</p>
@@ -391,9 +356,7 @@ export function SetupWizard() {
                 <Label>Model</Label>
                 <Select
                   value={data.model}
-                  onValueChange={(value) =>
-                    setData({ ...data, model: value })
-                  }
+                  onValueChange={(value) => setData({ ...data, model: value })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a model" />
@@ -413,9 +376,7 @@ export function SetupWizard() {
                     ))}
                   </SelectContent>
                 </Select>
-                {data.model && (
-                  <p className="text-xs text-muted-foreground">{data.model}</p>
-                )}
+                {data.model && <p className="text-xs text-muted-foreground">{data.model}</p>}
               </div>
             )}
           </CardContent>
@@ -428,8 +389,7 @@ export function SetupWizard() {
           <CardHeader>
             <CardTitle>System prompt</CardTitle>
             <CardDescription>
-              Define how your model should behave. This is prepended to every
-              training example.
+              Define how your model should behave. This is prepended to every training example.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -437,13 +397,9 @@ export function SetupWizard() {
               {PROMPT_TEMPLATES.map((t) => (
                 <Button
                   key={t.label}
-                  variant={
-                    data.systemPrompt === t.prompt ? "default" : "outline"
-                  }
+                  variant={data.systemPrompt === t.prompt ? 'default' : 'outline'}
                   size="sm"
-                  onClick={() =>
-                    setData({ ...data, systemPrompt: t.prompt })
-                  }
+                  onClick={() => setData({ ...data, systemPrompt: t.prompt })}
                 >
                   {t.label}
                 </Button>
@@ -451,16 +407,13 @@ export function SetupWizard() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="systemPrompt">
-                Prompt{" "}
-                <span className="text-muted-foreground">(optional)</span>
+                Prompt <span className="text-muted-foreground">(optional)</span>
               </Label>
               <Textarea
                 id="systemPrompt"
                 placeholder="You are a helpful assistant that..."
                 value={data.systemPrompt}
-                onChange={(e) =>
-                  setData({ ...data, systemPrompt: e.target.value })
-                }
+                onChange={(e) => setData({ ...data, systemPrompt: e.target.value })}
                 rows={6}
               />
             </div>
@@ -474,8 +427,7 @@ export function SetupWizard() {
           <CardHeader>
             <CardTitle>Training config</CardTitle>
             <CardDescription>
-              Defaults work well for most projects. Adjust if you know what
-              you&apos;re doing.
+              Defaults work well for most projects. Adjust if you know what you&apos;re doing.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -544,7 +496,7 @@ export function SetupWizard() {
               <CollapsibleTrigger asChild>
                 <Button variant="ghost" size="sm" className="gap-1 px-0">
                   <ChevronDown
-                    className={`size-4 transition-transform ${advancedOpen ? "rotate-180" : ""}`}
+                    className={`size-4 transition-transform ${advancedOpen ? 'rotate-180' : ''}`}
                   />
                   Advanced LoRA settings
                 </Button>
@@ -601,8 +553,7 @@ export function SetupWizard() {
                           ...data,
                           trainingConfig: {
                             ...data.trainingConfig,
-                            lora_dropout:
-                              parseFloat(e.target.value) || 0.05,
+                            lora_dropout: parseFloat(e.target.value) || 0.05,
                           },
                         })
                       }
@@ -614,11 +565,9 @@ export function SetupWizard() {
 
             <div className="rounded-md border border-border bg-muted/50 p-3">
               <p className="text-sm text-muted-foreground">
-                Estimated cost:{" "}
-                <span className="font-medium text-foreground">
-                  ~${estimateCost()}
-                </span>{" "}
-                per training run
+                Estimated cost:{' '}
+                <span className="font-medium text-foreground">~${estimateCost()}</span> per training
+                run
               </p>
             </div>
           </CardContent>
@@ -631,8 +580,8 @@ export function SetupWizard() {
           <CardHeader>
             <CardTitle>Invite team</CardTitle>
             <CardDescription>
-              Add collaborators to rate examples and review training.
-              You can skip this and invite people later.
+              Add collaborators to rate examples and review training. You can skip this and invite
+              people later.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -643,7 +592,7 @@ export function SetupWizard() {
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") {
+                  if (e.key === 'Enter') {
                     e.preventDefault();
                     addInvite();
                   }
@@ -651,7 +600,7 @@ export function SetupWizard() {
               />
               <Select
                 value={inviteRole}
-                onValueChange={(v) => setInviteRole(v as "trainer" | "rater")}
+                onValueChange={(v) => setInviteRole(v as 'trainer' | 'rater')}
               >
                 <SelectTrigger className="w-32">
                   <SelectValue />
@@ -679,11 +628,7 @@ export function SetupWizard() {
                         {invite.role}
                       </Badge>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeInvite(invite.email)}
-                    >
+                    <Button variant="ghost" size="sm" onClick={() => removeInvite(invite.email)}>
                       <Trash2 className="size-3.5 text-muted-foreground" />
                     </Button>
                   </div>
@@ -693,8 +638,7 @@ export function SetupWizard() {
 
             {data.invites.length === 0 && (
               <p className="py-4 text-center text-sm text-muted-foreground">
-                No invites yet. You can always add team members later in
-                Settings.
+                No invites yet. You can always add team members later in Settings.
               </p>
             )}
           </CardContent>
@@ -714,18 +658,11 @@ export function SetupWizard() {
           </Button>
         ) : (
           <div className="space-y-1 text-right">
-            <Button
-              onClick={handleSave}
-              disabled={saving}
-            >
-              {saving ? (
-                <Loader2 className="mr-2 size-4 animate-spin" />
-              ) : null}
-              {saving ? "Creating..." : "Create Project"}
+            <Button onClick={handleSave} disabled={saving}>
+              {saving ? <Loader2 className="mr-2 size-4 animate-spin" /> : null}
+              {saving ? 'Creating...' : 'Create Project'}
             </Button>
-            {saveError && (
-              <p className="text-sm text-destructive">{saveError}</p>
-            )}
+            {saveError && <p className="text-sm text-destructive">{saveError}</p>}
           </div>
         )}
       </div>

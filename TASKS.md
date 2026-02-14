@@ -230,12 +230,12 @@ Track progress by checking off tasks as they're completed.
 ### W1.4 — Rating Interface (Card UI + Rating Controls)
 **Deps:** W0.5, W0.3 · **Size:** L
 
-- [ ] Server component page fetching unrated examples
-- [ ] RatingCard: input display ("What the AI saw") + output display ("What the AI said")
-- [ ] Quick buttons: Great (8-10), Okay (5-7), Bad (1-4) with color coding
-- [ ] Precise 1-10 slider + Skip button
-- [ ] Progress indicator + session stats
-- [ ] Auto-advance to next card after rating
+- [x] Server component page fetching unrated examples
+- [x] RatingCard: input display ("What the AI saw") + output display ("What the AI said")
+- [x] Quick buttons: Great (8-10), Okay (5-7), Bad (1-4) with color coding
+- [x] Precise 1-10 slider + Skip button
+- [x] Progress indicator + session stats
+- [x] Auto-advance to next card after rating
 
 ### W1.5 — Rating: Rewrite Flow + Keyboard Shortcuts
 **Deps:** W1.4 · **Size:** M

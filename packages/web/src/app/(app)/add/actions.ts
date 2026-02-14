@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from '@/lib/supabase/server';
 
 export async function addExample(
   projectId: string,
@@ -14,10 +14,10 @@ export async function addExample(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { error: "Not authenticated" };
+    return { error: 'Not authenticated' };
   }
 
-  const { error } = await supabase.from("examples").insert({
+  const { error } = await supabase.from('examples').insert({
     project_id: projectId,
     input,
     output,
@@ -40,17 +40,14 @@ type BulkExample = {
   rating?: number;
 };
 
-export async function importExamples(
-  projectId: string,
-  examples: BulkExample[],
-) {
+export async function importExamples(projectId: string, examples: BulkExample[]) {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { error: "Not authenticated" };
+    return { error: 'Not authenticated' };
   }
 
   const rows = examples.map((ex) => ({
@@ -63,29 +60,11 @@ export async function importExamples(
     created_by: user.id,
   }));
 
-  const { error } = await supabase.from("examples").insert(rows);
+  const { error } = await supabase.from('examples').insert(rows);
 
   if (error) {
     return { error: error.message };
   }
 
   return { success: true, count: rows.length };
-}
-
-export async function getUserProjects() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return { projects: [] };
-  }
-
-  const { data: projects } = await supabase
-    .from("projects")
-    .select("id, name")
-    .order("created_at", { ascending: false });
-
-  return { projects: projects ?? [] };
 }

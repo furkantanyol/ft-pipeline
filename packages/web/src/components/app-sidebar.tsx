@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   Star,
@@ -10,7 +10,7 @@ import {
   FlaskConical,
   MessageSquare,
   Settings,
-} from "lucide-react";
+} from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -21,17 +21,18 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { UserMenu } from "@/components/user-menu";
+} from '@/components/ui/sidebar';
+import { UserMenu } from '@/components/user-menu';
+import { ProjectSelector } from '@/components/project-selector';
 
 const navItems = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Rate", href: "/rate", icon: Star },
-  { label: "Add", href: "/add", icon: Plus },
-  { label: "Train", href: "/train", icon: Zap },
-  { label: "Eval", href: "/eval", icon: FlaskConical },
-  { label: "Playground", href: "/playground", icon: MessageSquare },
-  { label: "Settings", href: "/settings", icon: Settings },
+  { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { label: 'Rate', href: '/rate', icon: Star },
+  { label: 'Add', href: '/add', icon: Plus },
+  { label: 'Train', href: '/train', icon: Zap },
+  { label: 'Eval', href: '/eval', icon: FlaskConical },
+  { label: 'Playground', href: '/playground', icon: MessageSquare },
+  { label: 'Settings', href: '/settings', icon: Settings },
 ];
 
 export function AppSidebar() {
@@ -39,12 +40,11 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="px-4 py-5">
+      <SidebarHeader className="space-y-3 px-4 py-5">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <span className="text-lg font-light tracking-tight text-foreground">
-            aitelier
-          </span>
+          <span className="text-lg font-light tracking-tight text-foreground">aitelier</span>
         </Link>
+        <ProjectSelector />
       </SidebarHeader>
 
       <SidebarContent>
@@ -53,10 +53,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname.startsWith(item.href)}
-                  >
+                  <SidebarMenuButton asChild isActive={pathname.startsWith(item.href)}>
                     <Link href={item.href}>
                       <item.icon className="size-4" />
                       <span>{item.label}</span>
