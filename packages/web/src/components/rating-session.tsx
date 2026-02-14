@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { RatingCard } from '@/components/rating-card';
 import { useProject } from '@/components/project-provider';
@@ -79,25 +80,27 @@ export function RatingSession({ initialExamplesPromise }: Props) {
       )}
 
       {/* Card or empty state */}
-      {!current ? (
-        <Card>
-          <CardContent className="py-16 text-center">
-            <p className="text-lg font-medium">All caught up!</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {total === 0
-                ? 'No unrated examples. Add some first.'
-                : `You've reviewed all ${total} examples.`}
-            </p>
-            {rated > 0 && (
-              <p className="mt-3 text-sm text-muted-foreground">
-                Session: {rated} rated, avg {(ratingSum / rated).toFixed(1)}
+      <AnimatePresence mode="wait">
+        {!current ? (
+          <Card>
+            <CardContent className="py-16 text-center">
+              <p className="text-lg font-medium">All caught up!</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {total === 0
+                  ? 'No unrated examples. Add some first.'
+                  : `You've reviewed all ${total} examples.`}
               </p>
-            )}
-          </CardContent>
-        </Card>
-      ) : (
-        <RatingCard example={current} onRated={handleRated} />
-      )}
+              {rated > 0 && (
+                <p className="mt-3 text-sm text-muted-foreground">
+                  Session: {rated} rated, avg {(ratingSum / rated).toFixed(1)}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        ) : (
+          <RatingCard example={current} onRated={handleRated} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

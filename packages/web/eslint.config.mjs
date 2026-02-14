@@ -1,3 +1,3 @@
-import nextConfig from "eslint-config-next/core-web-vitals";
+import nextConfig from 'eslint-config-next/core-web-vitals';
 
 export default [...nextConfig];

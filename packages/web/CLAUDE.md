@@ -94,7 +94,6 @@ Supabase Postgres with RLS. Five core tables:
 
 Together.ai is the primary provider. API calls go through server actions (never client-side). The provider module in `src/lib/providers/together.ts` handles JSONL formatting, file upload, job creation, and status polling.
 
-
 ## Docs
 
 [NextJS](https://nextjs.org/docs)

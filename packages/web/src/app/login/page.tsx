@@ -1,20 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { signInWithMagicLink } from "./actions";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useState } from 'react';
+import { signInWithMagicLink } from './actions';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [pending, setPending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,20 +34,14 @@ export default function LoginPage() {
     <main className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-light tracking-tight text-foreground">
-            aitelier
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Fine-tuning dataset curation
-          </p>
+          <h1 className="text-3xl font-light tracking-tight text-foreground">aitelier</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Fine-tuning dataset curation</p>
         </div>
 
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Sign in</CardTitle>
-            <CardDescription>
-              Enter your email to receive a magic link
-            </CardDescription>
+            <CardDescription>Enter your email to receive a magic link</CardDescription>
           </CardHeader>
           <CardContent>
             {sent ? (
@@ -62,8 +50,7 @@ export default function LoginPage() {
                   Check your email for the login link.
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Sent to{" "}
-                  <span className="font-medium text-foreground">{email}</span>
+                  Sent to <span className="font-medium text-foreground">{email}</span>
                 </p>
                 <Button
                   variant="ghost"
@@ -71,7 +58,7 @@ export default function LoginPage() {
                   className="mt-4"
                   onClick={() => {
                     setSent(false);
-                    setEmail("");
+                    setEmail('');
                   }}
                 >
                   Try a different email
@@ -91,11 +78,9 @@ export default function LoginPage() {
                     autoFocus
                   />
                 </div>
-                {error && (
-                  <p className="text-sm text-destructive">{error}</p>
-                )}
+                {error && <p className="text-sm text-destructive">{error}</p>}
                 <Button type="submit" className="w-full" disabled={pending}>
-                  {pending ? "Sending..." : "Send Magic Link"}
+                  {pending ? 'Sending...' : 'Send Magic Link'}
                 </Button>
               </form>
             )}

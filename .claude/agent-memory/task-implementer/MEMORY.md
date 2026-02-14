@@ -62,7 +62,57 @@ pnpm turbo build && pnpm prettier --write . && pnpm turbo lint && pnpm turbo tes
 - For unused destructured variables, use `.values()` or refactor to avoid the variable entirely
 - Use `as const` for message role literals in tests to satisfy TypeScript strict typing
 
+## Web App Implementation Patterns
+
+### React Hooks and ESLint Rules
+
+- When using event handlers in `useEffect` that depend on component functions, wrap those functions with `useCallback` to avoid stale closures
+- ESLint rule `react-hooks/exhaustive-deps` requires all dependencies to be listed
+- ESLint rule `react-hooks/immutability` prevents accessing variables before they are declared
+- Functions must be declared before being referenced in `useEffect`, or use `useCallback` with proper dependencies
+
+### Framer Motion Integration
+
+- Install with `pnpm add framer-motion`
+- Use `AnimatePresence` with `mode="wait"` to animate between different components
+- Wrap animated components with `motion.div` and set `initial`, `animate`, `exit` props
+- Key prop is essential for AnimatePresence to track component identity changes
+- Typical slide-in animation: `initial={{ opacity: 0, x: 20 }}`, `animate={{ opacity: 1, x: 0 }}`, `exit={{ opacity: 0, x: -20 }}`
+- Use `transition={{ duration: 0.2 }}` for smooth, subtle animations
+
+### Server Actions with Optional Parameters
+
+- When server actions have optional parameters (e.g., `rewrite?: string`), build update object conditionally
+- Example pattern:
+  ```typescript
+  const updateData: { required: type; optional?: type } = { required: value };
+  if (optional !== undefined) {
+    updateData.optional = optional;
+  }
+  ```
+
+### Keyboard Shortcuts Implementation
+
+- Add event listener to `window` in `useEffect`, clean up in return function
+- Check `e.target instanceof HTMLTextAreaElement` to avoid triggering shortcuts while typing
+- Use `e.preventDefault()` to prevent default browser behavior
+- Support modifier key checks: `!e.metaKey && !e.ctrlKey`
+- Number keys: `e.key >= '1' && e.key <= '9'` for 1-9, special case for 0 = 10
+- Common shortcuts: `r` for action, `s` for skip, `Escape` to cancel, arrow keys for navigation
+
 ## Completed Tasks
+
+### Task W1.5: Rating Rewrite Flow + Keyboard Shortcuts (Web)
+
+- Installed Framer Motion for animations
+- Implemented slide-up rewrite panel with `AnimatePresence` and height animation
+- Added textarea for editing output with auto-focus on activation
+- Card transition animations using `motion.div` with slide effect
+- Comprehensive keyboard shortcuts: 1-0 for ratings, R for rewrite, S for skip, → for next, Escape to cancel
+- Visual keyboard legend displayed below rating controls
+- Updated server action to accept optional `rewrite` parameter
+- All handlers wrapped with `useCallback` to satisfy ESLint exhaustive-deps rule
+- Rewrite disables rating buttons until saved or cancelled
 
 ### Task #6: ait eval command (M3.1)
 

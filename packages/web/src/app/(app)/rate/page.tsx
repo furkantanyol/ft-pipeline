@@ -3,10 +3,17 @@ import { cookies } from 'next/headers';
 import { getUnratedExamples } from './actions';
 import { RatingSession } from '@/components/rating-session';
 import { Card, CardContent } from '@/components/ui/card';
+import { getUserProjects } from '@/lib/projects';
 
 export default async function RatePage() {
   const cookieStore = await cookies();
-  const activeProjectId = cookieStore.get('active_project')?.value ?? null;
+  let activeProjectId = cookieStore.get('active_project')?.value ?? null;
+
+  // Fallback to first project if cookie isn't set yet
+  if (!activeProjectId) {
+    const projects = await getUserProjects();
+    activeProjectId = projects[0]?.id ?? null;
+  }
 
   const initialExamplesPromise = activeProjectId
     ? getUnratedExamples(activeProjectId)

@@ -156,6 +156,7 @@ Track progress by checking off tasks as they're completed.
 ## Web App — Milestone 0: Foundation
 
 ### W0.1 — Scaffold Next.js 15 App
+
 **Deps:** None · **Size:** S
 
 - [x] Initialize Next.js 15 app (app router) at `packages/web/` with TypeScript, Tailwind CSS, ESLint, `src/` dir
@@ -165,6 +166,7 @@ Track progress by checking off tasks as they're completed.
 - [x] Create `packages/web/CLAUDE.md` with web-specific guidelines
 
 ### W0.2 — Supabase Client Setup
+
 **Deps:** W0.1 · **Size:** S
 
 - [x] Install `@supabase/supabase-js` and `@supabase/ssr`
@@ -175,6 +177,7 @@ Track progress by checking off tasks as they're completed.
 - [x] Add `.env.local.example` with Supabase env var placeholders
 
 ### W0.3 — Database Schema & Types
+
 **Deps:** W0.2 · **Size:** M
 
 - [x] Create SQL migration `supabase/migrations/001_initial_schema.sql` with tables: `projects`, `examples`, `training_runs`, `evaluations`, `project_members`
@@ -182,6 +185,7 @@ Track progress by checking off tasks as they're completed.
 - [x] Auto-generate TypeScript types via `pnpm db:gen-types` (uses `supabase gen types`)
 
 ### W0.4 — Auth: Magic Link Login
+
 **Deps:** W0.2 · **Size:** M
 
 - [x] Create Next.js middleware (`src/middleware.ts`) for auth session refresh + redirect to `/login`
@@ -190,6 +194,7 @@ Track progress by checking off tasks as they're completed.
 - [x] Server action for `signInWithOtp`
 
 ### W0.5 — App Shell & Navigation
+
 **Deps:** W0.4 · **Size:** M
 
 - [x] Create `(app)` route group for authenticated pages
@@ -204,6 +209,7 @@ Track progress by checking off tasks as they're completed.
 ## Web App — Milestone 1: Data Layer
 
 ### W1.1 — Project Setup Wizard (Steps 1-3: Basics, Provider, Model)
+
 **Deps:** W0.5, W0.3 · **Size:** L
 
 - [x] Multi-step wizard (client component with step state)
@@ -212,6 +218,7 @@ Track progress by checking off tasks as they're completed.
 - [x] Step 3 — Model: dropdown fetched from Together.ai API, highlight recommended models
 
 ### W1.2 — Project Setup Wizard (Steps 4-6: Prompt, Config, Invite + Save)
+
 **Deps:** W1.1 · **Size:** M
 
 - [x] Step 4 — System Prompt: textarea with clickable template presets
@@ -220,6 +227,7 @@ Track progress by checking off tasks as they're completed.
 - [x] Save action: insert project + members + send invites → redirect to dashboard
 
 ### W1.3 — Add Examples Page
+
 **Deps:** W0.5, W0.3 · **Size:** M
 
 - [x] Manual add tab: input + output textareas, optional rating slider, "Add & Next" flow
@@ -228,6 +236,7 @@ Track progress by checking off tasks as they're completed.
 - [x] Validation errors for malformed input
 
 ### W1.4 — Rating Interface (Card UI + Rating Controls)
+
 **Deps:** W0.5, W0.3 · **Size:** L
 
 - [x] Server component page fetching unrated examples
@@ -238,14 +247,16 @@ Track progress by checking off tasks as they're completed.
 - [x] Auto-advance to next card after rating
 
 ### W1.5 — Rating: Rewrite Flow + Keyboard Shortcuts
+
 **Deps:** W1.4 · **Size:** M
 
-- [ ] "Rewrite" button → slide-up textarea (Framer Motion) pre-filled with output
-- [ ] Card transition animations (slide out/in)
-- [ ] Keyboard shortcuts: `1`-`0` rating, `r` rewrite, `s` skip, `→` next
-- [ ] Shortcut legend below card
+- [x] "Rewrite" button → slide-up textarea (Framer Motion) pre-filled with output
+- [x] Card transition animations (slide out/in)
+- [x] Keyboard shortcuts: `1`-`0` rating, `r` rewrite, `s` skip, `→` next
+- [x] Shortcut legend below card
 
 ### W1.6 — Rating Filters & Sorting
+
 **Deps:** W1.4 · **Size:** S
 
 - [ ] Filter dropdown: Unrated (default), All, Below threshold, Needs rewrite
@@ -257,6 +268,7 @@ Track progress by checking off tasks as they're completed.
 ## Web App — Milestone 2: Dashboard & Visualization
 
 ### W2.1 — Dashboard: Key Metrics Cards
+
 **Deps:** W0.5, W0.3 · **Size:** M
 
 - [ ] Server actions for aggregate stats (total, rated, quality, models trained)
@@ -264,6 +276,7 @@ Track progress by checking off tasks as they're completed.
 - [ ] Skeleton loading state
 
 ### W2.2 — Dashboard: Rating Distribution Chart
+
 **Deps:** W2.1 · **Size:** M
 
 - [ ] Use ShadCDN Charts, create rating histogram (1-10, color-coded)
@@ -271,6 +284,7 @@ Track progress by checking off tasks as they're completed.
 - [ ] Readiness indicator ("Ready to train" / "Need X more quality examples")
 
 ### W2.3 — Dashboard: Training Timeline + Activity Feed
+
 **Deps:** W2.1 · **Size:** M
 
 - [ ] Training timeline: horizontal visual of runs (version, count, status badge, clickable)
@@ -282,6 +296,7 @@ Track progress by checking off tasks as they're completed.
 ## Web App — Milestone 3: Training Pipeline
 
 ### W3.1 — Training: Pre-flight Check + Config Editor
+
 **Deps:** W0.5, W0.3 · **Size:** M
 
 - [ ] Pre-flight: quality count, train split count, cost estimate, duration, warnings, diff from last run
@@ -289,6 +304,7 @@ Track progress by checking off tasks as they're completed.
 - [ ] Live cost re-estimation on config change
 
 ### W3.2 — Training: Split Management
+
 **Deps:** W0.5, W0.3 · **Size:** M
 
 - [ ] Visual split editor (unassigned/train/val groups)
@@ -297,6 +313,7 @@ Track progress by checking off tasks as they're completed.
 - [ ] Split quality indicators (count + avg rating per split)
 
 ### W3.3 — Training: Together.ai Integration
+
 **Deps:** W3.1, W3.2 · **Size:** L
 
 - [ ] Together.ai provider module: formatExamplesToJSONL, uploadTrainingFile, createFineTuneJob, getJobStatus
@@ -305,6 +322,7 @@ Track progress by checking off tasks as they're completed.
 - [ ] Redirect to `/train/[runId]` on launch
 
 ### W3.4 — Training: Live Status Page
+
 **Deps:** W3.3 · **Size:** M
 
 - [ ] Dynamic route `/train/[runId]` with status display
@@ -313,6 +331,7 @@ Track progress by checking off tasks as they're completed.
 - [ ] Cancel button, completed run shows model ID + "Run Evaluation" CTA
 
 ### W3.5 — Training: Run History
+
 **Deps:** W3.3 · **Size:** S
 
 - [ ] Sortable table of all runs (version, status, model, count, duration, cost, eval score, date)
@@ -324,6 +343,7 @@ Track progress by checking off tasks as they're completed.
 ## Web App — Milestone 4: Evaluation
 
 ### W4.1 — Eval: Setup Page
+
 **Deps:** W0.5, W0.3 · **Size:** S
 
 - [ ] Model A / Model B dropdowns (completed runs + baseline)
@@ -331,6 +351,7 @@ Track progress by checking off tasks as they're completed.
 - [ ] "Start Evaluation" → generate outputs for both models → redirect to comparison UI
 
 ### W4.2 — Eval: Blind Comparison UI
+
 **Deps:** W4.1 · **Size:** L
 
 - [ ] Full-screen layout: input context + two response cards side-by-side
@@ -340,6 +361,7 @@ Track progress by checking off tasks as they're completed.
 - [ ] Progress indicator, save to `evaluations` table
 
 ### W4.3 — Eval: Results Reveal + Historical Trends
+
 **Deps:** W4.2 · **Size:** M
 
 - [ ] Reveal animation showing model identities
@@ -353,6 +375,7 @@ Track progress by checking off tasks as they're completed.
 ## Web App — Milestone 5: Playground
 
 ### W5.1 — Playground: Single Model Chat
+
 **Deps:** W0.5, W0.3 · **Size:** M
 
 - [ ] Input textarea + streaming output panel
@@ -362,6 +385,7 @@ Track progress by checking off tasks as they're completed.
 - [ ] "Save as Example" button → creates unrated example
 
 ### W5.2 — Playground: Side-by-Side Comparison
+
 **Deps:** W5.1 · **Size:** S
 
 - [ ] "Compare" toggle → two output panels with independent model selectors
@@ -373,6 +397,7 @@ Track progress by checking off tasks as they're completed.
 ## Web App — Milestone 6: Settings & Team
 
 ### W6.1 — Settings Page
+
 **Deps:** W0.5, W0.3 · **Size:** M
 
 - [ ] Project settings: name, description
@@ -387,6 +412,7 @@ Track progress by checking off tasks as they're completed.
 ## Web App — Milestone 7: Polish
 
 ### W7.1 — Mobile-Responsive Rating + Animations
+
 **Deps:** W1.5 · **Size:** M
 
 - [ ] Full mobile-responsive rating interface (full-width cards, stacked buttons, 44px tap targets)
@@ -394,6 +420,7 @@ Track progress by checking off tasks as they're completed.
 - [ ] Polish card transition animations
 
 ### W7.2 — Real-time Collaboration
+
 **Deps:** W0.2 · **Size:** M
 
 - [ ] `useRealtime` hook for Supabase Realtime subscriptions
@@ -402,6 +429,7 @@ Track progress by checking off tasks as they're completed.
 - [ ] Team activity toasts ("David just rated 3 examples")
 
 ### W7.3 — Empty States & Onboarding
+
 **Deps:** W0.5 · **Size:** S
 
 - [ ] Reusable `EmptyState` component (icon, title, description, action button)

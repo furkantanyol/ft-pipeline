@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { Project } from '@/lib/projects';
 
@@ -27,6 +27,13 @@ export function ProjectProvider({
 }) {
   const router = useRouter();
   const [activeProjectId, setActiveProjectId] = useState(initialProjectId);
+
+  // Sync cookie on mount when layout fell back to a default project
+  useEffect(() => {
+    if (initialProjectId) {
+      document.cookie = `${COOKIE_NAME}=${initialProjectId}; path=/; max-age=${COOKIE_MAX_AGE}`;
+    }
+  }, [initialProjectId]);
 
   const activeProject = projects.find((p) => p.id === activeProjectId) ?? null;
 

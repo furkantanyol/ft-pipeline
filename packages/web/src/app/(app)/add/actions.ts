@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 
 export async function addExample(
@@ -31,6 +32,7 @@ export async function addExample(
     return { error: error.message };
   }
 
+  revalidatePath('/rate');
   return { success: true };
 }
 
@@ -66,5 +68,6 @@ export async function importExamples(projectId: string, examples: BulkExample[])
     return { error: error.message };
   }
 
+  revalidatePath('/rate');
   return { success: true, count: rows.length };
 }

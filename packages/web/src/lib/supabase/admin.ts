@@ -1,5 +1,5 @@
-import { createClient as createSupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "./types";
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+import type { Database } from './types';
 
 // Server-only admin client using the service role key.
 // Bypasses RLS — use only in server actions that do their own auth checks.

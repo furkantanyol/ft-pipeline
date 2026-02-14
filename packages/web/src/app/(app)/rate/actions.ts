@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 
 export async function getUnratedExamples(projectId: string) {
@@ -26,7 +27,7 @@ export async function getUnratedExamples(projectId: string) {
   return { examples: data ?? [] };
 }
 
-export async function rateExample(exampleId: string, rating: number) {
+export async function rateExample(exampleId: string, rating: number, rewrite?: string) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -36,18 +37,28 @@ export async function rateExample(exampleId: string, rating: number) {
     return { error: 'Not authenticated' };
   }
 
-  const { error } = await supabase
-    .from('examples')
-    .update({
-      rating,
-      rated_by: user.id,
-      rated_at: new Date().toISOString(),
-    })
-    .eq('id', exampleId);
+  const updateData: {
+    rating: number;
+    rated_by: string;
+    rated_at: string;
+    rewrite?: string;
+  } = {
+    rating,
+    rated_by: user.id,
+    rated_at: new Date().toISOString(),
+  };
+
+  // Only include rewrite if provided
+  if (rewrite !== undefined) {
+    updateData.rewrite = rewrite;
+  }
+
+  const { error } = await supabase.from('examples').update(updateData).eq('id', exampleId);
 
   if (error) {
     return { error: error.message };
   }
 
+  revalidatePath('/dashboard');
   return { success: true };
 }
