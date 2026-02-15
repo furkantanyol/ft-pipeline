@@ -316,10 +316,10 @@ Track progress by checking off tasks as they're completed.
 
 **Deps:** W3.1, W3.2 · **Size:** L
 
-- [ ] Together.ai provider module: formatExamplesToJSONL, uploadTrainingFile, createFineTuneJob, getJobStatus
-- [ ] `startTraining` server action: fetch → format → upload → create job → save run
-- [ ] "Start Training" button with confirmation modal
-- [ ] Redirect to `/train/[runId]` on launch
+- [x] Together.ai provider module: formatExamplesToJSONL, uploadTrainingFile, createFineTuneJob, getJobStatus
+- [x] `startTraining` server action: fetch → format → upload → create job → save run
+- [x] "Start Training" button with confirmation modal
+- [x] Redirect to `/train/[runId]` on launch
 
 ### W3.4 — Training: Live Status Page
 

@@ -192,6 +192,21 @@ pnpm turbo build && pnpm prettier --write . && pnpm turbo lint && pnpm turbo tes
 - Suspense key includes filter/sort to trigger re-fetch on change
 - Type-safe filter and sort enums exported from actions.ts
 
+### Task W3.3: Together.ai Integration (Web)
+
+- Created Together.ai provider module at `lib/providers/together.ts`
+- Functions: `formatExamplesToJSONL()`, `uploadTrainingFile()`, `createFineTuneJob()`, `getJobStatus()`
+- Training file format: JSONL with `{"messages": [{"role": "system/user/assistant", "content": "..."}]}`
+- Uses rewrite if available, otherwise original output
+- Created `startTraining()` server action in `train/actions.ts`
+- Flow: fetch examples → format JSONL → create run (uploading) → upload files → update (queued) → create job → update (training)
+- Created `StartTrainingButton` component with confirmation AlertDialog
+- Shows config summary, warnings, readiness status in modal
+- Redirects to `/train/[runId]` on successful launch
+- Created basic `/train/[runId]` page with status display
+- Status badges: pending, uploading, queued, training, completed, failed, cancelled
+- Shows run details: base model, train/val counts, job ID, model ID, error if any
+
 ### Task W2.1: Dashboard Key Metrics Cards (Web)
 
 - Created `getDashboardMetrics()` server action in `/dashboard/actions.ts`

@@ -5,6 +5,7 @@ import { getPreflightData, getSplitData } from './actions';
 import { TrainingPreflight } from '@/components/training-preflight';
 import { TrainingConfigEditor } from '@/components/training-config-editor';
 import { SplitManager } from '@/components/split-manager';
+import { StartTrainingButton } from '@/components/start-training-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
@@ -38,6 +39,11 @@ async function TrainingContent({ projectId }: { projectId: string }) {
         trainCount={data.trainCount}
         valCount={data.valCount}
       />
+
+      {/* Start Training CTA */}
+      <div className="flex justify-end">
+        <StartTrainingButton projectId={projectId} preflightData={data} />
+      </div>
     </div>
   );
 }

@@ -418,3 +418,143 @@ export async function moveExamplesToSplit(
 
   return { success: true };
 }
+
+export async function startTraining(projectId: string): Promise<{
+  success: boolean;
+  runId?: string;
+  error?: string;
+}> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { success: false, error: 'Not authenticated' };
+  }
+
+  // Get project details
+  const { data: project, error: projectError } = await supabase
+    .from('projects')
+    .select('base_model, system_prompt, provider, provider_config, training_config')
+    .eq('id', projectId)
+    .single();
+
+  if (projectError || !project) {
+    return { success: false, error: 'Project not found' };
+  }
+
+  // Validate provider is Together.ai
+  if (project.provider !== 'together') {
+    return { success: false, error: 'Only Together.ai provider is currently supported' };
+  }
+
+  // Get API key from provider_config
+  const providerConfig = project.provider_config as { api_key?: string };
+  const apiKey = providerConfig.api_key;
+
+  if (!apiKey) {
+    return {
+      success: false,
+      error: 'API key not configured. Please update project settings.',
+    };
+  }
+
+  // Get training examples
+  const { data: trainExamples, error: trainError } = await supabase
+    .from('examples')
+    .select('input, output, rewrite')
+    .eq('project_id', projectId)
+    .eq('split', 'train')
+    .order('created_at', { ascending: true });
+
+  if (trainError || !trainExamples || trainExamples.length === 0) {
+    return { success: false, error: 'No training examples found. Run split first.' };
+  }
+
+  // Get validation examples
+  const { data: valExamples, error: valError } = await supabase
+    .from('examples')
+    .select('input, output, rewrite')
+    .eq('project_id', projectId)
+    .eq('split', 'val')
+    .order('created_at', { ascending: true });
+
+  if (valError || !valExamples || valExamples.length === 0) {
+    return { success: false, error: 'No validation examples found. Run split first.' };
+  }
+
+  // Parse training config
+  const trainingConfig = project.training_config as TrainingConfig;
+
+  try {
+    // Import provider functions (dynamic to avoid server-side issues)
+    const { formatExamplesToJSONL, uploadTrainingFile, createFineTuneJob } =
+      await import('@/lib/providers/together');
+
+    // Format examples to JSONL
+    const trainJSONL = formatExamplesToJSONL(trainExamples, project.system_prompt);
+    const valJSONL = formatExamplesToJSONL(valExamples, project.system_prompt);
+
+    // Create training run record (status: uploading)
+    const { data: run, error: runError } = await supabase
+      .from('training_runs')
+      .insert({
+        project_id: projectId,
+        provider: project.provider,
+        base_model: project.base_model,
+        status: 'uploading',
+        config: trainingConfig,
+        example_count: trainExamples.length + valExamples.length,
+        train_count: trainExamples.length,
+        val_count: valExamples.length,
+        created_by: user.id,
+      })
+      .select('id')
+      .single();
+
+    if (runError || !run) {
+      return { success: false, error: 'Failed to create training run record' };
+    }
+
+    // Upload training file
+    const trainFileId = await uploadTrainingFile(trainJSONL, apiKey, 'train.jsonl');
+
+    // Upload validation file
+    const valFileId = await uploadTrainingFile(valJSONL, apiKey, 'val.jsonl');
+
+    // Update status to queued
+    await supabase.from('training_runs').update({ status: 'queued' }).eq('id', run.id);
+
+    // Create fine-tune job
+    const jobId = await createFineTuneJob({
+      apiKey,
+      baseModel: project.base_model,
+      trainingFileId: trainFileId,
+      validationFileId: valFileId,
+      epochs: trainingConfig.epochs,
+      batchSize: trainingConfig.batch_size,
+      learningRate: trainingConfig.learning_rate,
+      loraR: trainingConfig.lora_r,
+      loraAlpha: trainingConfig.lora_alpha,
+      loraDropout: trainingConfig.lora_dropout,
+    });
+
+    // Update run with job ID and status
+    await supabase
+      .from('training_runs')
+      .update({
+        provider_job_id: jobId,
+        status: 'training',
+        started_at: new Date().toISOString(),
+      })
+      .eq('id', run.id);
+
+    return { success: true, runId: run.id };
+  } catch (err) {
+    // Update run status to failed
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+
+    return { success: false, error: errorMessage };
+  }
+}
