@@ -271,9 +271,9 @@ Track progress by checking off tasks as they're completed.
 
 **Deps:** W0.5, W0.3 · **Size:** M
 
-- [ ] Server actions for aggregate stats (total, rated, quality, models trained)
-- [ ] 4 metric cards with label, number, description
-- [ ] Skeleton loading state
+- [x] Server actions for aggregate stats (total, rated, quality, models trained)
+- [x] 4 metric cards with label, number, description
+- [x] Skeleton loading state
 
 ### W2.2 — Dashboard: Rating Distribution Chart
 

@@ -124,6 +124,18 @@ pnpm turbo build && pnpm prettier --write . && pnpm turbo lint && pnpm turbo tes
 - Suspense key includes filter/sort to trigger re-fetch on change
 - Type-safe filter and sort enums exported from actions.ts
 
+### Task W2.1: Dashboard Key Metrics Cards (Web)
+
+- Created `getDashboardMetrics()` server action in `/dashboard/actions.ts`
+- Queries: total examples, rated count, quality count (above threshold), completed training runs
+- Created reusable `MetricCard` component with icon, label, value, description
+- Created `MetricCardSkeleton` for loading state
+- Dashboard displays 4 metric cards in responsive grid (2 cols on tablet, 4 on desktop)
+- Icons: Database (total), CheckCircle2 (rated), BarChart3 (quality), Sparkles (models)
+- Rated card shows percentage calculation dynamically
+- Uses Suspense for async data loading with skeleton fallback
+- Dashboard reads active project from cookie (same pattern as rate page)
+
 ### Task W1.5: Rating Rewrite Flow + Keyboard Shortcuts (Web)
 
 - Installed Framer Motion for animations
