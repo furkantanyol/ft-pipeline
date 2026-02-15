@@ -46,34 +46,34 @@
   </head>
   <body class="bg-zinc-950 text-zinc-50 font-sans antialiased">
     <!-- Nav -->
-    <nav class="sticky top-0 z-50 bg-zinc-950/95 backdrop-blur-sm border-b border-zinc-800">
-      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#" class="text-2xl font-light tracking-tight text-zinc-50">aitelier</a>
-        <div class="flex items-center gap-6">
+    <nav class="sticky top-0 z-50 bg-zinc-950/95 backdrop-blur-sm border-b border-zinc-800/50">
+      <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        <a href="#" class="text-xl font-light tracking-tight text-zinc-50">aitelier</a>
+        <div class="flex items-center gap-5">
           <a
             href="https://github.com/furkantanyol/aitelier"
             target="_blank"
             rel="noopener"
-            class="text-sm text-zinc-400 hover:text-zinc-50 transition-colors duration-200 hidden sm:inline"
+            class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors duration-200 hidden sm:inline"
             >GitHub</a
           >
           <a
             href="https://www.npmjs.com/package/aitelier"
             target="_blank"
             rel="noopener"
-            class="text-sm text-zinc-400 hover:text-zinc-50 transition-colors duration-200 hidden sm:inline"
+            class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors duration-200 hidden sm:inline"
             >npm</a
           >
           <a
             href="https://github.com/furkantanyol/aitelier#readme"
             target="_blank"
             rel="noopener"
-            class="text-sm text-zinc-400 hover:text-zinc-50 transition-colors duration-200 hidden sm:inline"
+            class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors duration-200 hidden sm:inline"
             >Docs</a
           >
           <a
             href="https://app.aitelier.sh"
-            class="text-sm font-medium px-4 py-2 rounded-lg bg-zinc-800 text-zinc-50 hover:bg-zinc-700 transition-colors duration-200"
+            class="text-sm font-medium px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-200 hover:bg-zinc-700 transition-colors duration-200"
             >Sign In</a
           >
         </div>
@@ -81,17 +81,19 @@
     </nav>
 
     <!-- Hero -->
-    <section class="max-w-6xl mx-auto px-6 pt-24 pb-20">
-      <div class="max-w-3xl">
-        <p class="text-sm uppercase tracking-widest text-zinc-500 mb-4">Your AI atelier</p>
-        <h1 class="text-5xl md:text-6xl font-light tracking-tight text-zinc-50 mb-6">
-          Craft fine-tuned models with CLI + web&nbsp;app
+    <section class="max-w-5xl mx-auto px-6 pt-24 pb-16">
+      <div class="max-w-2xl">
+        <p class="text-xs uppercase tracking-widest text-zinc-500 mb-5 font-medium">
+          Your AI atelier
+        </p>
+        <h1 class="text-4xl md:text-5xl font-light tracking-tight text-zinc-50 leading-tight mb-5">
+          Craft fine-tuned models with CLI +&nbsp;web&nbsp;app
         </h1>
-        <p class="text-xl text-zinc-400 leading-relaxed mb-8">
+        <p class="text-lg text-zinc-400 leading-relaxed mb-8">
           A complete toolkit for the full lifecycle of fine-tuning LLMs. Collect examples, rate
           quality, train models, and evaluate results — all in one place.
         </p>
-        <div class="flex flex-wrap items-center gap-3 mb-10">
+        <div class="flex flex-wrap items-center gap-3 mb-8">
           <img
             src="https://img.shields.io/npm/v/aitelier?style=flat-square&color=white&labelColor=27272a"
             alt="npm version"
@@ -108,22 +110,26 @@
             class="h-5"
           />
         </div>
-        <div class="flex flex-wrap gap-4">
+        <div class="flex flex-wrap gap-3">
           <a
             href="#quick-start"
-            class="inline-flex items-center px-6 py-3 rounded-lg bg-zinc-50 text-zinc-950 font-medium text-sm hover:bg-zinc-200 transition-colors duration-200"
+            class="inline-flex items-center px-5 py-2.5 rounded-lg bg-zinc-50 text-zinc-950 font-medium text-sm hover:bg-zinc-200 transition-colors duration-200"
           >
             Get Started
           </a>
           <a
             href="https://app.aitelier.sh"
-            class="inline-flex items-center px-6 py-3 rounded-lg bg-zinc-800 text-zinc-50 font-medium text-sm hover:bg-zinc-700 transition-colors duration-200"
+            class="inline-flex items-center px-5 py-2.5 rounded-lg bg-zinc-800 text-zinc-200 font-medium text-sm hover:bg-zinc-700 transition-colors duration-200"
           >
             Open Web App
           </a>
         </div>
       </div>
-      <div class="mt-16 rounded-xl border border-zinc-800 overflow-hidden bg-zinc-900">
+
+      <!-- CLI Demo -->
+      <div
+        class="mt-14 max-w-3xl mx-auto rounded-xl border border-zinc-800/60 overflow-hidden bg-zinc-900/50"
+      >
         <img
           src="https://vhs.charm.sh/vhs-TmiLHX4VFolJ31pnvwOmW.gif"
           alt="aitelier CLI demo showing the init, add, and train workflow"
@@ -134,32 +140,33 @@
     </section>
 
     <!-- Two Ways to Work -->
-    <section class="max-w-6xl mx-auto px-6 py-20">
-      <h2 class="text-3xl md:text-4xl font-light tracking-tight text-zinc-50 mb-12">
-        Two ways to work
-      </h2>
-      <div class="grid md:grid-cols-2 gap-6">
+    <section class="max-w-5xl mx-auto px-6 py-20">
+      <h2 class="text-3xl font-light tracking-tight text-zinc-50 mb-3">Two ways to work</h2>
+      <p class="text-zinc-400 mb-10">Use whichever fits your workflow — or both.</p>
+      <div class="grid md:grid-cols-2 gap-5">
         <!-- CLI Card -->
         <div
-          class="bg-zinc-900 border border-zinc-800 rounded-xl p-8 hover:-translate-y-0.5 transition-transform duration-200"
+          class="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-7 hover:-translate-y-0.5 transition-transform duration-200"
         >
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center text-lg">
+          <div class="flex items-center gap-3 mb-5">
+            <div
+              class="w-9 h-9 rounded-lg bg-zinc-800/80 flex items-center justify-center text-sm font-mono text-zinc-300"
+            >
               &gt;_
             </div>
             <div>
-              <h3 class="text-xl font-medium text-zinc-50">CLI</h3>
-              <p class="text-sm text-zinc-500">Fast &amp; local</p>
+              <h3 class="text-base font-medium text-zinc-50">CLI</h3>
+              <p class="text-xs text-zinc-500">Fast &amp; local</p>
             </div>
           </div>
-          <p class="text-zinc-400 mb-6">
+          <p class="text-sm text-zinc-400 mb-5">
             Power users and solo developers. Work locally with JSONL files, iterate quickly, and
             keep everything in your terminal.
           </p>
-          <ul class="space-y-3">
-            <li class="flex items-start gap-3 text-sm text-zinc-300">
+          <ul class="space-y-2.5">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300">
               <svg
-                class="w-5 h-5 text-zinc-500 shrink-0 mt-0.5"
+                class="w-4 h-4 text-zinc-600 shrink-0 mt-0.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -169,9 +176,9 @@
               </svg>
               Single command to collect training examples
             </li>
-            <li class="flex items-start gap-3 text-sm text-zinc-300">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300">
               <svg
-                class="w-5 h-5 text-zinc-500 shrink-0 mt-0.5"
+                class="w-4 h-4 text-zinc-600 shrink-0 mt-0.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -181,9 +188,9 @@
               </svg>
               Interactive rating and rewriting workflow
             </li>
-            <li class="flex items-start gap-3 text-sm text-zinc-300">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300">
               <svg
-                class="w-5 h-5 text-zinc-500 shrink-0 mt-0.5"
+                class="w-4 h-4 text-zinc-600 shrink-0 mt-0.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -193,9 +200,9 @@
               </svg>
               Auto-format JSONL for any provider
             </li>
-            <li class="flex items-start gap-3 text-sm text-zinc-300">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300">
               <svg
-                class="w-5 h-5 text-zinc-500 shrink-0 mt-0.5"
+                class="w-4 h-4 text-zinc-600 shrink-0 mt-0.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -205,9 +212,9 @@
               </svg>
               Dataset health stats and quality insights
             </li>
-            <li class="flex items-start gap-3 text-sm text-zinc-300">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300">
               <svg
-                class="w-5 h-5 text-zinc-500 shrink-0 mt-0.5"
+                class="w-4 h-4 text-zinc-600 shrink-0 mt-0.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -221,12 +228,12 @@
         </div>
         <!-- Web Card -->
         <div
-          class="bg-zinc-900 border border-zinc-800 rounded-xl p-8 hover:-translate-y-0.5 transition-transform duration-200"
+          class="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-7 hover:-translate-y-0.5 transition-transform duration-200"
         >
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center text-lg">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-9 h-9 rounded-lg bg-zinc-800/80 flex items-center justify-center">
               <svg
-                class="w-5 h-5 text-zinc-300"
+                class="w-4 h-4 text-zinc-300"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -240,18 +247,18 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-xl font-medium text-zinc-50">Web App</h3>
-              <p class="text-sm text-zinc-500">Team collaboration</p>
+              <h3 class="text-base font-medium text-zinc-50">Web App</h3>
+              <p class="text-xs text-zinc-500">Team collaboration</p>
             </div>
           </div>
-          <p class="text-zinc-400 mb-6">
+          <p class="text-sm text-zinc-400 mb-5">
             Invite teammates to curate training data together. Non-technical collaborators can
             contribute without touching the terminal.
           </p>
-          <ul class="space-y-3">
-            <li class="flex items-start gap-3 text-sm text-zinc-300">
+          <ul class="space-y-2.5">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300">
               <svg
-                class="w-5 h-5 text-zinc-500 shrink-0 mt-0.5"
+                class="w-4 h-4 text-zinc-600 shrink-0 mt-0.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -261,9 +268,9 @@
               </svg>
               Visual dataset browser and editor
             </li>
-            <li class="flex items-start gap-3 text-sm text-zinc-300">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300">
               <svg
-                class="w-5 h-5 text-zinc-500 shrink-0 mt-0.5"
+                class="w-4 h-4 text-zinc-600 shrink-0 mt-0.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -273,9 +280,9 @@
               </svg>
               Side-by-side model evaluation
             </li>
-            <li class="flex items-start gap-3 text-sm text-zinc-300">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300">
               <svg
-                class="w-5 h-5 text-zinc-500 shrink-0 mt-0.5"
+                class="w-4 h-4 text-zinc-600 shrink-0 mt-0.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -285,9 +292,9 @@
               </svg>
               Real-time training job monitoring
             </li>
-            <li class="flex items-start gap-3 text-sm text-zinc-300">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300">
               <svg
-                class="w-5 h-5 text-zinc-500 shrink-0 mt-0.5"
+                class="w-4 h-4 text-zinc-600 shrink-0 mt-0.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -297,9 +304,9 @@
               </svg>
               Role-based access (owner, trainer, rater)
             </li>
-            <li class="flex items-start gap-3 text-sm text-zinc-300">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300">
               <svg
-                class="w-5 h-5 text-zinc-500 shrink-0 mt-0.5"
+                class="w-4 h-4 text-zinc-600 shrink-0 mt-0.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -309,9 +316,9 @@
               </svg>
               Interactive model playground
             </li>
-            <li class="flex items-start gap-3 text-sm text-zinc-300">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300">
               <svg
-                class="w-5 h-5 text-zinc-500 shrink-0 mt-0.5"
+                class="w-4 h-4 text-zinc-600 shrink-0 mt-0.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -327,166 +334,98 @@
     </section>
 
     <!-- How It Works -->
-    <section class="max-w-6xl mx-auto px-6 py-20">
-      <h2 class="text-3xl md:text-4xl font-light tracking-tight text-zinc-50 mb-12">
-        How it works
-      </h2>
-      <div class="flex flex-col md:flex-row md:items-start gap-6 md:gap-0">
-        <!-- Step 1 -->
-        <div
-          class="flex md:flex-col items-start md:items-center text-left md:text-center gap-4 md:gap-3 md:flex-1"
-        >
+    <section class="max-w-5xl mx-auto px-6 py-20">
+      <h2 class="text-3xl font-light tracking-tight text-zinc-50 mb-3">How it works</h2>
+      <p class="text-zinc-400 mb-10">Five steps from raw data to deployed model.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-5">
+        <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-5 text-center">
           <div
-            class="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 text-lg shrink-0"
+            class="w-10 h-10 rounded-full bg-zinc-800/80 flex items-center justify-center text-zinc-400 text-sm font-medium mx-auto mb-3"
           >
             1
           </div>
-          <div>
-            <h3 class="text-sm font-medium text-zinc-50 mb-1">Collect</h3>
-            <p class="text-sm text-zinc-500">Add input/output training examples to your dataset</p>
-          </div>
+          <h3 class="text-sm font-medium text-zinc-50 mb-1">Collect</h3>
+          <p class="text-xs text-zinc-500 leading-relaxed">Add input/output training examples</p>
         </div>
-        <!-- Arrow -->
-        <div class="hidden md:flex items-center justify-center shrink-0 pt-3">
-          <svg
-            class="w-5 h-5 text-zinc-700"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="1.5"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-            />
-          </svg>
-        </div>
-        <!-- Step 2 -->
-        <div
-          class="flex md:flex-col items-start md:items-center text-left md:text-center gap-4 md:gap-3 md:flex-1"
-        >
+        <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-5 text-center">
           <div
-            class="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 text-lg shrink-0"
+            class="w-10 h-10 rounded-full bg-zinc-800/80 flex items-center justify-center text-zinc-400 text-sm font-medium mx-auto mb-3"
           >
             2
           </div>
-          <div>
-            <h3 class="text-sm font-medium text-zinc-50 mb-1">Rate</h3>
-            <p class="text-sm text-zinc-500">Score examples and rewrite low-quality ones</p>
-          </div>
+          <h3 class="text-sm font-medium text-zinc-50 mb-1">Rate</h3>
+          <p class="text-xs text-zinc-500 leading-relaxed">
+            Score quality and rewrite weak examples
+          </p>
         </div>
-        <!-- Arrow -->
-        <div class="hidden md:flex items-center justify-center shrink-0 pt-3">
-          <svg
-            class="w-5 h-5 text-zinc-700"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="1.5"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-            />
-          </svg>
-        </div>
-        <!-- Step 3 -->
-        <div
-          class="flex md:flex-col items-start md:items-center text-left md:text-center gap-4 md:gap-3 md:flex-1"
-        >
+        <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-5 text-center">
           <div
-            class="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 text-lg shrink-0"
+            class="w-10 h-10 rounded-full bg-zinc-800/80 flex items-center justify-center text-zinc-400 text-sm font-medium mx-auto mb-3"
           >
             3
           </div>
-          <div>
-            <h3 class="text-sm font-medium text-zinc-50 mb-1">Train</h3>
-            <p class="text-sm text-zinc-500">Split, format, and kick off fine-tuning jobs</p>
-          </div>
+          <h3 class="text-sm font-medium text-zinc-50 mb-1">Train</h3>
+          <p class="text-xs text-zinc-500 leading-relaxed">
+            Split, format, and kick off fine-tuning
+          </p>
         </div>
-        <!-- Arrow -->
-        <div class="hidden md:flex items-center justify-center shrink-0 pt-3">
-          <svg
-            class="w-5 h-5 text-zinc-700"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="1.5"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-            />
-          </svg>
-        </div>
-        <!-- Step 4 -->
-        <div
-          class="flex md:flex-col items-start md:items-center text-left md:text-center gap-4 md:gap-3 md:flex-1"
-        >
+        <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-5 text-center">
           <div
-            class="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 text-lg shrink-0"
+            class="w-10 h-10 rounded-full bg-zinc-800/80 flex items-center justify-center text-zinc-400 text-sm font-medium mx-auto mb-3"
           >
             4
           </div>
-          <div>
-            <h3 class="text-sm font-medium text-zinc-50 mb-1">Evaluate</h3>
-            <p class="text-sm text-zinc-500">Run A/B comparisons against base models</p>
-          </div>
+          <h3 class="text-sm font-medium text-zinc-50 mb-1">Evaluate</h3>
+          <p class="text-xs text-zinc-500 leading-relaxed">A/B compare against base models</p>
         </div>
-        <!-- Arrow -->
-        <div class="hidden md:flex items-center justify-center shrink-0 pt-3">
-          <svg
-            class="w-5 h-5 text-zinc-700"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="1.5"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-            />
-          </svg>
-        </div>
-        <!-- Step 5 -->
-        <div
-          class="flex md:flex-col items-start md:items-center text-left md:text-center gap-4 md:gap-3 md:flex-1"
-        >
+        <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-5 text-center">
           <div
-            class="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 text-lg shrink-0"
+            class="w-10 h-10 rounded-full bg-zinc-800/80 flex items-center justify-center text-zinc-400 text-sm font-medium mx-auto mb-3"
           >
             5
           </div>
-          <div>
-            <h3 class="text-sm font-medium text-zinc-50 mb-1">Ship</h3>
-            <p class="text-sm text-zinc-500">Deploy your fine-tuned model with confidence</p>
-          </div>
+          <h3 class="text-sm font-medium text-zinc-50 mb-1">Ship</h3>
+          <p class="text-xs text-zinc-500 leading-relaxed">Deploy your fine-tuned model</p>
         </div>
       </div>
     </section>
 
     <!-- Quick Start -->
-    <section id="quick-start" class="max-w-6xl mx-auto px-6 py-20">
-      <h2 class="text-3xl md:text-4xl font-light tracking-tight text-zinc-50 mb-12">
-        Get started in minutes
-      </h2>
-      <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-        <div class="flex items-center gap-2 px-5 py-3 border-b border-zinc-800">
-          <div class="w-3 h-3 rounded-full bg-zinc-700"></div>
-          <div class="w-3 h-3 rounded-full bg-zinc-700"></div>
-          <div class="w-3 h-3 rounded-full bg-zinc-700"></div>
-          <span class="text-xs text-zinc-600 ml-2 font-mono">terminal</span>
+    <section id="quick-start" class="max-w-5xl mx-auto px-6 py-20">
+      <h2 class="text-3xl font-light tracking-tight text-zinc-50 mb-3">Get started in minutes</h2>
+      <p class="text-zinc-400 mb-10">Install the CLI, then follow the workflow.</p>
+
+      <!-- Install Options -->
+      <div class="grid sm:grid-cols-2 gap-4 mb-6 max-w-2xl">
+        <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-xl overflow-hidden">
+          <div class="px-4 py-2.5 border-b border-zinc-800/60 flex items-center justify-between">
+            <span class="text-xs text-zinc-500 font-medium">npm</span>
+          </div>
+          <pre
+            class="px-4 py-3 text-sm font-mono"
+          ><code class="text-zinc-300">npm install -g aitelier</code></pre>
+        </div>
+        <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-xl overflow-hidden">
+          <div class="px-4 py-2.5 border-b border-zinc-800/60 flex items-center justify-between">
+            <span class="text-xs text-zinc-500 font-medium">Homebrew</span>
+          </div>
+          <pre
+            class="px-4 py-3 text-sm font-mono"
+          ><code class="text-zinc-300">brew install aitelier</code></pre>
+        </div>
+      </div>
+
+      <!-- Workflow -->
+      <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-xl overflow-hidden max-w-2xl">
+        <div class="flex items-center gap-2 px-4 py-2.5 border-b border-zinc-800/60">
+          <div class="w-2.5 h-2.5 rounded-full bg-zinc-700/80"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-zinc-700/80"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-zinc-700/80"></div>
+          <span class="text-xs text-zinc-600 ml-1.5 font-mono">terminal</span>
         </div>
         <pre
-          class="p-6 overflow-x-auto text-sm leading-relaxed font-mono"
-        ><code><span class="text-zinc-500"># Install globally</span>
-<span class="text-zinc-300">npm install -g aitelier</span>
-
-<span class="text-zinc-500"># Initialize a new project</span>
+          class="px-5 py-5 overflow-x-auto text-sm leading-relaxed font-mono"
+        ><code><span class="text-zinc-500"># Initialize a new project</span>
 <span class="text-zinc-300">ait init</span>
 
 <span class="text-zinc-500"># Add training examples interactively</span>
@@ -503,74 +442,79 @@
 <span class="text-zinc-500"># Evaluate your fine-tuned model</span>
 <span class="text-zinc-300">ait eval</span></code></pre>
       </div>
-      <p class="mt-6 text-sm text-zinc-500">
-        <a href="#commands" class="text-zinc-400 hover:text-zinc-50 transition-colors duration-200"
+      <p class="mt-5 text-sm">
+        <a href="#commands" class="text-zinc-500 hover:text-zinc-200 transition-colors duration-200"
           >View all commands &rarr;</a
         >
       </p>
     </section>
 
     <!-- Commands Table -->
-    <section id="commands" class="max-w-6xl mx-auto px-6 py-20">
-      <h2 class="text-3xl md:text-4xl font-light tracking-tight text-zinc-50 mb-12">
-        CLI Commands
-      </h2>
-      <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+    <section id="commands" class="max-w-5xl mx-auto px-6 py-20">
+      <h2 class="text-3xl font-light tracking-tight text-zinc-50 mb-3">CLI Commands</h2>
+      <p class="text-zinc-400 mb-10">Nine commands covering the full fine-tuning lifecycle.</p>
+      <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-xl overflow-hidden">
         <table class="w-full text-sm">
           <thead>
-            <tr class="border-b border-zinc-800">
-              <th class="text-left px-6 py-4 text-zinc-500 font-medium">Command</th>
-              <th class="text-left px-6 py-4 text-zinc-500 font-medium">Description</th>
+            <tr class="border-b border-zinc-800/60">
+              <th
+                class="text-left px-5 py-3 text-zinc-500 font-medium text-xs uppercase tracking-wider"
+              >
+                Command
+              </th>
+              <th
+                class="text-left px-5 py-3 text-zinc-500 font-medium text-xs uppercase tracking-wider"
+              >
+                Description
+              </th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-zinc-800/50">
+          <tbody class="divide-y divide-zinc-800/30">
             <tr>
-              <td class="px-6 py-3.5 font-mono text-zinc-50">ait init</td>
-              <td class="px-6 py-3.5 text-zinc-300">
-                Initialize a new aitelier project with config and data directories
+              <td class="px-5 py-3 font-mono text-zinc-200 text-xs">ait init</td>
+              <td class="px-5 py-3 text-zinc-400">
+                Initialize a new project with config and data directories
               </td>
             </tr>
             <tr>
-              <td class="px-6 py-3.5 font-mono text-zinc-50">ait add</td>
-              <td class="px-6 py-3.5 text-zinc-300">
+              <td class="px-5 py-3 font-mono text-zinc-200 text-xs">ait add</td>
+              <td class="px-5 py-3 text-zinc-400">
                 Add training examples interactively (input/output pairs)
               </td>
             </tr>
             <tr>
-              <td class="px-6 py-3.5 font-mono text-zinc-50">ait rate</td>
-              <td class="px-6 py-3.5 text-zinc-300">
+              <td class="px-5 py-3 font-mono text-zinc-200 text-xs">ait rate</td>
+              <td class="px-5 py-3 text-zinc-400">
                 Review and rate examples, rewrite low-quality ones
               </td>
             </tr>
             <tr>
-              <td class="px-6 py-3.5 font-mono text-zinc-50">ait stats</td>
-              <td class="px-6 py-3.5 text-zinc-300">
+              <td class="px-5 py-3 font-mono text-zinc-200 text-xs">ait stats</td>
+              <td class="px-5 py-3 text-zinc-400">
                 View dataset health metrics and quality distribution
               </td>
             </tr>
             <tr>
-              <td class="px-6 py-3.5 font-mono text-zinc-50">ait split</td>
-              <td class="px-6 py-3.5 text-zinc-300">
+              <td class="px-5 py-3 font-mono text-zinc-200 text-xs">ait split</td>
+              <td class="px-5 py-3 text-zinc-400">
                 Split dataset into training and validation sets
               </td>
             </tr>
             <tr>
-              <td class="px-6 py-3.5 font-mono text-zinc-50">ait format</td>
-              <td class="px-6 py-3.5 text-zinc-300">
-                Format examples into provider-specific JSONL
-              </td>
+              <td class="px-5 py-3 font-mono text-zinc-200 text-xs">ait format</td>
+              <td class="px-5 py-3 text-zinc-400">Format examples into provider-specific JSONL</td>
             </tr>
             <tr>
-              <td class="px-6 py-3.5 font-mono text-zinc-50">ait train</td>
-              <td class="px-6 py-3.5 text-zinc-300">Upload data and start a fine-tuning job</td>
+              <td class="px-5 py-3 font-mono text-zinc-200 text-xs">ait train</td>
+              <td class="px-5 py-3 text-zinc-400">Upload data and start a fine-tuning job</td>
             </tr>
             <tr>
-              <td class="px-6 py-3.5 font-mono text-zinc-50">ait status</td>
-              <td class="px-6 py-3.5 text-zinc-300">Check the status of running training jobs</td>
+              <td class="px-5 py-3 font-mono text-zinc-200 text-xs">ait status</td>
+              <td class="px-5 py-3 text-zinc-400">Check the status of running training jobs</td>
             </tr>
             <tr>
-              <td class="px-6 py-3.5 font-mono text-zinc-50">ait eval</td>
-              <td class="px-6 py-3.5 text-zinc-300">
+              <td class="px-5 py-3 font-mono text-zinc-200 text-xs">ait eval</td>
+              <td class="px-5 py-3 text-zinc-400">
                 Run A/B evaluations comparing fine-tuned vs base models
               </td>
             </tr>
@@ -580,44 +524,42 @@
     </section>
 
     <!-- Providers & Models -->
-    <section class="max-w-6xl mx-auto px-6 py-20">
-      <h2 class="text-3xl md:text-4xl font-light tracking-tight text-zinc-50 mb-3">
-        Powered by Together.ai
-      </h2>
-      <p class="text-lg text-zinc-400 mb-12">
+    <section class="max-w-5xl mx-auto px-6 py-20">
+      <h2 class="text-3xl font-light tracking-tight text-zinc-50 mb-3">Powered by Together.ai</h2>
+      <p class="text-zinc-400 mb-10">
         Fine-tune open-source models with LoRA. OpenAI support coming soon.
       </p>
-      <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-8">
-        <h3 class="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-6">
+      <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-7">
+        <h3 class="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-6">
           Recommended Models
         </h3>
         <div class="grid md:grid-cols-3 gap-6">
           <div>
-            <h4 class="text-zinc-50 font-medium mb-1">Llama 3.3 70B</h4>
-            <p class="text-sm text-zinc-400">
+            <h4 class="text-sm text-zinc-200 font-medium mb-1">Llama 3.3 70B</h4>
+            <p class="text-xs text-zinc-500 leading-relaxed">
               Best quality. Ideal for complex tasks that need strong reasoning and instruction
               following.
             </p>
           </div>
           <div>
-            <h4 class="text-zinc-50 font-medium mb-1">Llama 3.2 11B</h4>
-            <p class="text-sm text-zinc-400">
+            <h4 class="text-sm text-zinc-200 font-medium mb-1">Llama 3.2 11B</h4>
+            <p class="text-xs text-zinc-500 leading-relaxed">
               Great balance of quality and cost. Works well for most fine-tuning use cases.
             </p>
           </div>
           <div>
-            <h4 class="text-zinc-50 font-medium mb-1">Mistral 7B</h4>
-            <p class="text-sm text-zinc-400">
+            <h4 class="text-sm text-zinc-200 font-medium mb-1">Mistral 7B</h4>
+            <p class="text-xs text-zinc-500 leading-relaxed">
               Fast and affordable. Perfect for high-volume, simpler tasks and rapid iteration.
             </p>
           </div>
         </div>
-        <div class="mt-8 pt-6 border-t border-zinc-800">
+        <div class="mt-6 pt-5 border-t border-zinc-800/60">
           <a
             href="https://api.together.ai/settings/api-keys"
             target="_blank"
             rel="noopener"
-            class="text-sm text-zinc-400 hover:text-zinc-50 transition-colors duration-200"
+            class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors duration-200"
           >
             Get your Together.ai API key &rarr;
           </a>
@@ -626,32 +568,30 @@
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-zinc-800 mt-20">
-      <div class="max-w-6xl mx-auto px-6 py-16">
+    <footer class="border-t border-zinc-800/50">
+      <div class="max-w-5xl mx-auto px-6 py-14">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
-          <!-- Branding -->
           <div class="col-span-2 md:col-span-1">
-            <p class="text-xl font-light tracking-tight text-zinc-50 mb-2">aitelier</p>
-            <p class="text-sm text-zinc-500 mb-4">Craft fine-tuned models.</p>
+            <p class="text-lg font-light tracking-tight text-zinc-50 mb-2">aitelier</p>
+            <p class="text-xs text-zinc-500 mb-3">Craft fine-tuned models.</p>
             <p class="text-xs text-zinc-600">&copy; 2025 Furkan Tanyol</p>
           </div>
-          <!-- Product -->
           <div>
-            <h4 class="text-sm font-medium text-zinc-400 mb-4">Product</h4>
-            <ul class="space-y-2.5">
+            <h4 class="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-4">Product</h4>
+            <ul class="space-y-2">
               <li>
                 <a
                   href="https://www.npmjs.com/package/aitelier"
                   target="_blank"
                   rel="noopener"
-                  class="text-sm text-zinc-500 hover:text-zinc-50 transition-colors duration-200"
+                  class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors duration-200"
                   >CLI (npm)</a
                 >
               </li>
               <li>
                 <a
                   href="https://app.aitelier.sh"
-                  class="text-sm text-zinc-500 hover:text-zinc-50 transition-colors duration-200"
+                  class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors duration-200"
                   >Web App</a
                 >
               </li>
@@ -660,22 +600,23 @@
                   href="https://github.com/furkantanyol/aitelier#readme"
                   target="_blank"
                   rel="noopener"
-                  class="text-sm text-zinc-500 hover:text-zinc-50 transition-colors duration-200"
+                  class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors duration-200"
                   >Documentation</a
                 >
               </li>
             </ul>
           </div>
-          <!-- Resources -->
           <div>
-            <h4 class="text-sm font-medium text-zinc-400 mb-4">Resources</h4>
-            <ul class="space-y-2.5">
+            <h4 class="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-4">
+              Resources
+            </h4>
+            <ul class="space-y-2">
               <li>
                 <a
                   href="https://github.com/furkantanyol/aitelier"
                   target="_blank"
                   rel="noopener"
-                  class="text-sm text-zinc-500 hover:text-zinc-50 transition-colors duration-200"
+                  class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors duration-200"
                   >GitHub</a
                 >
               </li>
@@ -684,7 +625,7 @@
                   href="https://www.npmjs.com/package/aitelier"
                   target="_blank"
                   rel="noopener"
-                  class="text-sm text-zinc-500 hover:text-zinc-50 transition-colors duration-200"
+                  class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors duration-200"
                   >npm</a
                 >
               </li>
@@ -693,22 +634,21 @@
                   href="https://github.com/furkantanyol/aitelier/issues"
                   target="_blank"
                   rel="noopener"
-                  class="text-sm text-zinc-500 hover:text-zinc-50 transition-colors duration-200"
+                  class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors duration-200"
                   >Issues</a
                 >
               </li>
             </ul>
           </div>
-          <!-- Legal -->
           <div>
-            <h4 class="text-sm font-medium text-zinc-400 mb-4">Legal</h4>
-            <ul class="space-y-2.5">
+            <h4 class="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-4">Legal</h4>
+            <ul class="space-y-2">
               <li>
                 <a
                   href="https://github.com/furkantanyol/aitelier/blob/main/LICENSE"
                   target="_blank"
                   rel="noopener"
-                  class="text-sm text-zinc-500 hover:text-zinc-50 transition-colors duration-200"
+                  class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors duration-200"
                   >MIT License</a
                 >
               </li>
