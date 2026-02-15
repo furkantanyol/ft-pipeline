@@ -120,6 +120,15 @@ pnpm turbo build && pnpm prettier --write . && pnpm turbo lint && pnpm turbo tes
 
 ## Completed Tasks
 
+### Task W3.1: Training Pre-flight Check + Config Editor (Web)
+
+- Created `/train` page with pre-flight checks and config editor
+- Server actions in `train/actions.ts`: `getPreflightData()`, `updateTrainingConfig()`
+- Created `TrainingPreflight` component with readiness status, data overview (quality/train/val/unassigned counts), warnings list, cost/duration estimates, diff from last run
+- Created `TrainingConfigEditor` component with basic params (epochs, batch size, learning rate), LoRA params (rank, alpha, dropout), preset buttons (Conservative/Aggressive), live cost/duration re-estimation
+- Utility functions moved to `lib/training-utils.ts` (not server actions) for `estimateTrainingCost()` and `estimateTrainingDuration()`
+- Important: Next.js server actions must be async - pure utility functions cannot be exported from `'use server'` files
+
 ### Task W2.3: Dashboard Training Timeline + Activity Feed (Web)
 
 - Created `getTrainingRuns()` server action in dashboard actions.ts

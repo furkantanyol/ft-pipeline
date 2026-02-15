@@ -299,9 +299,9 @@ Track progress by checking off tasks as they're completed.
 
 **Deps:** W0.5, W0.3 · **Size:** M
 
-- [ ] Pre-flight: quality count, train split count, cost estimate, duration, warnings, diff from last run
-- [ ] Config editor: epochs, batch, lr, LoRA params with presets (Conservative/Aggressive)
-- [ ] Live cost re-estimation on config change
+- [x] Pre-flight: quality count, train split count, cost estimate, duration, warnings, diff from last run
+- [x] Config editor: epochs, batch, lr, LoRA params with presets (Conservative/Aggressive)
+- [x] Live cost re-estimation on config change
 
 ### W3.2 — Training: Split Management
 
