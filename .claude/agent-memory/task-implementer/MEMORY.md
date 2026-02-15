@@ -149,6 +149,27 @@ pnpm turbo build && pnpm prettier --write . && pnpm turbo lint && pnpm turbo tes
 - TypeScript type casting needed for Supabase status field (returns generic string, not union type)
 - Note: Team leaderboard deferred for later multi-user work
 
+### Task W3.2: Training Split Management (Web)
+
+- Created `getSplitData()` server action in train/actions.ts
+- Returns unassigned/train/val example groups with avg rating stats for each
+- Val is auto-locked if any examples already in val split (prevents accidental reshuffling)
+- Created `autoSplit()` server action with stratified sampling by rating
+- Respects locked val set: only splits unassigned + train examples, leaves val untouched
+- Default 80/20 train/val ratio, shuffles within rating groups for balanced splits
+- Created `unlockValidationSet()` server action to clear val assignments (moves to unassigned)
+- Created `moveExamplesToSplit()` server action for manual split management
+- Created `SplitManager` component with three split overview cards (unassigned, train, val)
+- Each card shows count, avg rating, percentage bar of total examples
+- Color-coded: gray (unassigned), blue (train), green (val)
+- Lock icon appears on val card when locked
+- Auto-split button triggers stratified split, disabled when no examples
+- Unlock button appears when val is locked, shows confirmation dialog
+- Split quality section shows detailed breakdown with icons and avg ratings
+- Warning highlight on unassigned section if examples exist
+- Integrated into train page between preflight and config editor
+- Install shadcn alert-dialog component for confirmation dialogs
+
 ### Task W2.2: Dashboard Rating Distribution Chart (Web)
 
 - Created `getRatingDistribution()` server action in dashboard actions.ts

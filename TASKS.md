@@ -307,10 +307,10 @@ Track progress by checking off tasks as they're completed.
 
 **Deps:** W0.5, W0.3 · **Size:** M
 
-- [ ] Visual split editor (unassigned/train/val groups)
-- [ ] Auto-split button (80/20 stratified)
-- [ ] Lock/unlock validation set with confirmation
-- [ ] Split quality indicators (count + avg rating per split)
+- [x] Visual split editor (unassigned/train/val groups)
+- [x] Auto-split button (80/20 stratified)
+- [x] Lock/unlock validation set with confirmation
+- [x] Split quality indicators (count + avg rating per split)
 
 ### W3.3 — Training: Together.ai Integration
 

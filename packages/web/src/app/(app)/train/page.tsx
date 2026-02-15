@@ -1,14 +1,16 @@
 import { Suspense } from 'react';
 import { cookies } from 'next/headers';
 import { getUserProjects } from '@/lib/projects';
-import { getPreflightData } from './actions';
+import { getPreflightData, getSplitData } from './actions';
 import { TrainingPreflight } from '@/components/training-preflight';
 import { TrainingConfigEditor } from '@/components/training-config-editor';
+import { SplitManager } from '@/components/split-manager';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 async function TrainingContent({ projectId }: { projectId: string }) {
   const { data, error } = await getPreflightData(projectId);
+  const splitResult = await getSplitData(projectId);
 
   if (error || !data) {
     return (
@@ -18,9 +20,18 @@ async function TrainingContent({ projectId }: { projectId: string }) {
     );
   }
 
+  if (splitResult.error || !splitResult.data) {
+    return (
+      <div className="text-sm text-destructive">
+        Failed to load split data: {splitResult.error ?? 'Unknown error'}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <TrainingPreflight data={data} />
+      <SplitManager projectId={projectId} data={splitResult.data} />
       <TrainingConfigEditor
         projectId={projectId}
         initialConfig={data.trainingConfig}
