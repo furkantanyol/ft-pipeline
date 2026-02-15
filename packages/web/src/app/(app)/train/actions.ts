@@ -558,3 +558,310 @@ export async function startTraining(projectId: string): Promise<{
     return { success: false, error: errorMessage };
   }
 }
+
+export async function pollTrainingStatus(runId: string): Promise<{
+  success: boolean;
+  run?: {
+    id: string;
+    status: string;
+    model_id: string | null;
+    error: string | null;
+  };
+  error?: string;
+}> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { success: false, error: 'Not authenticated' };
+  }
+
+  // Get training run
+  const { data: run, error: runError } = await supabase
+    .from('training_runs')
+    .select('id, project_id, provider, provider_job_id, status, model_id, error')
+    .eq('id', runId)
+    .single();
+
+  if (runError || !run) {
+    return { success: false, error: 'Training run not found' };
+  }
+
+  // If already in terminal state, just return current status
+  if (run.status === 'completed' || run.status === 'failed' || run.status === 'cancelled') {
+    return {
+      success: true,
+      run: {
+        id: run.id,
+        status: run.status,
+        model_id: run.model_id,
+        error: run.error,
+      },
+    };
+  }
+
+  // Get project to fetch API key
+  const { data: project, error: projectError } = await supabase
+    .from('projects')
+    .select('provider_config')
+    .eq('id', run.project_id)
+    .single();
+
+  if (projectError || !project) {
+    return { success: false, error: 'Project not found' };
+  }
+
+  const providerConfig = project.provider_config as { api_key?: string };
+  const apiKey = providerConfig.api_key;
+
+  if (!apiKey) {
+    return { success: false, error: 'API key not configured' };
+  }
+
+  if (!run.provider_job_id) {
+    return { success: false, error: 'No provider job ID found' };
+  }
+
+  try {
+    // Poll Together.ai for job status
+    const { getJobStatus } = await import('@/lib/providers/together');
+    const jobStatus = await getJobStatus(run.provider_job_id, apiKey);
+
+    // Map Together.ai status to our status
+    // Together.ai statuses: "pending", "queued", "running", "succeeded", "failed", "cancelled"
+    const statusMap: Record<string, string> = {
+      pending: 'queued',
+      queued: 'queued',
+      running: 'training',
+      succeeded: 'completed',
+      failed: 'failed',
+      cancelled: 'cancelled',
+    };
+
+    const newStatus = statusMap[jobStatus.status] ?? run.status;
+
+    // Prepare update data
+    const updateData: {
+      status: string;
+      model_id?: string | null;
+      error?: string | null;
+      completed_at?: string;
+    } = {
+      status: newStatus,
+    };
+
+    if (jobStatus.fine_tuned_model) {
+      updateData.model_id = jobStatus.fine_tuned_model;
+    }
+
+    if (jobStatus.error) {
+      updateData.error = jobStatus.error;
+    }
+
+    if (newStatus === 'completed' || newStatus === 'failed' || newStatus === 'cancelled') {
+      updateData.completed_at = new Date().toISOString();
+    }
+
+    // Update run in DB
+    await supabase.from('training_runs').update(updateData).eq('id', run.id);
+
+    return {
+      success: true,
+      run: {
+        id: run.id,
+        status: newStatus,
+        model_id: updateData.model_id ?? run.model_id,
+        error: updateData.error ?? run.error,
+      },
+    };
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+    return { success: false, error: errorMessage };
+  }
+}
+
+export async function cancelTraining(runId: string): Promise<{
+  success: boolean;
+  error?: string;
+}> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { success: false, error: 'Not authenticated' };
+  }
+
+  // Get training run
+  const { data: run, error: runError } = await supabase
+    .from('training_runs')
+    .select('id, project_id, provider, provider_job_id, status')
+    .eq('id', runId)
+    .single();
+
+  if (runError || !run) {
+    return { success: false, error: 'Training run not found' };
+  }
+
+  // Check if run can be cancelled
+  if (run.status === 'completed' || run.status === 'failed' || run.status === 'cancelled') {
+    return { success: false, error: 'Training run is already in a terminal state' };
+  }
+
+  if (!run.provider_job_id) {
+    // If no job ID yet, just mark as cancelled
+    await supabase
+      .from('training_runs')
+      .update({
+        status: 'cancelled',
+        completed_at: new Date().toISOString(),
+      })
+      .eq('id', run.id);
+
+    return { success: true };
+  }
+
+  // Get project to fetch API key
+  const { data: project, error: projectError } = await supabase
+    .from('projects')
+    .select('provider_config')
+    .eq('id', run.project_id)
+    .single();
+
+  if (projectError || !project) {
+    return { success: false, error: 'Project not found' };
+  }
+
+  const providerConfig = project.provider_config as { api_key?: string };
+  const apiKey = providerConfig.api_key;
+
+  if (!apiKey) {
+    return { success: false, error: 'API key not configured' };
+  }
+
+  try {
+    // Cancel job via Together.ai API
+    const { cancelFineTuneJob } = await import('@/lib/providers/together');
+    await cancelFineTuneJob(run.provider_job_id, apiKey);
+
+    // Update run status
+    await supabase
+      .from('training_runs')
+      .update({
+        status: 'cancelled',
+        completed_at: new Date().toISOString(),
+      })
+      .eq('id', run.id);
+
+    return { success: true };
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+    return { success: false, error: errorMessage };
+  }
+}
+
+export type TrainingRunRow = {
+  id: string;
+  version: number;
+  status: string;
+  model_id: string | null;
+  example_count: number;
+  duration: number | null; // in minutes
+  cost_estimate: number | null;
+  cost_actual: number | null;
+  eval_score: number | null;
+  created_at: string;
+  completed_at: string | null;
+};
+
+export async function getAllTrainingRuns(projectId: string): Promise<{
+  data: TrainingRunRow[] | null;
+  error?: string;
+}> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { data: null, error: 'Not authenticated' };
+  }
+
+  // Get all training runs for the project
+  const { data: runs, error: runsError } = await supabase
+    .from('training_runs')
+    .select(
+      'id, status, model_id, example_count, cost_estimate, cost_actual, created_at, started_at, completed_at',
+    )
+    .eq('project_id', projectId)
+    .order('created_at', { ascending: false });
+
+  if (runsError) {
+    return { data: null, error: runsError.message };
+  }
+
+  if (!runs) {
+    return { data: [], error: undefined };
+  }
+
+  // Get evaluation scores for completed runs
+  const completedRunIds = runs.filter((r) => r.status === 'completed').map((r) => r.id);
+
+  let evalScores: Record<string, number> = {};
+
+  if (completedRunIds.length > 0) {
+    const { data: evals } = await supabase
+      .from('evaluations')
+      .select('training_run_id, model_score')
+      .in('training_run_id', completedRunIds);
+
+    if (evals) {
+      // Calculate average eval score per run
+      const scoresByRun: Record<string, number[]> = {};
+      evals.forEach((e) => {
+        if (e.model_score !== null) {
+          if (!scoresByRun[e.training_run_id]) {
+            scoresByRun[e.training_run_id] = [];
+          }
+          scoresByRun[e.training_run_id].push(e.model_score);
+        }
+      });
+
+      Object.entries(scoresByRun).forEach(([runId, scores]) => {
+        if (scores.length > 0) {
+          evalScores[runId] = scores.reduce((sum, s) => sum + s, 0) / scores.length;
+        }
+      });
+    }
+  }
+
+  // Map runs to table rows with calculated fields
+  const rows: TrainingRunRow[] = runs.map((run, index) => {
+    // Calculate duration in minutes
+    let duration: number | null = null;
+    if (run.started_at && run.completed_at) {
+      const start = new Date(run.started_at).getTime();
+      const end = new Date(run.completed_at).getTime();
+      duration = Math.round((end - start) / (1000 * 60));
+    }
+
+    return {
+      id: run.id,
+      version: runs.length - index, // Descending version numbers
+      status: run.status,
+      model_id: run.model_id,
+      example_count: run.example_count,
+      duration,
+      cost_estimate: run.cost_estimate,
+      cost_actual: run.cost_actual,
+      eval_score: evalScores[run.id] ?? null,
+      created_at: run.created_at,
+      completed_at: run.completed_at,
+    };
+  });
+
+  return { data: rows };
+}

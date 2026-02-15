@@ -169,3 +169,20 @@ export async function getJobStatus(jobId: string, apiKey: string): Promise<FineT
     error: data.error,
   };
 }
+
+/**
+ * Cancel a fine-tune job on Together.ai
+ */
+export async function cancelFineTuneJob(jobId: string, apiKey: string): Promise<void> {
+  const response = await fetch(`${TOGETHER_API_BASE}/fine-tunes/${jobId}/cancel`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Failed to cancel job: ${error}`);
+  }
+}

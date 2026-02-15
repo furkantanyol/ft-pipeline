@@ -192,6 +192,23 @@ pnpm turbo build && pnpm prettier --write . && pnpm turbo lint && pnpm turbo tes
 - Suspense key includes filter/sort to trigger re-fetch on change
 - Type-safe filter and sort enums exported from actions.ts
 
+### Task W3.5: Training Run History (Web)
+
+- Installed Shadcn table component with `pnpm dlx shadcn@latest add table`
+- Created `getAllTrainingRuns()` server action in `train/actions.ts`
+- Returns all runs with computed version numbers (descending), duration (in minutes), eval scores
+- Duration calculated from started_at to completed_at timestamps
+- Eval scores aggregated from evaluations table (average model_score per run)
+- Created `RunHistory` component at `components/run-history.tsx`
+- Sortable table with 8 columns: version, status, model, count, duration, cost, eval score, date
+- Click sorting on column headers (toggles asc/desc direction, defaults to desc)
+- Status badges with icons (same pattern as TrainingTimeline)
+- Row click navigates to `/train/[runId]` detail page
+- Copy model ID button on completed runs with toast notification
+- Moved SortableHeader component outside render to fix ESLint react-hooks/static-components error
+- TypeScript strict mode fix: type status as `keyof typeof statusConfig` with fallback
+- Integrated into train page below config/split sections
+
 ### Task W3.3: Together.ai Integration (Web)
 
 - Created Together.ai provider module at `lib/providers/together.ts`

@@ -325,18 +325,18 @@ Track progress by checking off tasks as they're completed.
 
 **Deps:** W3.3 · **Size:** M
 
-- [ ] Dynamic route `/train/[runId]` with status display
-- [ ] Poll Together.ai every 10s, update DB as status changes
-- [ ] Status badge progression: Uploading → Queued → Training → Complete/Failed
-- [ ] Cancel button, completed run shows model ID + "Run Evaluation" CTA
+- [x] Dynamic route `/train/[runId]` with status display
+- [x] Poll Together.ai every 10s, update DB as status changes
+- [x] Status badge progression: Uploading → Queued → Training → Complete/Failed
+- [x] Cancel button, completed run shows model ID + "Run Evaluation" CTA
 
 ### W3.5 — Training: Run History
 
 **Deps:** W3.3 · **Size:** S
 
-- [ ] Sortable table of all runs (version, status, model, count, duration, cost, eval score, date)
-- [ ] Row click → `/train/[runId]`
-- [ ] Copy model ID button on completed runs
+- [x] Sortable table of all runs (version, status, model, count, duration, cost, eval score, date)
+- [x] Row click → `/train/[runId]`
+- [x] Copy model ID button on completed runs
 
 ---
 

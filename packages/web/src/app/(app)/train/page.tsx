@@ -1,17 +1,19 @@
 import { Suspense } from 'react';
 import { cookies } from 'next/headers';
 import { getUserProjects } from '@/lib/projects';
-import { getPreflightData, getSplitData } from './actions';
+import { getPreflightData, getSplitData, getAllTrainingRuns } from './actions';
 import { TrainingPreflight } from '@/components/training-preflight';
 import { TrainingConfigEditor } from '@/components/training-config-editor';
 import { SplitManager } from '@/components/split-manager';
 import { StartTrainingButton } from '@/components/start-training-button';
+import { RunHistory } from '@/components/run-history';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 async function TrainingContent({ projectId }: { projectId: string }) {
   const { data, error } = await getPreflightData(projectId);
   const splitResult = await getSplitData(projectId);
+  const runsResult = await getAllTrainingRuns(projectId);
 
   if (error || !data) {
     return (
@@ -25,6 +27,14 @@ async function TrainingContent({ projectId }: { projectId: string }) {
     return (
       <div className="text-sm text-destructive">
         Failed to load split data: {splitResult.error ?? 'Unknown error'}
+      </div>
+    );
+  }
+
+  if (runsResult.error) {
+    return (
+      <div className="text-sm text-destructive">
+        Failed to load training runs: {runsResult.error}
       </div>
     );
   }
@@ -44,6 +54,9 @@ async function TrainingContent({ projectId }: { projectId: string }) {
       <div className="flex justify-end">
         <StartTrainingButton projectId={projectId} preflightData={data} />
       </div>
+
+      {/* Training Run History */}
+      <RunHistory runs={runsResult.data ?? []} />
     </div>
   );
 }
