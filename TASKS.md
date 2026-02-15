@@ -378,19 +378,19 @@ Track progress by checking off tasks as they're completed.
 
 **Deps:** W0.5, W0.3 · **Size:** M
 
-- [ ] Input textarea + streaming output panel
-- [ ] Model selector (completed runs + base model)
-- [ ] Temperature + max tokens sliders
-- [ ] Generate / Regenerate buttons
-- [ ] "Save as Example" button → creates unrated example
+- [x] Input textarea + streaming output panel
+- [x] Model selector (completed runs + base model)
+- [x] Temperature + max tokens sliders
+- [x] Generate / Regenerate buttons
+- [x] "Save as Example" button → creates unrated example
 
 ### W5.2 — Playground: Side-by-Side Comparison
 
 **Deps:** W5.1 · **Size:** S
 
-- [ ] "Compare" toggle → two output panels with independent model selectors
-- [ ] Same input → both models stream simultaneously
-- [ ] Quick preference buttons + response time display
+- [x] "Compare" toggle → two output panels with independent model selectors
+- [x] Same input → both models stream simultaneously
+- [x] Quick preference buttons + response time display
 
 ---
 

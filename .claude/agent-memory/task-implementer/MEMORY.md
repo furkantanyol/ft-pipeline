@@ -118,7 +118,32 @@ pnpm turbo build && pnpm prettier --write . && pnpm turbo lint && pnpm turbo tes
 - Define color scheme in `chartConfig` with CSS variables like `hsl(var(--chart-1))`
 - Chart components are client-side (`"use client"`)
 
+### Playground Streaming API Pattern
+
+- API route at `/api/playground/route.ts` proxies streaming requests to Together.ai
+- Client component uses `fetch()` with `response.body.getReader()` for SSE streaming
+- Stream chunks are decoded and parsed as `data: {JSON}` format
+- Abort controllers manage request cancellation on unmount or new request
+- For side-by-side comparison: run two `generateWithModel()` calls in parallel with `Promise.all()`
+- Each model has independent state (output, isGenerating, responseTime, abortController)
+- Response time calculated from `Date.now()` before/after fetch completes
+
 ## Completed Tasks
+
+### Task W5.2: Playground Side-by-Side Comparison (Web)
+
+- Extended `PlaygroundInterface` component with compare mode toggle
+- Compare mode uses `Switch` component (installed with `pnpm dlx shadcn@latest add switch`)
+- Added state for second model: `selectedModelB`, `outputB`, `isGeneratingB`, `responseTimeB`, `abortControllerBRef`
+- Refactored generation logic into reusable `generateWithModel()` function
+- `handleGenerate()` runs both models in parallel with `Promise.all()` when in compare mode
+- UI shows two-column layout with independent output panels when comparing
+- Each panel displays response time in seconds (calculated from fetch start/end)
+- Quick preference buttons: "Prefer Model A" / "Prefer Model B" (currently just toast notifications)
+- Single mode shows response time in header, compare mode shows time for each panel
+- Model selector dynamically adjusts: single card in single mode, Model A + Model B cards in compare mode
+- Parameters card moves below model selectors in compare mode for cleaner layout
+- Save as Example button only visible in single mode (not compare mode)
 
 ### Task W3.1: Training Pre-flight Check + Config Editor (Web)
 
@@ -202,6 +227,23 @@ pnpm turbo build && pnpm prettier --write . && pnpm turbo lint && pnpm turbo tes
 - Created `RunHistory` component at `components/run-history.tsx`
 - Sortable table with 8 columns: version, status, model, count, duration, cost, eval score, date
 - Click sorting on column headers (toggles asc/desc direction, defaults to desc)
+
+### Task W5.1: Playground Single Model Chat (Web)
+
+- Created Next.js Route Handler at `src/app/api/playground/route.ts` for streaming SSE responses
+- Server actions can't stream — use Route Handlers for SSE/streaming responses
+- Route handler fetches project provider_config, proxies Together.ai streaming response
+- Together.ai streaming: `stream: true` returns SSE with `data: {...}` chunks containing delta content
+- Created `getAvailableModels()` server action: returns base model + completed fine-tuned models
+- Model dropdown shows base model (e.g., "meta-llama/Llama-3-8b-chat-hf (base)") and fine-tuned runs (e.g., "v1 — ft:...")
+- Created `getSystemPrompt()` server action to fetch project's system prompt for chat context
+- Created `saveAsExample()` server action to save playground output as unrated training example
+- Created `PlaygroundInterface` client component with model selector, temp/max_tokens sliders, streaming output
+- Streaming implementation: fetch from Route Handler, read SSE stream with ReadableStreamDefaultReader, parse `data:` lines
+- Abort controller pattern: cancel previous request when starting new generation, cleanup on unmount
+- Regenerate button reuses same input with current params
+- Save as Example validates both input and output exist, shows toast on success
+- projects.provider_config is jsonb column storing {"api_key": "..."}
 - Status badges with icons (same pattern as TrainingTimeline)
 - Row click navigates to `/train/[runId]` detail page
 - Copy model ID button on completed runs with toast notification
