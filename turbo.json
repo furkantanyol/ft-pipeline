@@ -3,6 +3,8 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "env": ["SUPABASE_SECRET_KEY"],
+      "inputs": [".env*"],
       "outputs": ["dist/**", ".next/**"]
     },
     "test": {
@@ -10,4 +12,4 @@
     },
     "lint": {}
   }
-}
+} 

@@ -30,7 +30,7 @@ A complete toolkit for the full lifecycle of fine-tuning LLMs — from collectin
 | -------------------------------------- | ------------------------------------------------------------ | ------------------------------------ |
 | [`packages/cli`](packages/cli)         | CLI tool — `npx aitelier`                                    | [CLI Quick Start](#cli-quick-start)  |
 | [`packages/web`](packages/web)         | Next.js web app — [app.aitelier.sh](https://app.aitelier.sh) | [Web README](packages/web/README.md) |
-| [`packages/landing`](packages/landing) | Landing page — [aitelier.sh](https://aitelier.sh)            | Static HTML                          |
+| [`packages/landing`](packages/landing) | Landing page — [aitelier.sh](https://aitelier.sh)            | Static HTML page                     |
 
 ## CLI Quick Start
 
