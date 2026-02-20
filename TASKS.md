@@ -48,6 +48,18 @@ Track progress by checking off tasks as they're completed.
 - [x] Train/val split status
 - [x] Write tests
 
+### M1.6 — `ait list` Command
+
+- [x] Paginated table view (ID, user preview, assistant preview, rating, split, version)
+- [x] Filtering: --rated, --unrated, --min, --max, --split
+- [x] Interactive mode: select example → view full details
+- [x] Edit messages (user, assistant, system) via editor prompt
+- [x] Re-rate examples from detail view
+- [x] Delete examples with confirmation
+- [x] Add new example from list view
+- [x] Non-interactive modes: --json, --no-interactive
+- [x] Write tests
+
 ---
 
 ## Milestone 2: Format, Split, Train
@@ -262,6 +274,16 @@ Track progress by checking off tasks as they're completed.
 - [x] Filter dropdown: Unrated (default), All, Below threshold, Needs rewrite
 - [x] Sort dropdown: Newest (default), Random, By rating
 - [x] Filters modify Supabase query, persist in session
+
+### W1.7 — Examples Browser Page
+
+**Deps:** W1.3, W1.6 · **Size:** L
+
+- [x] Server actions: `getExamplesList` (paginated, filtered, sorted), `updateExample`, `deleteExample`, `deleteExamples`, `updateExamplesSplit`
+- [x] Examples table component: sortable columns, bulk select, row actions, pagination
+- [x] Example detail dialog: view/edit mode, inline editing of input/output/rating, delete
+- [x] Page with filter/sort controls (All, Rated, Unrated, Quality, Train, Val, Unassigned)
+- [x] Sidebar nav item added (Examples between Add and Train)
 
 ---
 

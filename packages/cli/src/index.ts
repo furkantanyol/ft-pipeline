@@ -10,6 +10,7 @@ import { registerSplit } from './commands/split.js';
 import { registerTrain } from './commands/train.js';
 import { registerEval } from './commands/eval.js';
 import { registerStatus } from './commands/status.js';
+import { registerList } from './commands/list.js';
 import { logo, text } from './utils/ui.js';
 
 const program = new Command();
@@ -61,5 +62,6 @@ registerSplit(program);
 registerTrain(program);
 registerEval(program);
 registerStatus(program);
+registerList(program);
 
 program.parse();
